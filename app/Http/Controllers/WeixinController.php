@@ -45,7 +45,7 @@ class WeixinController extends Controller
 //            print($data. "\n");
             return json_decode($data,true);
         } else {
-            return array();
+            return $errCode;
 //            print($errCode . "\n");
         }
     }
