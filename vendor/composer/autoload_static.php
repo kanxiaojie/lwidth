@@ -305,6 +305,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
 
     public static $classMap = array (
         'CreatePostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_13_130837_create_posts_table.php',
+        'CreateProfilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_16_074534_create_profiles_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_13_131953_create_users_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'ExampleTest' => __DIR__ . '/../..' . '/tests/ExampleTest.php',

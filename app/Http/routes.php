@@ -12,3 +12,10 @@ $app->get('/api', function () use ($app) {
 
 $app->post('/encrypt/user','UserController@encryptCode');
 $app->post('/decrypt/user','UserController@decryptCode');
+
+$app->get('/weixin/check','WeixinController@check');
+$app->get('/weixin/login','WeixinController@login');
+$app->get('/weixin/userInfo','WeixinController@useInfo');
+
+$app->post('/weixin/firstcode','WeixinController@firstLogin');
+

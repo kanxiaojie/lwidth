@@ -31,4 +31,10 @@ class User extends Model implements
     protected $hidden = [
         'password',
     ];
+
+    public function profile()
+    {
+        return $this->hasOne('App\Profile');
+
+    }
 }
