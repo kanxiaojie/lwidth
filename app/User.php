@@ -37,4 +37,9 @@ class User extends Model implements
         return $this->hasOne('App\Profile');
 
     }
+
+    public function language()
+    {
+        return $this->belongsTo('App\Language');
+    }
 }

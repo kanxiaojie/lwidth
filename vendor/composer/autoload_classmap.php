@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddColumnsToUsersTable' => $baseDir . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
+    'CreateLanguagesTable' => $baseDir . '/database/migrations/2017_03_17_020843_create_languages_table.php',
     'CreatePostsTable' => $baseDir . '/database/migrations/2017_03_13_130837_create_posts_table.php',
     'CreateProfilesTable' => $baseDir . '/database/migrations/2017_03_16_074534_create_profiles_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2017_03_13_131953_create_users_table.php',
@@ -15,6 +17,7 @@ return array(
     'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/src/Facade.php',
     'File_Iterator_Factory' => $vendorDir . '/phpunit/php-file-iterator/src/Factory.php',
     'IlluminateQueueClosure' => $vendorDir . '/illuminate/queue/IlluminateQueueClosure.php',
+    'LanguageTableSeeder' => $baseDir . '/database/seeds/LanguageTableSeeder.php',
     'PHPUnit\\Framework\\Assert' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
     'PHPUnit\\Framework\\BaseTestListener' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',
     'PHPUnit\\Framework\\TestCase' => $vendorDir . '/phpunit/phpunit/src/ForwardCompatibility/TestCase.php',
