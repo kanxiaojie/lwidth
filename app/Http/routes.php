@@ -19,3 +19,5 @@ $app->get('/weixin/userInfo','WeixinController@useInfo');
 
 $app->post('/weixin/firstcode','WeixinController@firstLogin');
 
+$app->get('/upload/image','UploadToQiniuController@index');
+$app->post('/images/upload','UploadToQiniuController@uploadToQiniu');
