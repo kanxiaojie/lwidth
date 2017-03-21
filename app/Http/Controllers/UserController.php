@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Qiniu\Auth;
+use Qiniu\Storage\UploadManager;
 
 class UserController extends Controller
 {
