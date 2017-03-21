@@ -5,7 +5,7 @@
         <div class="col-md-4 column">
         </div>
         <div class="col-md-4 column">
-            <form name="form" role="form" method="post" action="{{url('/images/upload')}}" enctype="multipart/form-data" onsubmit="return isValidateFile('file');">
+            <form name="form" role="form" method="POST" action="{{url('/images/upload')}}" enctype="multipart/form-data" onsubmit="return isValidateFile('file');">
 
                 <div class="form-group">
                     <label for="exampleInputFile">选择文件</label><input type="file" name='file' />
