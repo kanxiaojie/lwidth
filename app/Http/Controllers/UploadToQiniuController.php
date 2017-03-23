@@ -40,6 +40,7 @@ class UploadToQiniuController extends Controller
 
     public function uploadToQiniu()
     {
+        $data = array();
         $token=$this->getToken();
         $uploadManager=new UploadManager();
         $name=$_FILES['file']['name'];
@@ -51,8 +52,10 @@ class UploadToQiniuController extends Controller
             return response()->json(['name' => 'Abigail', 'state' => 'CA']);//返回错误信息到上传页面
         }else{//成功
             //添加信息到数据库
-            var_dump($ret);
-            return response()->json(['name' => 'china', 'state' => 'success']);//返回结果到上传页面
+            var_dump($ret['key']);
+//            $data['path'] = "http://on4a1hdp1.bkt.clouddn.com/";
+//            return response()->json(["path" => 'http://on4a1hdp1.bkt.clouddn.com/'.$ret["key"], 'state' => 'success']);//返回结果到上传页面
+            return 'http://on4a1hdp1.bkt.clouddn.com/'.$ret["key"];//返回结果到上传页面
         }
     }
 
