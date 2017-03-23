@@ -10,6 +10,7 @@ return array(
     'CountryTableSeeder' => $baseDir . '/database/seeds/CountryTableSeeder.php',
     'CreateCountriesTable' => $baseDir . '/database/migrations/2017_03_23_150520_create_countries_table.php',
     'CreateLanguagesTable' => $baseDir . '/database/migrations/2017_03_17_020843_create_languages_table.php',
+    'CreatePostingsTable' => $baseDir . '/database/migrations/2017_03_23_154335_create_postings_table.php',
     'CreatePostsTable' => $baseDir . '/database/migrations/2017_03_13_130837_create_posts_table.php',
     'CreateProfilesTable' => $baseDir . '/database/migrations/2017_03_16_074534_create_profiles_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2017_03_13_131953_create_users_table.php',
