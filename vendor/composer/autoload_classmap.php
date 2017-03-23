@@ -7,6 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AddColumnsToUsersTable' => $baseDir . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
+    'CountryTableSeeder' => $baseDir . '/database/seeds/CountryTableSeeder.php',
+    'CreateCountriesTable' => $baseDir . '/database/migrations/2017_03_23_150520_create_countries_table.php',
     'CreateLanguagesTable' => $baseDir . '/database/migrations/2017_03_17_020843_create_languages_table.php',
     'CreatePostsTable' => $baseDir . '/database/migrations/2017_03_13_130837_create_posts_table.php',
     'CreateProfilesTable' => $baseDir . '/database/migrations/2017_03_16_074534_create_profiles_table.php',

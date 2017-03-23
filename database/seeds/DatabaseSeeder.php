@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
 
         $this->call(LanguageTableSeeder::class);
+        $this->call(CountryTableSeeder::class);
 
         Model::reguard();
     }
