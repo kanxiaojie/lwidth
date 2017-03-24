@@ -21,3 +21,6 @@ $app->post('/weixin/firstcode','WeixinController@firstLogin');
 
 $app->get('/upload/image','UploadToQiniuController@index');
 $app->post('/images/upload','UploadToQiniuController@uploadToQiniu');
+
+//帖子
+$app->get('/posts/lists','PostController@index');
