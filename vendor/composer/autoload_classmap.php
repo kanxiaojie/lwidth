@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddColumnsToCommentsTable' => $baseDir . '/database/migrations/2017_03_24_024341_add_columns_to_comments_table.php',
     'AddColumnsToUsersTable' => $baseDir . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
     'CountryTableSeeder' => $baseDir . '/database/seeds/CountryTableSeeder.php',
     'CreateCommentsTable' => $baseDir . '/database/migrations/2017_03_24_015251_create_comments_table.php',
@@ -13,6 +14,7 @@ return array(
     'CreateLanguagesTable' => $baseDir . '/database/migrations/2017_03_17_020843_create_languages_table.php',
     'CreatePostingsTable' => $baseDir . '/database/migrations/2017_03_23_154335_create_postings_table.php',
     'CreatePostsTable' => $baseDir . '/database/migrations/2017_03_13_130837_create_posts_table.php',
+    'CreatePraisesTable' => $baseDir . '/database/migrations/2017_03_24_024030_create_praises_table.php',
     'CreateProfilesTable' => $baseDir . '/database/migrations/2017_03_16_074534_create_profiles_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2017_03_13_131953_create_users_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',

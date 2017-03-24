@@ -57,4 +57,9 @@ class User extends Model implements
     {
         return $this->hasMany('App\Comment');
     }
+
+    public function praises()
+    {
+        return $this->hasMany('App\Praise');
+    }
 }
