@@ -42,4 +42,19 @@ class User extends Model implements
     {
         return $this->belongsTo('App\Language');
     }
+
+    public function country()
+    {
+        return $this->belongsTo('App\Country');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }
