@@ -44,4 +44,43 @@ class PostRepository
     {
         $post = $this->post->where('id',$id)->first();
     }
+
+    public function savePost($inputs,$picturePath = null)
+    {
+        $post = new Post();
+
+        $this->save($post,$inputs,$picturePath);
+    }
+
+    public function save($post,$inputs,$picturePath = null)
+    {
+        if (isset($inputs['user_id']) && !empty($inputs['user_id']))
+        {
+            $post->user_id = $inputs['user_id'];
+        }
+
+        if(isset($inputs['title']) && !empty($inputs['title']))
+        {
+            $post->title = $inputs['title'];
+        }
+
+        if(isset($inputs['content']) && !empty($inputs['content']))
+        {
+            $post->content = $inputs['content'];
+        }
+
+        if (isset($inputs['picturePath']) && !empty($inputs['picturePath']))
+        {
+            if($post->pictures)
+            {
+                $post->pictures .= ','.$picturePath;
+            }
+            else
+            {
+                $post->pictures = $picturePath;
+            }
+        }
+
+        $post->save();
+    }
 }
