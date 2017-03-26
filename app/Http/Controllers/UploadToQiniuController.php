@@ -47,11 +47,11 @@ class UploadToQiniuController extends Controller
 
     public function uploadToQiniu(Request $request)
     {
+        $input = $request->all();
         $inputs = array();
 
         $inputs['wesecret'] = $request->input('wesecret');
         $inputs['content'] = $request->input('content');
-//        $inputs['title'] = $request->input('title');
 
         $openid = Crypt::decrypt($inputs['wesecret']);
 
@@ -60,7 +60,8 @@ class UploadToQiniuController extends Controller
         {
             $inputs['user_id'] = $user->id;
 
-            if(file_exists($request->input('file')))
+//            if(file_exists($request->input('file')))
+            if(array_key_exists('file',$input))
             {
                 $token=$this->getToken();
                 $uploadManager=new UploadManager();
