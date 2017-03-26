@@ -10,18 +10,19 @@ $app->get('/api', function () use ($app) {
     return response()->json(['name' => 'Abigail', 'state' => 'CA']);
 });
 
-$app->post('/encrypt/user','UserController@encryptCode');
-$app->post('/decrypt/user','UserController@decryptCode');
 
-$app->get('/weixin/check','WeixinController@check');
-$app->get('/weixin/login','WeixinController@login');
-$app->get('/weixin/userInfo','WeixinController@useInfo');
+$app->post('/api/encrypt/user','UserController@encryptCode');
+$app->post('/api/decrypt/user','UserController@decryptCode');
 
-$app->post('/weixin/firstcode','WeixinController@firstLogin');
+$app->get('/api/weixin/check','WeixinController@check');
+$app->get('/api/weixin/login','WeixinController@login');
+$app->get('/api/weixin/userInfo','WeixinController@useInfo');
 
-$app->get('/upload/image','UploadToQiniuController@index');
+$app->post('/api/weixin/firstcode','WeixinController@firstLogin');
 
-$app->post('/images/upload','UploadToQiniuController@uploadToQiniu');
+$app->get('/api/upload/image','UploadToQiniuController@index');
+
+$app->post('/api/images/upload','UploadToQiniuController@uploadToQiniu');
 
 //帖子
-$app->get('/posts/lists','PostController@index');
+$app->get('/api/posts/lists','PostController@index');

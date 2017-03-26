@@ -38,8 +38,12 @@ class UploadToQiniuController extends Controller
         return $auth->uploadToken($bucket);//生成token
     }
 
-    public function uploadToQiniu()
+    public function uploadToQiniu(Request $request)
     {
+        $wesecret = $request->get('wesecret');
+
+        error_log($wesecret);
+
         $data = array();
         $token=$this->getToken();
         $uploadManager=new UploadManager();
