@@ -20,4 +20,9 @@ class Comment extends Model
     {
         return $this->hasMany('App\CommentToComment');
     }
+
+    public function praiseToComments()
+    {
+        return $this->hasMany('App\PraiseToComment');
+    }
 }
