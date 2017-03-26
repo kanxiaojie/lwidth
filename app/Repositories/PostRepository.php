@@ -59,10 +59,10 @@ class PostRepository
             $post->user_id = $inputs['user_id'];
         }
 
-        if(isset($inputs['title']) && !empty($inputs['title']))
-        {
-            $post->title = $inputs['title'];
-        }
+//        if(isset($inputs['title']) && !empty($inputs['title']))
+//        {
+//            $post->title = $inputs['title'];
+//        }
 
         if(isset($inputs['content']) && !empty($inputs['content']))
         {

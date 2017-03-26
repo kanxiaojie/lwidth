@@ -51,7 +51,7 @@ class UploadToQiniuController extends Controller
 
         $inputs['wesecret'] = $request->input('wesecret');
         $inputs['content'] = $request->input('content');
-        $inputs['title'] = $request->input('title');
+//        $inputs['title'] = $request->input('title');
 
         $openid = Crypt::decrypt($inputs['wesecret']);
 
@@ -73,7 +73,7 @@ class UploadToQiniuController extends Controller
                     return response()->json(['status' => '201', 'message' => '照片上传失败']);//返回错误信息到上传页面
                 }else{//成功
                     $picturePath = 'http://on9ea4hzu.bkt.clouddn.com/image/jpg/'.$ret["key"];
-                    if(!empty($inputs['content']) && !empty($inputs['title']))
+                    if(!empty($inputs['content']))
                     {
                         $this->postRepository->savePost($inputs,$picturePath);
                     }
@@ -88,7 +88,7 @@ class UploadToQiniuController extends Controller
             }
             else
             {
-                if(!empty($inputs['content']) && !empty($inputs['title']))
+                if(!empty($inputs['content']))
                 {
                     $this->postRepository->savePost($inputs);
                     return response()->json(['status' => 200,'message' =>'帖子发表成功']);
