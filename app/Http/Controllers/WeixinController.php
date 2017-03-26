@@ -114,11 +114,11 @@ class WeixinController extends Controller
             }
 
             $token = Crypt::encrypt($datas['openId']);
-            return response()->json(['errcode'=> 200,'wemsg' => $token]);
+            return response()->json(['status'=> 200,'wesecret' => $token]);
         }
         else
         {
-            return response()->json(['errcode'=>201,"errmsg" => "invalid code"]);
+            return response()->json(['status'=>201,"wesecret" => "invalid code"]);
         }
     }
 

@@ -55,7 +55,7 @@ class UploadToQiniuController extends Controller
             var_dump($ret['key']);
 //            $data['path'] = "http://on4a1hdp1.bkt.clouddn.com/";
 //            return response()->json(["path" => 'http://on4a1hdp1.bkt.clouddn.com/'.$ret["key"], 'state' => 'success']);//返回结果到上传页面
-            return 'http://on9ea4hzu.bkt.clouddn.com/'.$ret["key"];//返回结果到上传页面
+            return 'http://on9ea4hzu.bkt.clouddn.com/image/jpg/'.$ret["key"];//返回结果到上传页面
         }
     }
 
