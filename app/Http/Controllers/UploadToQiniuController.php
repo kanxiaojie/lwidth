@@ -70,7 +70,7 @@ class UploadToQiniuController extends Controller
                 list($ret,$err)=$uploadManager->putFile($token,$name,$filePath,null,$type,false);
                 if($err){//上传失败
                     var_dump($err);
-                    return response()->json(['status' => '201', 'message' => '照片上传失败']);//返回错误信息到上传页面
+                    return response()->json(['status' => '201', 'message' => 'pictures upload failed']);//返回错误信息到上传页面
                 }else{//成功
                     $picturePath = 'http://on9ea4hzu.bkt.clouddn.com/image/jpg/'.$ret["key"];
                     if(!empty($inputs['content']))
@@ -79,7 +79,7 @@ class UploadToQiniuController extends Controller
                     }
                     else
                     {
-                        return response()->json(['status' => 201,'message' => '帖子标题或内容需填写']);
+                        return response()->json(['status' => 201,'message' => 'post content can not be null']);
                     }
 
 //                    var_dump($ret['key']);
@@ -91,18 +91,18 @@ class UploadToQiniuController extends Controller
                 if(!empty($inputs['content']))
                 {
                     $this->postRepository->savePost($inputs);
-                    return response()->json(['status' => 200,'message' =>'帖子发表成功']);
+                    return response()->json(['status' => 200,'message' =>'posting success']);
                 }
                 else
                 {
-                    return response()->json(['status' => 201,'message' => '帖子标题或内容需填写']);
+                    return response()->json(['status' => 201,'message' => 'posting content should be written']);
                 }
             }
 
         }
         else
         {
-            return response()->json(['status'=>200,'message'=>'无此人信息']);
+            return response()->json(['status'=>200,'message'=>'user not exist']);
         }
 
 
