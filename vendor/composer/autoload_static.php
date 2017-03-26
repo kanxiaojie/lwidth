@@ -316,6 +316,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'AddColumnsToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_024341_add_columns_to_comments_table.php',
         'AddColumnsToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
         'CountryTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CountryTableSeeder.php',
+        'CreateCommentToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_014705_create_commentToComments_table.php',
         'CreateCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_015251_create_comments_table.php',
         'CreateCountriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_23_150520_create_countries_table.php',
         'CreateLanguagesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_17_020843_create_languages_table.php',
