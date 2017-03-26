@@ -69,7 +69,7 @@ class PostRepository
             $post->content = $inputs['content'];
         }
 
-        if (isset($inputs['picturePath']) && !empty($inputs['picturePath']))
+        if ($picturePath)
         {
             if($post->pictures)
             {
