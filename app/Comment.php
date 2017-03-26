@@ -15,4 +15,9 @@ class Comment extends Model
     {
         return $this->belongsTo('App\Post','post_id');
     }
+
+    public function commentToComments()
+    {
+        return $this->hasMany('App\CommentToComment');
+    }
 }
