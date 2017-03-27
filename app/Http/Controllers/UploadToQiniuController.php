@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\BaseRepository;
 use App\Repositories\PostRepository;
 use App\User;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Qiniu\Storage\UploadManager;
 class UploadToQiniuController extends Controller
 {
     protected $postRepository;
+    protected $baseRepository;
 
     /**
      * Create a new controller instance.
@@ -20,9 +22,11 @@ class UploadToQiniuController extends Controller
      * @return void
      */
     public function __construct(
+        BaseRepository $baseRepository,
         PostRepository $postRepository
     )
     {
+        $this->baseRepository = $baseRepository;
         $this->postRepository = $postRepository;
     }
 
@@ -65,7 +69,8 @@ class UploadToQiniuController extends Controller
             {
                 $token=$this->getToken();
                 $uploadManager=new UploadManager();
-                $name=$_FILES['file']['name'];
+//                $name=$_FILES['file']['name'];
+                $name = $this->baseRepository->guid().'.'.$input['file']->getClientOriginalExtension();
                 $filePath=$_FILES['file']['tmp_name'];
                 $type=$_FILES['file']['type'];
                 list($ret,$err)=$uploadManager->putFile($token,$name,$filePath,null,$type,false);
@@ -73,7 +78,7 @@ class UploadToQiniuController extends Controller
                     var_dump($err);
                     return response()->json(['status' => '201', 'message' => 'pictures upload failed']);//返回错误信息到上传页面
                 }else{//成功
-                    $picturePath = 'http://on9ea4hzu.bkt.clouddn.com/image/jpg/'.$ret["key"];
+                    $picturePath = 'http://on9ea4hzu.bkt.clouddn.com/'.$ret["key"];
                     if(!empty($inputs['content']))
                     {
                         $this->postRepository->savePost($inputs,$picturePath);
@@ -84,7 +89,7 @@ class UploadToQiniuController extends Controller
                     }
 
 //                    var_dump($ret['key']);
-                    return 'http://on9ea4hzu.bkt.clouddn.com/image/jpg/'.$ret["key"];//返回结果到上传页面
+                    return 'http://on9ea4hzu.bkt.clouddn.com/'.$ret["key"];//返回结果到上传页面
                 }
             }
             else
