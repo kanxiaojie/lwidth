@@ -67,30 +67,35 @@ class UploadToQiniuController extends Controller
 //            if(file_exists($request->input('file')))
             if(array_key_exists('file',$input))
             {
-                $token=$this->getToken();
-                $uploadManager=new UploadManager();
+                $picturePath = '';
+                for ($i = 0;$i<count($input['file']);$i++)
+                {
+                    $token=$this->getToken();
+                    $uploadManager=new UploadManager();
 //                $name=$_FILES['file']['name'];
-                $name = $this->baseRepository->guid().'.'.$input['file']->getClientOriginalExtension();
-                $filePath=$_FILES['file']['tmp_name'];
-                $type=$_FILES['file']['type'];
-                list($ret,$err)=$uploadManager->putFile($token,$name,$filePath,null,$type,false);
-                if($err){//上传失败
-                    var_dump($err);
-                    return response()->json(['status' => '201', 'message' => 'pictures upload failed']);//返回错误信息到上传页面
-                }else{//成功
-                    $picturePath = 'http://on9ea4hzu.bkt.clouddn.com/'.$ret["key"];
-                    if(!empty($inputs['content']))
-                    {
-                        $this->postRepository->savePost($inputs,$picturePath);
+                    $name = $this->baseRepository->guid().'.'.$input['file'][$i]->getClientOriginalExtension();
+                    $filePath=$_FILES['file']['tmp_name'][$i];
+                    $type=$_FILES['file']['type'][$i];
+                    list($ret,$err)=$uploadManager->putFile($token,$name,$filePath,null,$type,false);
+                    if($err){//上传失败
+                        var_dump($err);
+                        return response()->json(['status' => '201', 'message' => 'pictures upload failed']);//返回错误信息到上传页面
+                    }else{//成功
+                        $picturePath = 'http://on9ea4hzu.bkt.clouddn.com/'.$ret["key"].','.$picturePath;
                     }
-                    else
-                    {
-                        return response()->json(['status' => 201,'message' => 'post content can not be null']);
-                    }
-
-//                    var_dump($ret['key']);
-                    return 'http://on9ea4hzu.bkt.clouddn.com/'.$ret["key"];//返回结果到上传页面
                 }
+
+                if(!empty($inputs['content']))
+                {
+                    $this->postRepository->savePost($inputs,$picturePath);
+                }
+                else
+                {
+                    return response()->json(['status' => 201,'message' => 'post content can not be null']);
+                }
+
+                return $picturePath;//返回结果到上传页面
+
             }
             else
             {
