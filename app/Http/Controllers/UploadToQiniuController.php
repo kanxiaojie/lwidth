@@ -81,7 +81,7 @@ class UploadToQiniuController extends Controller
                         var_dump($err);
                         return response()->json(['status' => '201', 'message' => 'pictures upload failed']);//返回错误信息到上传页面
                     }else{//成功
-                        $picturePath = 'http://on9ea4hzu.bkt.clouddn.com/'.$ret["key"].','.$picturePath;
+                        $picturePath = 'http://onh8wwwjp.bkt.clouddn.com/'.$ret["key"].','.$picturePath;
                     }
                 }
 
