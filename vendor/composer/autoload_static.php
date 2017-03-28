@@ -325,6 +325,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'CreatePraiseToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_024551_create_praiseToComments_table.php',
         'CreatePraisesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_024030_create_praises_table.php',
         'CreateProfilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_16_074534_create_profiles_table.php',
+        'CreateProvincesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_28_072011_create_provinces_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_13_131953_create_users_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'ExampleTest' => __DIR__ . '/../..' . '/tests/ExampleTest.php',

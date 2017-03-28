@@ -18,6 +18,7 @@ return array(
     'CreatePraiseToCommentsTable' => $baseDir . '/database/migrations/2017_03_26_024551_create_praiseToComments_table.php',
     'CreatePraisesTable' => $baseDir . '/database/migrations/2017_03_24_024030_create_praises_table.php',
     'CreateProfilesTable' => $baseDir . '/database/migrations/2017_03_16_074534_create_profiles_table.php',
+    'CreateProvincesTable' => $baseDir . '/database/migrations/2017_03_28_072011_create_provinces_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2017_03_13_131953_create_users_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'ExampleTest' => $baseDir . '/tests/ExampleTest.php',
