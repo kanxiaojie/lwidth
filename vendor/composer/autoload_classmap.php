@@ -9,6 +9,7 @@ return array(
     'AddColumnsToCommentsTable' => $baseDir . '/database/migrations/2017_03_24_024341_add_columns_to_comments_table.php',
     'AddColumnsToUsersTable' => $baseDir . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
     'CountryTableSeeder' => $baseDir . '/database/seeds/CountryTableSeeder.php',
+    'CreateCityTable' => $baseDir . '/database/migrations/2017_03_30_021416_create_city_table.php',
     'CreateCommentToCommentsTable' => $baseDir . '/database/migrations/2017_03_26_014705_create_commentToComments_table.php',
     'CreateCommentsTable' => $baseDir . '/database/migrations/2017_03_24_015251_create_comments_table.php',
     'CreateCountriesTable' => $baseDir . '/database/migrations/2017_03_23_150520_create_countries_table.php',
