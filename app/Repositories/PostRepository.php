@@ -50,6 +50,7 @@ class PostRepository
     public function getPost($id)
     {
         $post = $this->post->where('id',$id)->first();
+        return $post;
     }
 
     public function savePost($inputs,$picturePath = null)
