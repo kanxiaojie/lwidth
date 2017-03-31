@@ -22,7 +22,10 @@ $app->post('/api/weixin/firstcode','WeixinController@firstLogin');
 
 $app->get('/api/upload/image','UploadToQiniuController@index');
 
+//发表帖子和上传图片同时进行
 $app->post('/api/images/upload','UploadToQiniuController@uploadToQiniu');
 
-//帖子
-$app->get('/api/posts/lists','PostController@index');
+//所有帖子
+$app->get('/api/posts','PostController@index');
+//某个人的所有帖子
+$app->get('/api/loves','PostController@lists');

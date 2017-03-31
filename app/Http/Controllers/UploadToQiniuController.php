@@ -56,6 +56,7 @@ class UploadToQiniuController extends Controller
 
         $inputs['wesecret'] = $request->input('wesecret');
         $inputs['content'] = $request->input('content');
+        $inputs['visiable'] = $request->input('visiable');
 
         $openid = Crypt::decrypt($inputs['wesecret']);
 

@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 
+use Illuminate\Support\Facades\Crypt;
+
 class BaseRepository
 {
     public function guid(){
@@ -19,5 +21,12 @@ class BaseRepository
                 .substr($charid,20,12);// "}"
             return $uuid;
         }
+    }
+
+    public function decryptCode($wesecret)
+    {
+        $openid = Crypt::decrypt($wesecret);
+
+        return $openid;
     }
 }

@@ -40,6 +40,13 @@ class PostRepository
         return $posts;
     }
 
+    public function getLovesOfOneUser($user_id,$orderby = 'created_at', $direction = 'desc')
+    {
+        $posts = $this->post->where('user_id',$user_id)->orderBy($orderby,$direction)->get();
+
+        return $posts;
+    }
+
     public function getPost($id)
     {
         $post = $this->post->where('id',$id)->first();
@@ -59,11 +66,6 @@ class PostRepository
             $post->user_id = $inputs['user_id'];
         }
 
-//        if(isset($inputs['title']) && !empty($inputs['title']))
-//        {
-//            $post->title = $inputs['title'];
-//        }
-
         if(isset($inputs['content']) && !empty($inputs['content']))
         {
             $post->content = $inputs['content'];
@@ -79,6 +81,11 @@ class PostRepository
             {
                 $post->pictures = $picturePath;
             }
+        }
+
+        if(isset($inputs['visiable']) && !empty($inputs['visiable']))
+        {
+            $post->visiable = $inputs['visiable'];
         }
 
         $post->save();

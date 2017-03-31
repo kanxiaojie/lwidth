@@ -2,22 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\BaseRepository;
 use App\Repositories\PostRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     protected $postRepository;
+    protected $baseRepository;
+    protected $userRepository;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct(
-        PostRepository $postRepository
+        PostRepository $postRepository,
+        BaseRepository $baseRepository,
+        UserRepository $userRepository
     )
     {
         $this->postRepository = $postRepository;
+        $this->baseRepository = $baseRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index(Request $request)
@@ -51,6 +59,50 @@ class PostController extends Controller
         }
 
         return response()->json(['code' => 200,'data' => $datas]);
+    }
+
+    public function lists(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 201,'message' => 'user does not exist!']);
+        }
+        else
+        {
+            $data = array();
+            $userInfo = array();
+            $posts = $this->postRepository->getLovesOfOneUser($user->id);
+
+            $userInfo['id'] = $user->id;
+            $userInfo['nickName'] = $user->nickname;
+            $userInfo['avatarUrl'] = $user->avatarUrl;
+            if(!empty($user->college_id))
+            {
+                $userInfo['college'] = $user->college->name;
+            }
+            else
+            {
+                $userInfo['college'] = '';
+            }
+
+            if(empty($posts))
+            {
+                $data = [];
+            }
+            else
+            {
+                $data['id'] = '';
+                $data['content'] = '';
+                $data['images'] = '';
+//                $data['location'] = '';
+            }
+
+            return response()->json(['status' => 200,'data' => $data]);
+        }
     }
 
 }
