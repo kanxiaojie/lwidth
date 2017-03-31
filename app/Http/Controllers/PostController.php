@@ -69,6 +69,7 @@ class PostController extends Controller
         $wesecret = $request->get('wesecret');
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
+        $inputs = [];
 
         if(!$user)
         {
@@ -77,21 +78,8 @@ class PostController extends Controller
         else
         {
             $data = array();
-            $userInfo = array();
-            $images = array();
-            $posts = $this->postRepository->getLovesOfOneUser($user->id);
 
-            $userInfo['id'] = $user->id;
-            $userInfo['nickName'] = $user->nickname;
-            $userInfo['avatarUrl'] = $user->avatarUrl;
-            if(!empty($user->college_id))
-            {
-                $userInfo['college'] = $user->college->name;
-            }
-            else
-            {
-                $userInfo['college'] = '';
-            }
+            $posts = $this->postRepository->getPostLists($inputs);
 
             if(empty($posts))
             {
@@ -101,6 +89,9 @@ class PostController extends Controller
             {
                 foreach ($posts as $post)
                 {
+                    $userInfo = array();
+                    $images = array();
+
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
                     if(!empty($post->pictures))
@@ -119,6 +110,21 @@ class PostController extends Controller
                     {
                         $data['images'] = [];
                     }
+
+                    $userInfo['id'] = $user->id;
+                    $userInfo['nickName'] = $user->nickname;
+                    $userInfo['avatarUrl'] = $user->avatarUrl;
+                    if(!empty($user->college_id))
+                    {
+                        $userInfo['college'] = $user->college->name;
+                    }
+                    else
+                    {
+                        $userInfo['college'] = '';
+                    }
+
+                    $data['userInfo'] = $userInfo;
+
                     $data['created_at'] = $post->created_at;
                     if($post->likenum)
                     {
@@ -127,7 +133,6 @@ class PostController extends Controller
                     else
                     {
                         $data['praise_nums'] = 0;
-
                     }
 
                     if($post->commentnum)
