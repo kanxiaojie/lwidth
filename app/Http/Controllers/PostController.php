@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
+use App\Post;
+use App\Praise;
 use App\Repositories\BaseRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
@@ -75,6 +78,7 @@ class PostController extends Controller
         {
             $data = array();
             $userInfo = array();
+            $images = array();
             $posts = $this->postRepository->getLovesOfOneUser($user->id);
 
             $userInfo['id'] = $user->id;
@@ -95,13 +99,72 @@ class PostController extends Controller
             }
             else
             {
-                $data['id'] = '';
-                $data['content'] = '';
-                $data['images'] = '';
+                foreach ($posts as $post)
+                {
+                    $data['id'] = $post->id;
+                    $data['content'] = $post->content;
+                    if(!empty($post->pictures))
+                    {
+                        if(substr(trim($post->pictures),-1) == ',')
+                        {
+                            $data['images'] = explode(',',$post->pictures);
+                        }else
+                        {
+                            $images['images'] = $post->pictures;
+                        }
+
+                        $data['images'] = $images;
+                    }
+                    else
+                    {
+                        $data['images'] = [];
+                    }
+                    $data['created_at'] = $post->created_at;
+                    if($post->likenum)
+                    {
+                        $data['praise_nums'] = $post->likenum;
+                    }
+                    else
+                    {
+                        $data['praise_nums'] = 0;
+
+                    }
+
+                    if($post->commentnum)
+                    {
+                        $data['comment_nums'] = $post->commentnum;
+                    }
+                    else
+                    {
+                        $data['comment_nums'] = 0;
+                    }
+
+                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    if($if_my_comment)
+                    {
+                        $data['if_my_comment'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_comment'] = 0;
+                    }
+
+                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    if($if_my_praise)
+                    {
+                        $data['if_my_praise'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_praise'] = 0;
+                    }
+
 //                $data['location'] = '';
+                }
+
             }
 
-            return response()->json(['status' => 200,'data' => $data]);
+            return response()->json(['status' => 200,'userInfo'=>$userInfo,'data' => $data]);
         }
     }
 
