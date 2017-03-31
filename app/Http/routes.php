@@ -29,3 +29,5 @@ $app->post('/api/images/upload','UploadToQiniuController@uploadToQiniu');
 $app->get('/api/posts','PostController@index');
 //某个人的所有帖子
 $app->get('/api/loves','PostController@lists');
+//获取单个表白及评论内容
+$app->get('/api/loves/{$id}/comments','PostController@postAndSelfComments');
