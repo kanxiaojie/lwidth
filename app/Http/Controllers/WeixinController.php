@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 include_once "wxBizDataCrypt.php";
 
+use App\Gender;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -100,20 +101,58 @@ class WeixinController extends Controller
 
         $datas = $this->decryptUserInfo($appid,$sessionKey,$encryptedData,$iv);
 
+        $data = array();
+
         if(!empty($datas))
         {
             $user = $this->userRepository->getUserByOpenId($datas['openId']);
 
             if(!$user)
             {
-                 $this->userRepository->create($datas);
+                $res = $this->userRepository->create($datas);
             }
             else
             {
-                $this->userRepository->update($datas,$user);
+                $res = $this->userRepository->update($datas,$user);
             }
 
             $token = Crypt::encrypt($datas['openId']);
+
+            $data['id'] = $res->id;
+            $data['nickName'] = $res->nickname;
+            $data['avatarUrl'] = $res->avatarUrl;
+            if(!empty($res->gender))
+            {
+                $data['gender'] = Gender::where('id',$res->gender)->first()->name;
+            }
+            else
+            {
+                $data['gender'] = '未知';
+            }
+
+            if(!empty($res->province_id))
+            {
+                $data['province'] = $res->country->province->name;
+            }
+            else
+            {
+                $data['province'] = '';
+            }
+            if(!empty($res->city_id))
+            {
+                $data['city'] = $res->country->city->name;
+            }else
+            {
+                $data['city'] = '';
+            }
+            if(!empty($res->country_id))
+            {
+                $data['country'] = $res->country->name;
+            }else
+            {
+                $data['country'] = '';
+            }
+
             return response()->json(['status'=> 200,'wesecret' => $token]);
         }
         else

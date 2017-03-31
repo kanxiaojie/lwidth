@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(LanguageTableSeeder::class);
         $this->call(CountryTableSeeder::class);
+        $this->call(GenderTableSeeder::class);
 
         Model::reguard();
     }

@@ -47,7 +47,7 @@ class UserRepository
 
     public function saveUser($inputs,$user,$user_id = null)
     {
-        $res = array('status'=>1,'error'=>'');
+//        $res = array('status'=>1,'error'=>'');
 
         if(isset($inputs['openId']) && (!isset($inputs['updateOpenId'])))
         {
@@ -95,6 +95,6 @@ class UserRepository
 
         $profile->save();
 
-        return $res;
+        return $user;
     }
 }

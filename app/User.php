@@ -62,4 +62,9 @@ class User extends Model implements
     {
         return $this->hasMany('App\Praise');
     }
+
+    public function gender()
+    {
+        return $this->belongsTo('App\Gender','gender');
+    }
 }
