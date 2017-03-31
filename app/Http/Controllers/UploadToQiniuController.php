@@ -56,7 +56,9 @@ class UploadToQiniuController extends Controller
 
         $inputs['wesecret'] = $request->input('wesecret');
         $inputs['content'] = $request->input('content');
+        $inputs['location'] = $request->input('location');
         $inputs['visiable'] = $request->input('visiable');
+
 
         $openid = Crypt::decrypt($inputs['wesecret']);
 
@@ -64,6 +66,8 @@ class UploadToQiniuController extends Controller
         if($user)
         {
             $inputs['user_id'] = $user->id;
+
+            $datas = array();
 
 //            if(file_exists($request->input('file')))
             if(array_key_exists('file',$input))
@@ -88,21 +92,26 @@ class UploadToQiniuController extends Controller
 
                 if(!empty($inputs['content']))
                 {
-                    $this->postRepository->savePost($inputs,$picturePath);
+                    $post = $this->postRepository->savePost($inputs,$picturePath);
                 }
                 else
                 {
                     return response()->json(['status' => 201,'message' => 'post content can not be null']);
                 }
+//                $datas['picturePath'] = $picturePath;
+//                $datas['wesecret'] = $inputs['wesecret'];
+//                $datas['content'] = $inputs['content'];
+//                $datas['location'] = explode(',',$post->location);
+//                $datas['visiable'] = $post->visiable;
 
-                return $picturePath;//返回结果到上传页面
+                return response()->json(['status' => 200,'message' =>'posting success']);//返回结果到上传页面
 
             }
             else
             {
                 if(!empty($inputs['content']))
                 {
-                    $this->postRepository->savePost($inputs);
+                    $post = $this->postRepository->savePost($inputs);
                     return response()->json(['status' => 200,'message' =>'posting success']);
                 }
                 else
@@ -114,7 +123,7 @@ class UploadToQiniuController extends Controller
         }
         else
         {
-            return response()->json(['status'=>200,'message'=>'user not exist']);
+            return response()->json(['status'=>201,'message'=>'user not exist']);
         }
 
 

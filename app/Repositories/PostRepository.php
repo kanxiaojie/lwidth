@@ -56,7 +56,9 @@ class PostRepository
     {
         $post = new Post();
 
-        $this->save($post,$inputs,$picturePath);
+        $post = $this->save($post,$inputs,$picturePath);
+
+        return $post;
     }
 
     public function save($post,$inputs,$picturePath = null)
@@ -83,11 +85,18 @@ class PostRepository
             }
         }
 
+        if(isset($inputs['location']) && !empty($inputs['location']))
+        {
+            $post->visiable = implode(',',$inputs['location']);
+        }
+
         if(isset($inputs['visiable']) && !empty($inputs['visiable']))
         {
             $post->visiable = $inputs['visiable'];
         }
 
         $post->save();
+
+        return $post;
     }
 }

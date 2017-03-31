@@ -122,7 +122,6 @@ class PostController extends Controller
                     {
                         $userInfo['college'] = '';
                     }
-
                     $data['userInfo'] = $userInfo;
 
                     $data['created_at'] = $post->created_at;
@@ -164,12 +163,19 @@ class PostController extends Controller
                         $data['if_my_praise'] = 0;
                     }
 
-//                $data['location'] = '';
+                    if($post->location)
+                    {
+                        $data['location'] = explode(',',$post->location);
+                    }
+                    else
+                    {
+                        $data['location'] = '';
+                    }
                 }
 
             }
 
-            return response()->json(['status' => 200,'userInfo'=>$userInfo,'data' => $data]);
+            return response()->json(['status' => 200,'data' => $data]);
         }
     }
 
