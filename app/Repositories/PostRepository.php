@@ -99,4 +99,33 @@ class PostRepository
 
         return $post;
     }
+
+    public function getTime($created_at)
+    {
+        $time = strtotime($created_at);
+        $date=floor(((time())-$time)/86400);
+        $hour=floor(((time())-$time)%86400/3600);
+        $minute=floor((time()-$time)%86400/60);
+        $second=floor((time()-$time)%86400%60);
+
+        $diff = $date*24*60 + $hour*60 + $minute + $second/60;
+
+        if (($diff>0) && ($diff<60))
+        {
+
+            return $diff.'分钟前';
+        }elseif (($diff > 60) && ($diff < 1440))
+        {
+            return round($diff/60).'小时前';
+        }elseif (($diff >= 1440) && ($diff < 2880))
+        {
+            return '昨天'.date('H:i',$time);
+        }elseif (($diff >= 2880) && ($diff < 4320))
+        {
+            return '前天'.date('H:i',$time);
+        }elseif($diff > 4320)
+        {
+            return date('m-d H:i',$time);
+        }
+    }
 }

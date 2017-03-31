@@ -124,7 +124,10 @@ class PostController extends Controller
                     }
                     $data['userInfo'] = $userInfo;
 
-                    $data['created_at'] = $post->created_at;
+                    $diff_time = $this->postRepository->getTime($post->created_at);
+
+                    $data['created_at'] = $diff_time;
+
                     if($post->likenum)
                     {
                         $data['praise_nums'] = $post->likenum;
