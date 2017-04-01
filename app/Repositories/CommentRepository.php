@@ -44,6 +44,13 @@ class CommentRepository
         return $comment;
     }
 
+    public function getCommentToCommentById($id)
+    {
+        $commentToComment = $this->commentToComment->where('id',$id)->first();
+
+        return $commentToComment;
+    }
+
     public function savePublishForPost($id, $inputs)
     {
         $comment = new Comment();
@@ -62,6 +69,7 @@ class CommentRepository
         $commentToComment->user_id = $inputs['user_id'];
         $commentToComment->post_id = $comment->post_id;
         $commentToComment->comment_id = $comment->id;
+        $commentToComment->parent_id = $comment->id;
         $commentToComment->content = $inputs['content'];
         $commentToComment->save();
 
