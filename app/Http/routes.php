@@ -33,3 +33,5 @@ $app->get('/api/loves','PostController@lists');
 $app->get('/api/loves/{id}/comments','PostController@postAndSelfComments');
 //给某条表白评论
 $app->post('/api/loves/{id}/comments','CommentController@publishComments');
+//给某条表白点赞/或取消点赞
+$app->post('/api/loves/{id}/praises','PraiseController@praiseToPost');

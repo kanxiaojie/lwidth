@@ -53,6 +53,9 @@ class CommentRepository
         {
             $res['status'] = 200;
 
+            $post->commentnum += 1;
+            $post->save();
+
             $this->savePublishForPost($id,$inputs);
         }else
         {
