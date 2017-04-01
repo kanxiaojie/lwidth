@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\Comment;
+use App\CommentToComment;
 use App\Post;
 use App\User;
 
@@ -17,14 +18,17 @@ class CommentRepository
 {
     protected $comment;
     protected $postRepository;
+    protected $commentToComment;
 
     public function __construct(
         Comment $comment,
-        PostRepository $postRepository
+        PostRepository $postRepository,
+        CommentToComment $commentToComment
     )
     {
         $this->comment = $comment;
         $this->postRepository = $postRepository;
+        $this->commentToComment = $commentToComment;
     }
 
     public function getPostComments($post_id)
@@ -32,6 +36,12 @@ class CommentRepository
         $comments = $this->comment->where('post_id',$post_id)->get();
 
         return $comments;
+    }
+
+    public function getCommentById($id)
+    {
+        $comment = $this->comment->where('id',$id)->first();
+        return $comment;
     }
 
     public function savePublishForPost($id, $inputs)
@@ -42,6 +52,22 @@ class CommentRepository
         $comment->content = $inputs['content'];
 
         $comment->save();
+    }
+
+    public function saveCommentToComment($inputs, $comment)
+    {
+        $res = array('status' => '');
+
+        $commentToComment = new CommentToComment();
+        $commentToComment->user_id = $inputs['user_id'];
+        $commentToComment->post_id = $comment->post_id;
+        $commentToComment->comment_id = $comment->id;
+        $commentToComment->content = $inputs['content'];
+        $commentToComment->save();
+
+        $res['status'] = 200;
+
+        return $res;
     }
 
     public function publishForPost($inputs,$id)

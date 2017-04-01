@@ -47,4 +47,40 @@ class CommentController extends Controller
             }
         }
     }
+
+    public function commentToComment(Request $request, $id)
+    {
+        $inputs = [];
+        $wesecret = $request->get('wesecret');
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        $inputs['content'] = $request->get('content');
+        $inputs['objectUser_id'] = $request->get('objectUser_id');
+
+        if($user)
+        {
+            $comment = $this->commentRepository->getCommentById($id);
+            if(!$comment)
+            {
+                return response()->json(['status' => 201,'message' => 'comment does not exist,check the argument!']);
+            }else
+            {
+                $inputs['user_id'] = $user->id;
+                $res = $this->commentRepository->saveCommentToComment($inputs,$comment);
+                if ($res['status'] == 200)
+                {
+                    return response()->json(['status' => 200]);
+                }else
+                {
+                    return response()->json(['status' => 201,'message' => 'Save failed,please check the argument!']);
+                }
+            }
+        }else
+        {
+            return response()->json(['status' => 201,'message' => 'user does not exist!']);
+        }
+
+
+    }
 }
