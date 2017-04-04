@@ -129,4 +129,33 @@ class PostRepository
             return date('m-d H:i',$time);
         }
     }
+
+    public function getHotPost()
+    {
+        $res = [];
+        $posts = Post::all();
+
+        $hotPost = [];
+
+        if(!empty($posts))
+        {
+            foreach ($posts as $id=>$post)
+            {
+                $hots = $post->commentnum * 2 + $post->likenum;
+
+                $hotPost[$id] = $hots;
+            }
+
+            $postId = array_search(max($hotPost),$hotPost);
+
+            $res['status'] = 200;
+            $res['postId'] = $postId;
+        }
+        else
+        {
+            $res['status'] = 201;
+        }
+
+        return $res;
+    }
 }

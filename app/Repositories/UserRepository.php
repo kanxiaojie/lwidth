@@ -28,6 +28,13 @@ class UserRepository
         return $user;
     }
 
+    public function getUserById($id)
+    {
+        $user = $this->user->where('id',$id)->first();
+
+        return $user;
+    }
+
     public function create($inputs)
     {
         $user = new User();
@@ -96,5 +103,12 @@ class UserRepository
         $profile->save();
 
         return $user;
+    }
+
+    public function getPictures()
+    {
+        $users = User::all();
+
+        return $users;
     }
 }

@@ -38,6 +38,13 @@ class CommentRepository
         return $comments;
     }
 
+    public function getCommentToComments($parent_id)
+    {
+        $commentToComments = $this->commentToComment->where('parent_id',$parent_id)->get();
+
+        return $commentToComments;
+    }
+
     public function getCommentById($id)
     {
         $comment = $this->comment->where('id',$id)->first();

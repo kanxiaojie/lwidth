@@ -37,3 +37,11 @@ $app->post('/api/loves/{id}/comments','CommentController@publishComments');
 $app->post('/api/loves/{id}/praises','PraiseController@praiseToPost');
 //给某条评论再评论
 $app->post('/api/comments/{id}/comments','CommentController@commentToComment');
+//获取某条评论的所有再评论
+$app->get('/api/comments/{id}/comments','CommentController@getCommentToComments');
+
+//获取照片墙
+$app->get('/api/pictures','UserController@getPictures');
+
+//获取最热门的表白（排列顺序是  评论数*2 + 点赞数）
+$app->get('/api/hotLoves','PostController@getHotPosts');
