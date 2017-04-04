@@ -160,7 +160,8 @@ class WeixinController extends Controller
             $userInfo['wesecret'] = $token;
             $userInfo['userInfo'] = implode(',',$data);
 
-            return response()->json(['status'=> 200,'data' => $userInfo]);
+//            return response()->json(['status'=> 200,'data' => $userInfo]);
+            return implode(',',$userInfo);
         }
         else
         {
