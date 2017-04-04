@@ -87,8 +87,8 @@ class WeixinController extends Controller
         $encryptedData = $request->get('encryptedData');
         $iv = $request->get('iv');
 
-        $appid = env('WEIXIN_APP_ID','wx3bf755439a8b5173');
-        $secretid = env('WEIXIN_SECRET_ID','d2d6f9afd40c882ac3f6722febfe8122');
+        $appid = env('WEIXIN_APP_ID','wx7f02895dae7c918a');
+        $secretid = env('WEIXIN_SECRET_ID','9bac8ed86a35fcd067e1d5d04365d399');
 
         $sessionKey = $this->getOpenId($code,$appid,$secretid);
 
@@ -132,7 +132,8 @@ class WeixinController extends Controller
 
             if(!empty($res->province_id))
             {
-                $data['province'] = $res->country->province->name;
+//                $data['province'] = $res->country->province->name;
+                $data['province'] = "福建";
             }
             else
             {
@@ -140,14 +141,16 @@ class WeixinController extends Controller
             }
             if(!empty($res->city_id))
             {
-                $data['city'] = $res->country->city->name;
+//                $data['city'] = $res->country->city->name;
+                $data['city'] = "厦门";
             }else
             {
                 $data['city'] = '';
             }
             if(!empty($res->country_id))
             {
-                $data['country'] = $res->country->name;
+//                $data['country'] = $res->country->name;
+                $data['country'] = "中国";
             }else
             {
                 $data['country'] = '';
