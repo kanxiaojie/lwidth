@@ -102,6 +102,7 @@ class WeixinController extends Controller
         $datas = $this->decryptUserInfo($appid,$sessionKey,$encryptedData,$iv);
 
         $data = array();
+        $userInfo = [];
 
         if(!empty($datas))
         {
@@ -156,7 +157,10 @@ class WeixinController extends Controller
                 $data['country'] = '';
             }
 
-            return response()->json(['status'=> 200,'wesecret' => $token]);
+            $userInfo['wesecret'] = $token;
+            $userInfo['userInfo'] = $data;
+
+            return response()->json(['status'=> 200,'data' => $userInfo]);
         }
         else
         {
