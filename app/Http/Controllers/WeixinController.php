@@ -83,6 +83,23 @@ class WeixinController extends Controller
 
     public function firstLogin(Request $request)
     {
+
+        $data['province'] = "福建";
+
+        $data['city'] = "厦门";
+
+        $data['country'] = "中国";
+
+
+        $userInfo['wesecret'] = "fdsjfndsjf";
+        $userInfo['userInfo'] = $data;
+        $userInfo['picture'] = "http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI7hsTibhnpQPxN0eJPoiaNpPq0HSQzG9XpvmicjAjr0x5f1GcNd7LpHoXMgiadUbd4ibn46HibM5FMXBow/0";
+
+        return response()->json(['status'=> 200,'data' => $userInfo]);
+
+
+
+
         $code = $request->get('code');
         $encryptedData = $request->get('encryptedData');
         $iv = $request->get('iv');
@@ -158,7 +175,7 @@ class WeixinController extends Controller
             }
 
             $userInfo['wesecret'] = $token;
-            $userInfo['userInfo'] = json_encode($data);
+            $userInfo['userInfo'] = $data;
 
             return response()->json(['status'=> 200,'data' => $userInfo]);
 //            return json_decode($userInfo);
