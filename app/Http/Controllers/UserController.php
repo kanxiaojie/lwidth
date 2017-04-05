@@ -55,7 +55,7 @@ class UserController extends Controller
 
         $openid = Crypt::decrypt($inputs['wesecret']);
         $userInfo = [];
-        $data = [];
+
         $user = $this->userRepository->getUserByOpenId($openid);
         if($user)
         {

@@ -556,6 +556,47 @@ class PostController extends Controller
             }
 
 
+        }else
+        {
+            return response()->json(['status' => 200,'message' => 'User does not exist']);
+        }
+    }
+
+    public function uploadPostImages(Request $request)
+    {
+        $inputs = $request->all();
+
+        $openid = Crypt::decrypt($inputs['wesecret']);
+
+        $user = $this->userRepository->getUserByOpenId($openid);
+        if ($user)
+        {
+            $inputs['user_id'] = $user->id;
+
+            $res = $this->baseRepository->uploadToQiniu($inputs);
+
+            if($res['status'] == 201)
+            {
+                return response()->json(['status' => 201,'message' => 'pictures upload failed']);
+            }else
+            {
+                $post = $this->postRepository->updatePost($inputs,$inputs['post_id'],$res['picturePath']);
+
+                if($post)
+                {
+                    return response()->json(['status' => 200]);
+                }
+                else
+                {
+                    return response()->json(['status' => 201,'message' => 'upload failed']);
+                }
+            }
+
+
+        }
+        else
+        {
+            return response()->json(['status' => 200,'message' => 'User does not exist']);
         }
     }
 

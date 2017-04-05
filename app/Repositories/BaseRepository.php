@@ -50,29 +50,26 @@ class BaseRepository
     {
         $res = ['status' => '','picturePath' => ''];
 
-        if(array_key_exists('file',$inputs))
-        {
-            $picturePath = '';
-            for ($i = 0;$i<count($inputs['file']);$i++)
-            {
-                $token=$this->getToken();
-                $uploadManager=new UploadManager();
+        $picturePath = '';
+
+        $token=$this->getToken();
+        $uploadManager=new UploadManager();
 //                $name=$_FILES['file']['name'];
-                $name = $this->guid().'.'.$inputs['file'][$i]->getClientOriginalExtension();
-                $filePath=$_FILES['file']['tmp_name'][$i];
-                $type=$_FILES['file']['type'][$i];
-                list($ret,$err)=$uploadManager->putFile($token,$name,$filePath,null,$type,false);
-                if($err){
-                    $res['status'] = 201;
-                    return $res;
-                }else{
-                    $picturePath = 'http://onh8wwwjp.bkt.clouddn.com/'.$ret["key"].','.$picturePath;
-                }
-            }
-
-            $res['picturePath'] = $picturePath;
-
+        $name = $this->guid().'.'.$inputs['file']->getClientOriginalExtension();
+        $filePath=$_FILES['file']['tmp_name'];
+        $type=$_FILES['file']['type'];
+        list($ret,$err)=$uploadManager->putFile($token,$name,$filePath,null,$type,false);
+        if($err){
+            $res['status'] = 201;
             return $res;
+        }else{
+            $picturePath = 'http://onh8wwwjp.bkt.clouddn.com/'.$ret["key"].','.$picturePath;
         }
+
+
+        $res['picturePath'] = $picturePath;
+
+        return $res;
+
     }
 }

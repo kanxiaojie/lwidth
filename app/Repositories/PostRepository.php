@@ -62,6 +62,15 @@ class PostRepository
         return $post;
     }
 
+    public function updatePost($inputs, $id,$picturePath = null)
+    {
+        $post = $this->post->where('id',$id)->firstOrFail();
+
+        $Post = $this->save($post,$inputs,$picturePath);
+
+        return $Post;
+    }
+
     public function save($post,$inputs,$picturePath = null)
     {
         if (isset($inputs['user_id']) && !empty($inputs['user_id']))
