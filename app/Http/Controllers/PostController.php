@@ -13,6 +13,7 @@ use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class PostController extends Controller
 {
@@ -529,6 +530,41 @@ class PostController extends Controller
                 }
             }
 
+        }
+    }
+
+    public function publishPost(Request $request)
+    {
+        $inputs = $request->all();
+
+        $openid = Crypt::decrypt($inputs['wesecret']);
+        $userInfo = [];
+        $data = [];
+        $user = $this->userRepository->getUserByOpenId($openid);
+        if ($user)
+        {
+            $inputs['user_id'] = $user->id;
+            if (array_key_exists('file', $inputs))
+            {
+                $res = $this->baseRepository->uploadToQiniu($inputs);
+
+                if($res['status'] == 201)
+                {
+                    return response()->json(['status' => 201,'message' => 'pictures upload failed']);
+                }else
+                {
+                    $post = $this->postRepository->savePost($inputs,$res['picturePath']);
+
+                    if($post)
+                    {
+                        return response()->json(['status' => 200]);
+                    }
+                    else
+                    {
+                        return response()->json(['status' => 200,'message' => 'Public love failed,please check the arguments!']);
+                    }
+                }
+            }
         }
     }
 
