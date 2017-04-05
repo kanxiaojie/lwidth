@@ -113,6 +113,7 @@ class WeixinController extends Controller
 
             $token = Crypt::encrypt($datas['openId']);
 
+            $data['status'] = 200;
             $data['user_id'] = $res->id;
             $data['wesecret'] = $token;
 //            $data['nickName'] = $res->nickname;
@@ -155,8 +156,11 @@ class WeixinController extends Controller
 //            $userInfo['wesecret'] = $token;
 //            $userInfo['userInfo'] = $data;
 
+            $datas = json_decode($data);
 
-            return response()->json(['status'=> 200,'user_id' => $res->id,'wesecret' => $token]);
+
+//            return response()->json(['status'=> 200,'user_id' => $res->id,'wesecret' => $token]);
+            return $datas;
 
         }
         else
