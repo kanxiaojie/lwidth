@@ -84,22 +84,6 @@ class WeixinController extends Controller
     public function firstLogin(Request $request)
     {
 
-//        $data['province'] = "福建";
-//
-//        $data['city'] = "厦门";
-//
-//        $data['country'] = "中国";
-//
-//
-//        $userInfo['wesecret'] = "fdsjfndsjf";
-//        $userInfo['userInfo'] = $data;
-//        $userInfo['picture'] = "http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI7hsTibhnpQPxN0eJPoiaNpPq0HSQzG9XpvmicjAjr0x5f1GcNd7LpHoXMgiadUbd4ibn46HibM5FMXBow/0";
-//
-//        return response()->json(['status'=> 200,'data' => $userInfo]);
-//
-
-
-
         $code = $request->get('code');
         $encryptedData = $request->get('encryptedData');
         $iv = $request->get('iv');
@@ -108,13 +92,6 @@ class WeixinController extends Controller
         $secretid = env('WEIXIN_SECRET_ID','9bac8ed86a35fcd067e1d5d04365d399');
 
         $sessionKey = $this->getOpenId($code,$appid,$secretid);
-
-//        $appid = 'wx3bf755439a8b5173';
-//        $sessionKey = 'ukjJb2IOwUfXnxzjlrNHBg==';
-
-//        $encryptedData="GgQOBnjaA78Cc+pMhOCtM6ZoS7lRHitdpEALXY69IIeNOE4UT0Klf1LLa7x4ZZnulPyLUQfCMM7SQu58YNc4BYdX/xnHze6LJfq0nDFKVZjhTxv0aIaSXQg2j4qe7wLnrnv49U2ogV1jgHVNN/iDu1YBAiEP+QgA4UQAB+lghBWTr4oatiCjsM85id+j1p7Ze+I7jcZPBKBCgZhW5fWk309Hxe/aR7QZRA6xJ1fOuITX3V01q9n3jPm2yo5GJH/Jr2jJ5kaYgMr7yBwoqRbjBeh/rp+EXj8JaoD7Lf0w+2+HgQe06/kruZtphW2mhQyt7mpgncP9QhoKMgL0VZgu7pI65q8/lDGH9JszpKLJ9WncP5cajr0+9IFsl581VrwxWAvPfs3TSv5okxlnwfBPpqBm+dBnpL8x2/WtYDXXR6QB2pMCMeK6MjV/5b001vQeJ22OwyNxFiIVUwAmVQJqdA==";
-//
-//        $iv = '+1RXA4xYWH0BYscZHsHXNQ==';
 
         $datas = $this->decryptUserInfo($appid,$sessionKey,$encryptedData,$iv);
 
@@ -136,49 +113,51 @@ class WeixinController extends Controller
 
             $token = Crypt::encrypt($datas['openId']);
 
-            $data['id'] = $res->id;
-            $data['nickName'] = $res->nickname;
-            $data['avatarUrl'] = $res->avatarUrl;
-            if(!empty($res->gender))
-            {
-                $data['gender'] = Gender::where('id',$res->gender)->first()->name;
-            }
-            else
-            {
-                $data['gender'] = '未知';
-            }
+            $data['user_id'] = $res->id;
+            $data['wesecret'] = $token;
+//            $data['nickName'] = $res->nickname;
+//            $data['avatarUrl'] = $res->avatarUrl;
+//            if(!empty($res->gender))
+//            {
+//                $data['gender'] = Gender::where('id',$res->gender)->first()->name;
+//            }
+//            else
+//            {
+//                $data['gender'] = '未知';
+//            }
+//
+//            if(!empty($res->province_id))
+//            {
+////                $data['province'] = $res->country->province->name;
+//                $data['province'] = "福建";
+//            }
+//            else
+//            {
+//                $data['province'] = '';
+//            }
+//            if(!empty($res->city_id))
+//            {
+////                $data['city'] = $res->country->city->name;
+//                $data['city'] = "厦门";
+//            }else
+//            {
+//                $data['city'] = '';
+//            }
+//            if(!empty($res->country_id))
+//            {
+////                $data['country'] = $res->country->name;
+//                $data['country'] = "中国";
+//            }else
+//            {
+//                $data['country'] = '';
+//            }
+//
+//            $userInfo['wesecret'] = $token;
+//            $userInfo['userInfo'] = $data;
 
-            if(!empty($res->province_id))
-            {
-//                $data['province'] = $res->country->province->name;
-                $data['province'] = "福建";
-            }
-            else
-            {
-                $data['province'] = '';
-            }
-            if(!empty($res->city_id))
-            {
-//                $data['city'] = $res->country->city->name;
-                $data['city'] = "厦门";
-            }else
-            {
-                $data['city'] = '';
-            }
-            if(!empty($res->country_id))
-            {
-//                $data['country'] = $res->country->name;
-                $data['country'] = "中国";
-            }else
-            {
-                $data['country'] = '';
-            }
 
-            $userInfo['wesecret'] = $token;
-            $userInfo['userInfo'] = $data;
+            return response()->json(['status'=> 200,'data' => $data]);
 
-            return response()->json(['status'=> 200,'data' => $userInfo]);
-//            return json_decode($userInfo);
         }
         else
         {
