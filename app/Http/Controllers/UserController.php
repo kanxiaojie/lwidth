@@ -73,7 +73,7 @@ class UserController extends Controller
                     $userInfo['id'] = $updateUser->id ;
                     $userInfo['nickName'] = $updateUser->nickname ;
                     $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
-                    $userInfo['gender'] = Gender::where('id',$userInfo->gender)->first()->name ;
+                    $userInfo['gender'] = Gender::where('id',$updateUser->gender)->first()->name ;
                     $userInfo['province'] = "福建";
                     $userInfo['city'] = "厦门";
                     if($updateUser->country_id)
