@@ -538,33 +538,24 @@ class PostController extends Controller
         $inputs = $request->all();
 
         $openid = Crypt::decrypt($inputs['wesecret']);
-        $userInfo = [];
-        $data = [];
+
         $user = $this->userRepository->getUserByOpenId($openid);
         if ($user)
         {
             $inputs['user_id'] = $user->id;
-            if (array_key_exists('file', $inputs))
+
+            $post = $this->postRepository->savePost($inputs);
+
+            if($post)
             {
-                $res = $this->baseRepository->uploadToQiniu($inputs);
-
-                if($res['status'] == 201)
-                {
-                    return response()->json(['status' => 201,'message' => 'pictures upload failed']);
-                }else
-                {
-                    $post = $this->postRepository->savePost($inputs,$res['picturePath']);
-
-                    if($post)
-                    {
-                        return response()->json(['status' => 200]);
-                    }
-                    else
-                    {
-                        return response()->json(['status' => 200,'message' => 'Public love failed,please check the arguments!']);
-                    }
-                }
+                return response()->json(['status' => 200,'love_id'=>$post->id]);
             }
+            else
+            {
+                return response()->json(['status' => 200,'message' => 'Public love failed,please check the arguments!']);
+            }
+
+
         }
     }
 

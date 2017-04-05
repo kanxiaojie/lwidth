@@ -27,6 +27,7 @@ $app->post('/api/images/upload','UploadToQiniuController@uploadToQiniu');
 
 //发表白接口
 $app->post('/api/loves','PostController@publishPost');
+$app->post('/api/loves/images','PostController@uploadPostImages');
 
 //所有帖子
 $app->get('/api/posts','PostController@index');
