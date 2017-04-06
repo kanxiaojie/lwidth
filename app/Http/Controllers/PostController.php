@@ -75,7 +75,8 @@ class PostController extends Controller
     public function lists(Request $request)
     {
         $wesecret = $request->get('wesecret');
-        if ($wesecret)
+
+        if (!empty($wesecret))
         {
             $openid = $this->baseRepository->decryptCode($wesecret);
             $user = $this->userRepository->getUserByOpenId($openid);
@@ -83,11 +84,12 @@ class PostController extends Controller
 
         $inputs = [];
 
-        if(!$wesecret)
+        if(empty($wesecret))
         {
             $data = array();
+            $datas = array();
 
-            $posts = $this->postRepository->getPostListZero($inputs);
+            $posts = $this->postRepository->getPostListZero();
 
             if(empty($posts))
             {
@@ -119,9 +121,10 @@ class PostController extends Controller
                         $data['images'] = [];
                     }
 
-                    $userInfo['id'] = $user->id;
+                    $userInfo['id'] = $post->user_id;
+                    $user =User::where('id',$post->user_id)->first();
                     $userInfo['nickName'] = $user->nickname;
-                    $userInfo['avatarUrl'] = $user->avatarUrl;
+                    $userInfo['avatarUrl'] =  $user->avatarUrl;
                     if(!empty($user->college_id))
                     {
                         $userInfo['college'] = $user->college_id;
@@ -182,17 +185,19 @@ class PostController extends Controller
                     {
                         $data['location'] = '';
                     }
+
+                    $datas[] = $data;
                 }
 
             }
 
-            return response()->json(['status' => 200,'data' => $data]);
+            return response()->json(['status' => 200,'data' => $datas]);
 
         }
-        elseif($wesecret && $user)
+        elseif((!empty($wesecret)) && ($user))
         {
             $data = array();
-
+            $datas = [];
             $posts = $this->postRepository->getPostLists($inputs,$user);
 
             if(empty($posts))
@@ -288,11 +293,13 @@ class PostController extends Controller
                     {
                         $data['location'] = '';
                     }
+
+                    $datas[] = $data;
                 }
 
             }
 
-            return response()->json(['status' => 200,'data' => $data]);
+            return response()->json(['status' => 200,'data' => $datas]);
         }
     }
 
