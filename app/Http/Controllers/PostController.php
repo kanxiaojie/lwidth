@@ -124,7 +124,7 @@ class PostController extends Controller
                     $userInfo['avatarUrl'] = $user->avatarUrl;
                     if(!empty($user->college_id))
                     {
-                        $userInfo['college'] = $user->college->name;
+                        $userInfo['college'] = $user->college_id;
                     }
                     else
                     {
@@ -231,12 +231,21 @@ class PostController extends Controller
                     $data['images'] = [];
                 }
 
+                if($post->location)
+                {
+                    $data['location'] = explode(',',$post->location);
+                }
+                else
+                {
+                    $data['location'] = '';
+                }
+
                 $userInfo['id'] = $user->id;
                 $userInfo['nickName'] = $user->nickname;
                 $userInfo['avatarUrl'] = $user->avatarUrl;
                 if(!empty($user->college_id))
                 {
-                    $userInfo['college'] = $user->college->name;
+                    $userInfo['college'] = $user->college_id;
                 }
                 else
                 {

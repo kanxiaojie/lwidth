@@ -97,7 +97,7 @@ class PostRepository
 
         if(isset($inputs['location']) && !empty($inputs['location']))
         {
-            $post->visiable = implode(',',$inputs['location']);
+            $post->location = implode(',',$inputs['location']);
         }
 
         if(isset($inputs['visiable']) && !empty($inputs['visiable']))
