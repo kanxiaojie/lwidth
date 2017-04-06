@@ -76,7 +76,6 @@ class CommentRepository
         $commentToComment->user_id = $inputs['user_id'];
         $commentToComment->post_id = $comment->post_id;
         $commentToComment->comment_id = $comment->id;
-        $commentToComment->parent_id = $comment->id;
         $commentToComment->content = $inputs['content'];
         $commentToComment->save();
 

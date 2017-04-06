@@ -66,7 +66,7 @@ class CommentController extends Controller
 
         if($user)
         {
-            $comment = $this->commentRepository->getCommentToCommentById($id);
+            $comment = $this->commentRepository->getCommentById($id);
             if(!$comment)
             {
                 return response()->json(['status' => 201,'message' => 'comment does not exist,check the argument!']);
