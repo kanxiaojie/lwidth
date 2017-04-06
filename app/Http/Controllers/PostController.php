@@ -75,11 +75,15 @@ class PostController extends Controller
     public function lists(Request $request)
     {
         $wesecret = $request->get('wesecret');
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
+        if ($wesecret)
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        }
+
         $inputs = [];
 
-        if(!$user)
+        if(!$wesecret)
         {
             $data = array();
 
@@ -185,7 +189,7 @@ class PostController extends Controller
             return response()->json(['status' => 200,'data' => $data]);
 
         }
-        else
+        elseif($wesecret && $user)
         {
             $data = array();
 
