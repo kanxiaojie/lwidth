@@ -108,7 +108,7 @@ class PostController extends Controller
                     {
                         if(substr(trim($post->pictures),-1) == ',')
                         {
-                            $data['images'] = explode(',',$post->pictures);dd($data['images']);
+                            $data['images'] = explode(',',$post->pictures);
                         }else {
                             $data['images'] = explode(',',$post->pictures);
                         }
