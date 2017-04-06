@@ -109,13 +109,13 @@ class PostController extends Controller
                     {
                         if(substr(trim($post->pictures),-1) == ',')
                         {
-                            $images['images'] = explode(',',$post->pictures);
+                            $data['images'] = explode(',',$post->pictures);
                         }else
                         {
-                            $images['images'] = $post->pictures;
+                            $data['images'] = $post->pictures;
                         }
 
-                        $data['images'] = $images;
+//                        $data['images'] = $images;
                     }
                     else
                     {
@@ -218,13 +218,13 @@ class PostController extends Controller
                     {
                         if(substr(trim($post->pictures),-1) == ',')
                         {
-                            $images['images'] = explode(',',$post->pictures);
+                            $data['images'] = explode(',',$post->pictures);
                         }else
                         {
-                            $images['images'] = $post->pictures;
+                            $data['images'] = $post->pictures;
                         }
 
-                        $data['images'] = $images;
+//                        $data['images'] = $images;
                     }
                     else
                     {
