@@ -143,7 +143,7 @@ class PostRepository
         if (($diff>0) && ($diff<60))
         {
 
-            return $diff.'分钟前';
+            return round($diff).'分钟前';
         }elseif (($diff > 60) && ($diff < 1440))
         {
             return round($diff/60).'小时前';
