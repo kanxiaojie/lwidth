@@ -100,7 +100,6 @@ class PostController extends Controller
                 foreach ($posts as $post)
                 {
                     $userInfo = array();
-                    $images = array();
 
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
@@ -110,12 +109,9 @@ class PostController extends Controller
                         if(substr(trim($post->pictures),-1) == ',')
                         {
                             $data['images'] = explode(',',$post->pictures);
-                        }else
-                        {
+                        }else {
                             $data['images'] = $post->pictures;
                         }
-
-//                        $data['images'] = $images;
                     }
                     else
                     {

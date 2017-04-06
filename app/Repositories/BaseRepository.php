@@ -50,8 +50,6 @@ class BaseRepository
     {
         $res = ['status' => '','picturePath' => ''];
 
-        $picturePath = '';
-
         $token=$this->getToken();
         $uploadManager=new UploadManager();
 //                $name=$_FILES['file']['name'];
@@ -63,7 +61,7 @@ class BaseRepository
             $res['status'] = 201;
             return $res;
         }else{
-            $picturePath = 'http://onh8wwwjp.bkt.clouddn.com/'.$ret["key"].','.$picturePath;
+            $picturePath = 'http://onh8wwwjp.bkt.clouddn.com/'.$ret["key"];
         }
 
 
