@@ -93,7 +93,7 @@ class PostController extends Controller
 
             if(empty($posts))
             {
-                $data = [];
+                $datas = [];
             }
             else
             {
@@ -104,11 +104,12 @@ class PostController extends Controller
 
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
+
                     if(!empty($post->pictures))
                     {
                         if(substr(trim($post->pictures),-1) == ',')
                         {
-                            $data['images'] = explode(',',$post->pictures);
+                            $images['images'] = explode(',',$post->pictures);
                         }else
                         {
                             $images['images'] = $post->pictures;
@@ -202,7 +203,7 @@ class PostController extends Controller
 
             if(empty($posts))
             {
-                $data = [];
+                $datas = [];
             }
             else
             {
@@ -217,7 +218,7 @@ class PostController extends Controller
                     {
                         if(substr(trim($post->pictures),-1) == ',')
                         {
-                            $data['images'] = explode(',',$post->pictures);
+                            $images['images'] = explode(',',$post->pictures);
                         }else
                         {
                             $images['images'] = $post->pictures;
