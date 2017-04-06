@@ -23,19 +23,39 @@ class PostRepository
         $this->post = $post;
     }
 
-    public function getPostLists($inputs,$orderby = 'created_at', $direction = 'desc')
+    public function getPostLists($inputs,$user,$orderby = 'created_at', $direction = 'desc')
     {
-        $posts = $this->post->where(function ($query) use ($inputs){
-            if(isset($inputs['search']))
+        if((!$user->gender) && (!$user->college_id))
+        {
+            $posts = $this->post->where('visiable',0)->orderBy($orderby,$direction)->get();
+        }
+        elseif($user->college_id)
+        {
+            $userIds = User::where('college_id',$user->college_id)->pluck('id')->toArray();
+
+            $posts = $this->post->whereIn('user_id',$userIds)->whereIn('visiable',[0,1,2,3])
+                ->orWhere('user_id',$user->id)->where('visiable',4)->orderBy($orderby,$direction)->get();
+        }elseif ((!$user->college_id) && ($user->gender))
+        {
+            $userIds = User::where("gender",$user->gender)->pluck('id')->toArray();
+            if($user->gender = 1)
             {
-                $query->where('title','LIKE','%'.$inputs['search'].'%')
-                    ->orWhereHas('user',function ($query1) use ($inputs){
-                        $query1->where('nickname','LIKE','%'.$inputs['search'].'%')
-                            ->orWhere('realname','LIKE','%'.$inputs['search'].'%');
-                    })
-                ;
+                $posts = $this->post->whereIn('user_id',$userIds)->whereIn('visiable',[0,2])
+                    ->orWhere('user_id',$user->id)->where('visiable',4)->orderBy($orderby,$direction)->get();
+            }else
+            {
+                $posts = $this->post->whereIn('user_id',$userIds)->whereIn('visiable',[0,3])
+                    ->orWhere('user_id',$user->id)->where('visiable',4)->orderBy($orderby,$direction)->get();
             }
-        })->orderBy($orderby,$direction)->get();
+
+        }
+
+        return $posts;
+    }
+
+    public function getPostListZero($orderby = 'created_at', $direction = 'desc')
+    {
+        $posts = $this->post->where('visiable',0)->orderBy($orderby,$direction)->get();
 
         return $posts;
     }

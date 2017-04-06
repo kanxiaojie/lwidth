@@ -66,7 +66,7 @@ class UserRepository
             $user->nickname = $inputs['nickName'];
         }
 
-        if(isset($inputs['gender']))
+        if(isset($inputs['gender']) && (!empty($inputs['gender'])))
         {
             $user->gender = $inputs['gender'];
         }
@@ -117,7 +117,7 @@ class UserRepository
 
         if(isset($inputs['college']) && (!empty($inputs['college'])))
         {
-            $user->college_id = 1;
+            $user->college_id = $inputs['college'];
         }
 
         if(isset($inputs['major']) && (!empty($inputs['major'])))

@@ -36,7 +36,7 @@ $app->post('/api/loves/images','PostController@uploadPostImages');
 //所有帖子
 $app->get('/api/posts','PostController@index');
 
-//某个人的所有帖子
+//所有帖子
 $app->get('/api/loves','PostController@lists');
 
 //获取单个表白及评论内容
