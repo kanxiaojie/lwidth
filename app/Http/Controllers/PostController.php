@@ -344,8 +344,8 @@ class PostController extends Controller
 
                 if($post->location)
                 {
-//                    $data['location'] = explode(',',$post->location);
-                    $data['location'] = json_encode($post->location);
+                    $data['location'] = explode(',',$post->location);
+//                    $data['location'] = json_encode($post->location);
                 }
                 else
                 {
@@ -490,8 +490,8 @@ class PostController extends Controller
 
                 if($post->location)
                 {
-//                    $data['location'] = explode(',',$post->location);
-                    $data['location'] = json_encode($post->location);
+                    $data['location'] = explode(',',$post->location);
+//                    $data['location'] = json_encode($post->location);
                 }
                 else
                 {
