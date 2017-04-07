@@ -309,111 +309,152 @@ class PostController extends Controller
             $openid = $this->baseRepository->decryptCode($wesecret);
             $user = $this->userRepository->getUserByOpenId($openid);
         }
+
         if(empty($wesecret))
         {
+            $post = $this->postRepository->getPost($id);
             $data = array();
-            $datas = array();
-
-            $posts = $this->postRepository->getPostListZero();
-
-            if(empty($posts))
+            $datas =[];
+            $postComments = array();
+            $post_Comments = $this->commentRepository->getPostComments($post->id);
+            if($post)
             {
-                $datas = [];
+                $userInfo = array();
+                $images = array();
+                $commentOfUserInfo = array();
+
+                $data['id'] = $post->id;
+                $data['content'] = $post->content;
+                if(!empty($post->pictures))
+                {
+                    if(substr(trim($post->pictures),-1) == ',')
+                    {
+                        $data['images'] = explode(',',$post->pictures);
+                    }else
+                    {
+                        $images['images'] = $post->pictures;
+                    }
+
+                    $data['images'] = $images;
+                }
+                else
+                {
+                    $data['images'] = [];
+                }
+
+                if($post->location)
+                {
+                    $data['location'] = explode(',',$post->location);
+                }
+                else
+                {
+                    $data['location'] = '';
+                }
+
+                $userInfo['id'] = $post->user->id;
+                $userInfo['nickName'] = $post->user->nickname;
+                $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                if(!empty($post->user->college_id))
+                {
+                    $userInfo['college'] = $post->user->college_id;
+                }
+                else
+                {
+                    $userInfo['college'] = '';
+                }
+                $data['userInfo'] = $userInfo;
+
+                if($post->likenum)
+                {
+                    $data['praise_nums'] = $post->likenum;
+                }
+                else
+                {
+                    $data['praise_nums'] = 0;
+                }
+
+                if($post->commentnum)
+                {
+                    $data['comment_nums'] = $post->commentnum;
+                }
+                else
+                {
+                    $data['comment_nums'] = 0;
+                }
+
+
+                $data['if_my_comment'] = 0;
+
+
+
+                $data['if_my_praise'] = 0;
+
+
+
+                $data['if_my_love'] = 0;
+
+
+                $datas['love'] = $data;
+
+
+                if ($post_Comments)
+                {
+                    foreach ($post_Comments as $postComment)
+                    {
+                        $postComments['id'] = $postComment->id;
+                        $postComments['content'] = $postComment->content;
+
+                        $userOfComment = User::where('id',$postComment->user_id)->first();
+                        $commentOfUserInfo['id'] = $userOfComment->id;
+                        $commentOfUserInfo['nickName'] = $userOfComment->nickname;
+                        $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
+                        $postComments['userInfo'] = $commentOfUserInfo;
+
+                        $postComments['created_at'] = $this->postRepository->getTime($postComment->created_at);
+
+                        if($postComment->r_likenum)
+                        {
+                            $postComments['praise_nums'] = $postComment->r_likenum;
+                        }
+                        else
+                        {
+                            $postComments['praise_nums'] = 0;
+                        }
+
+                        if($postComment->r_commentnum)
+                        {
+                            $postComments['comment_nums'] = $postComment->r_commentnum;
+                        }
+                        else
+                        {
+                            $postComments['comment_nums'] = 0;
+                        }
+
+
+                        $postComments['if_my_comment'] = 0;
+
+
+
+                        $postComments['if_my_praise'] = 0;
+
+
+                        //在评论循环操作$data1,2,3,4,5,6,7
+                        $datas['comments'] = $postComments;
+                    }
+                }
+                else
+                {
+                    $datas['comments'] = [];
+                }
+
+                return response()->json(['status' => 200,'data' => $datas]);
+
             }
             else
             {
-                foreach ($posts as $post)
-                {
-                    $userInfo = array();
-
-                    $data['id'] = $post->id;
-                    $data['content'] = $post->content;
-
-                    if(!empty($post->pictures))
-                    {
-                        if(substr(trim($post->pictures),-1) == ',')
-                        {
-                            $data['images'] = explode(',',$post->pictures);
-                        }else {
-                            $data['images'] = explode(',',$post->pictures);
-                        }
-                    }
-                    else
-                    {
-                        $data['images'] = [];
-                    }
-
-                    $userInfo['id'] = $post->user_id;
-                    $user =User::where('id',$post->user_id)->first();
-                    $userInfo['nickName'] = $user->nickname;
-                    $userInfo['avatarUrl'] =  $user->avatarUrl;
-                    if(!empty($user->college_id))
-                    {
-                        $userInfo['college'] = $user->college_id;
-                    }
-                    else
-                    {
-                        $userInfo['college'] = '';
-                    }
-                    $data['userInfo'] = $userInfo;
-
-                    $diff_time = $this->postRepository->getTime($post->created_at);
-
-                    $data['created_at'] = $diff_time;
-
-                    if($post->likenum)
-                    {
-                        $data['praise_nums'] = $post->likenum;
-                    }
-                    else
-                    {
-                        $data['praise_nums'] = 0;
-                    }
-
-                    if($post->commentnum)
-                    {
-                        $data['comment_nums'] = $post->commentnum;
-                    }
-                    else
-                    {
-                        $data['comment_nums'] = 0;
-                    }
-
-                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_comment)
-                    {
-                        $data['if_my_comment'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_comment'] = 0;
-                    }
-
-                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_praise)
-                    {
-                        $data['if_my_praise'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_praise'] = 0;
-                    }
-
-                    if($post->location)
-                    {
-                        $data['location'] = explode(',',$post->location);
-                    }
-                    else
-                    {
-                        $data['location'] = '';
-                    }
-
-                    $datas[] = $data;
-                }
-
+                return response()->json(['status' => 201,'message' => 'post does not exist!']);
             }
 
-            return response()->json(['status' => 201,'data' => $datas]);
         }elseif((!empty($wesecret)) && ($user))
         {
             $post = $this->postRepository->getPost($id);
@@ -455,12 +496,12 @@ class PostController extends Controller
                     $data['location'] = '';
                 }
 
-                $userInfo['id'] = $user->id;
-                $userInfo['nickName'] = $user->nickname;
-                $userInfo['avatarUrl'] = $user->avatarUrl;
-                if(!empty($user->college_id))
+                $userInfo['id'] = $post->user->id;
+                $userInfo['nickName'] = $post->user->nickname;
+                $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                if(!empty($post->user->college_id))
                 {
-                    $userInfo['college'] = $user->college_id;
+                    $userInfo['college'] = $post->user->college_id;
                 }
                 else
                 {
