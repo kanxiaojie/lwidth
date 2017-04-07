@@ -401,6 +401,14 @@ class PostController extends Controller
                     $data['if_my_praise'] = 0;
                 }
 
+                if($user->id == $post->user_id)
+                {
+                    $data['if_my_love'] = 1;
+                }else
+                {
+                    $data['if_my_love'] = 0;
+                }
+
                 $datas['love'] = $data;
 
 
