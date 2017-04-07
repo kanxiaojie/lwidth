@@ -117,7 +117,8 @@ class PostRepository
 
         if(isset($inputs['location']) && !empty($inputs['location']))
         {
-            $post->location = implode(',',$inputs['location']);
+//            $post->location = implode(',',$inputs['location']);
+            $post->location = json_decode($inputs['location']);
         }
 
         if(isset($inputs['visiable']) && !empty($inputs['visiable']))
