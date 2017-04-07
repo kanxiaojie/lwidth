@@ -105,10 +105,20 @@ class UserRepository
         return $user;
     }
 
-    public function updateUser($inputs,$user,$picturePath)
+    public function updateUser($inputs,$user,$picturePath = null)
     {
 
-        $user->pictures = $picturePath;
+        if($picturePath)
+        {
+            if($user->pictures)
+            {
+                $user->pictures .= ','.$picturePath;
+            }
+            else
+            {
+                $user->pictures = $picturePath;
+            }
+        }
 
         if(isset($inputs['realname']) && (!empty($inputs['realname'])))
         {

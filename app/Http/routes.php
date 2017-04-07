@@ -62,4 +62,8 @@ $app->get('/api/hotLoves','PostController@getHotPosts');
 
 //提交/或者更新 个人详细信息
 $app->post('/api/users','UserController@updateUser');
+$app->post('/api/users/pictures','UserController@uploadUserImage');
+//获取某人的详细信息
+$app->get('/api/users/{id}','UserController@getUserInfo');
+$app->get('/api/user','UserController@getUserInfoByOpenId');
 
