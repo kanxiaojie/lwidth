@@ -157,7 +157,7 @@ class WeixinController extends Controller
 //            $userInfo['userInfo'] = $data;
 
 //            return $token;
-            return response()->json(['data' => $data]);
+            return response()->json(['wesecret' => $token,'user_id' => $res->id]);
 
         }
         else
