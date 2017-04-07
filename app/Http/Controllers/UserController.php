@@ -234,6 +234,7 @@ class UserController extends Controller
     {
         $user = $this->userRepository->getUserById($id);
 
+        $userInfo = [];
         if($user)
         {
             $updateUser = $user;
@@ -406,7 +407,7 @@ class UserController extends Controller
                 $userInfo['love_selecting'] = '';
             }
 
-
+            return response()->json(['status'=>200,'data'=>$userInfo]);
         }else
         {
             return response()->json(['status'=>201,'message'=>'user not exist']);
@@ -419,6 +420,7 @@ class UserController extends Controller
         $openid = Crypt::decrypt($inputs['wesecret']);
         $user = $this->userRepository->getUserByOpenId($openid);
 
+        $userInfo = [];
         if ($user)
         {
             $updateUser = $user;
@@ -590,6 +592,8 @@ class UserController extends Controller
             {
                 $userInfo['love_selecting'] = '';
             }
+
+            return response()->json(['status'=>200,'data'=>$userInfo]);
         }
         else{
             return response()->json(['status'=>201,'message'=>'user not exist']);
