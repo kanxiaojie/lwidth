@@ -308,7 +308,109 @@ class PostController extends Controller
 
         if(!$user)
         {
-            return response()->json(['status' => 201,'message' => 'user does not exist!']);
+            $data = array();
+            $datas = array();
+
+            $posts = $this->postRepository->getPostListZero();
+
+            if(empty($posts))
+            {
+                $datas = [];
+            }
+            else
+            {
+                foreach ($posts as $post)
+                {
+                    $userInfo = array();
+
+                    $data['id'] = $post->id;
+                    $data['content'] = $post->content;
+
+                    if(!empty($post->pictures))
+                    {
+                        if(substr(trim($post->pictures),-1) == ',')
+                        {
+                            $data['images'] = explode(',',$post->pictures);
+                        }else {
+                            $data['images'] = explode(',',$post->pictures);
+                        }
+                    }
+                    else
+                    {
+                        $data['images'] = [];
+                    }
+
+                    $userInfo['id'] = $post->user_id;
+                    $user =User::where('id',$post->user_id)->first();
+                    $userInfo['nickName'] = $user->nickname;
+                    $userInfo['avatarUrl'] =  $user->avatarUrl;
+                    if(!empty($user->college_id))
+                    {
+                        $userInfo['college'] = $user->college_id;
+                    }
+                    else
+                    {
+                        $userInfo['college'] = '';
+                    }
+                    $data['userInfo'] = $userInfo;
+
+                    $diff_time = $this->postRepository->getTime($post->created_at);
+
+                    $data['created_at'] = $diff_time;
+
+                    if($post->likenum)
+                    {
+                        $data['praise_nums'] = $post->likenum;
+                    }
+                    else
+                    {
+                        $data['praise_nums'] = 0;
+                    }
+
+                    if($post->commentnum)
+                    {
+                        $data['comment_nums'] = $post->commentnum;
+                    }
+                    else
+                    {
+                        $data['comment_nums'] = 0;
+                    }
+
+                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    if($if_my_comment)
+                    {
+                        $data['if_my_comment'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_comment'] = 0;
+                    }
+
+                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    if($if_my_praise)
+                    {
+                        $data['if_my_praise'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_praise'] = 0;
+                    }
+
+                    if($post->location)
+                    {
+                        $data['location'] = explode(',',$post->location);
+                    }
+                    else
+                    {
+                        $data['location'] = '';
+                    }
+
+                    $datas[] = $data;
+                }
+
+            }
+
+            return response()->json(['status' => 201,'data' => $datas]);
         }else
         {
             $post = $this->postRepository->getPost($id);
