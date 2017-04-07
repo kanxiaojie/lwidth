@@ -332,10 +332,10 @@ class PostController extends Controller
                         $data['images'] = explode(',',$post->pictures);
                     }else
                     {
-                        $images['images'] = $post->pictures;
+                        $data['images'] = $post->pictures;
                     }
 
-                    $data['images'] = $images;
+//                    $data['images'] = $images;
                 }
                 else
                 {
@@ -477,10 +477,10 @@ class PostController extends Controller
                         $data['images'] = explode(',',$post->pictures);
                     }else
                     {
-                        $images['images'] = $post->pictures;
+                        $data['images'] = $post->pictures;
                     }
 
-                    $data['images'] = $images;
+//                    $data['images'] = $images;
                 }
                 else
                 {
