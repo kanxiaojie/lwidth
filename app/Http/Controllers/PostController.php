@@ -303,10 +303,13 @@ class PostController extends Controller
     public function postAndSelfComments(Request $request,$id)
     {
         $wesecret = $request->get('wesecret');
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
 
-        if(!$user)
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        }
+        if(empty($wesecret))
         {
             $data = array();
             $datas = array();
@@ -411,7 +414,7 @@ class PostController extends Controller
             }
 
             return response()->json(['status' => 201,'data' => $datas]);
-        }else
+        }elseif((!empty($wesecret)) && ($user))
         {
             $post = $this->postRepository->getPost($id);
             $data = array();
