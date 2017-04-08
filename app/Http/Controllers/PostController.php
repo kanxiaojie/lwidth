@@ -170,7 +170,13 @@ class PostController extends Controller
 
                     if($post->location)
                     {
-                        $data['location'] = explode(',',$post->location);
+                        $location = explode(',',$post->location);
+
+                        $data['location']['name'] = $location[0];
+                        $data['location']['address'] = $location[1];
+                        $data['location']['latitude'] = $location[2];
+                        $data['location']['longitude'] = $location[3];
+
                     }
                     else
                     {
@@ -291,7 +297,13 @@ class PostController extends Controller
 
                     if($post->location)
                     {
-                        $data['location'] = explode(',',$post->location);
+                        $location = explode(',',$post->location);
+
+                        $data['location']['name'] = $location[0];
+                        $data['location']['address'] = $location[1];
+                        $data['location']['latitude'] = $location[2];
+                        $data['location']['longitude'] = $location[3];
+
                     }
                     else
                     {
@@ -528,7 +540,12 @@ class PostController extends Controller
 
                     if($post->location)
                     {
-                        $data['location'] = explode(',',$post->location);
+                        $location = explode(',',$post->location);
+
+                        $data['location']['name'] = $location[0];
+                        $data['location']['address'] = $location[1];
+                        $data['location']['latitude'] = $location[2];
+                        $data['location']['longitude'] = $location[3];
                     }
                     else
                     {
@@ -579,7 +596,6 @@ class PostController extends Controller
                         $data['images'] = explode(',',$post->pictures);
                     }
 
-//                    $data['images'] = $images;
                 }
                 else
                 {
@@ -588,8 +604,13 @@ class PostController extends Controller
 
                 if($post->location)
                 {
-                    $data['location'] = explode(',',$post->location);
-//                    $data['location'] = json_encode($post->location);
+                    $location = explode(',',$post->location);
+
+                    $data['location']['name'] = $location[0];
+                    $data['location']['address'] = $location[1];
+                    $data['location']['latitude'] = $location[2];
+                    $data['location']['longitude'] = $location[3];
+
                 }
                 else
                 {
@@ -710,7 +731,7 @@ class PostController extends Controller
             if($post)
             {
                 $userInfo = array();
-                $images = array();
+
                 $commentOfUserInfo = array();
 
                 $data['id'] = $post->id;
@@ -734,8 +755,12 @@ class PostController extends Controller
 
                 if($post->location)
                 {
-                    $data['location'] = explode(',',$post->location);
-//                    $data['location'] = json_encode($post->location);
+                    $location = explode(',',$post->location);
+
+                    $data['location']['name'] = $location[0];
+                    $data['location']['address'] = $location[1];
+                    $data['location']['latitude'] = $location[2];
+                    $data['location']['longitude'] = $location[3];
                 }
                 else
                 {
