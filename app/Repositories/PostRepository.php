@@ -33,6 +33,13 @@ class PostRepository
         return $posts;
     }
 
+    public function getMyLoves($user, $orderby = 'created_at', $direction = 'desc')
+    {
+        $posts = $this->post->where('user_id',$user->id)->orderBy($orderby,$direction)->get();
+
+        return $posts;
+    }
+
     public function getPostLists($inputs,$user,$orderby = 'created_at', $direction = 'desc')
     {
         if((!$user->gender) && (!$user->college_id))

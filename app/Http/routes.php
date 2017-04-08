@@ -42,6 +42,9 @@ $app->get('/api/loves','PostController@lists');
 //获取本校表白  (本校的表白 时间倒序)
 $app->get('/api/collegeLoves','PostController@getCollegeLoves');
 
+//获取我发表的所有表白
+$app->get('/api/myLoves','PostController@getMyLoves');
+
 //获取单个表白及评论内容
 $app->get('/api/loves/{id}/comments','PostController@postAndSelfComments');
 
