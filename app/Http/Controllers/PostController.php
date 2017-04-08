@@ -416,7 +416,13 @@ class PostController extends Controller
 
                     if($post->location)
                     {
-                        $data['location'] = explode(',',$post->location);
+                        $location = explode(',',$post->location);
+
+                        $data['location']['name'] = $location[0];
+                        $data['location']['address'] = $location[1];
+                        $data['location']['latitude'] = $location[2];
+                        $data['location']['longitude'] = $location[3];
+
                     }
                     else
                     {
