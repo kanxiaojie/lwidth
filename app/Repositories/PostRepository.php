@@ -23,6 +23,16 @@ class PostRepository
         $this->post = $post;
     }
 
+    public function getCollegeLoves($user, $orderby = 'created_at', $direction = 'desc')
+    {
+        $userIds = User::where('college_id',$user->college_id)->pluck('id')->toArray();
+
+        $posts = $this->post->whereIn('user_id',$userIds)->whereIn('visiable',[0,1,2,3])
+            ->orWhere('user_id',$user->id)->where('visiable',4)->orderBy($orderby,$direction)->get();
+
+        return $posts;
+    }
+
     public function getPostLists($inputs,$user,$orderby = 'created_at', $direction = 'desc')
     {
         if((!$user->gender) && (!$user->college_id))

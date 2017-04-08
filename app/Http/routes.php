@@ -39,6 +39,9 @@ $app->get('/api/posts','PostController@index');
 //所有帖子
 $app->get('/api/loves','PostController@lists');
 
+//获取本校表白  (本校的表白 时间倒序)
+$app->get('/api/collegeLoves','PostController@getCollegeLoves');
+
 //获取单个表白及评论内容
 $app->get('/api/loves/{id}/comments','PostController@postAndSelfComments');
 
@@ -66,4 +69,5 @@ $app->post('/api/users/pictures','UserController@uploadUserImage');
 //获取某人的详细信息
 $app->get('/api/users/{id}','UserController@getUserInfo');
 $app->get('/api/user','UserController@getUserInfoByOpenId');
+
 
