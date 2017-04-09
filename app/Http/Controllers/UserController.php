@@ -253,6 +253,22 @@ class UserController extends Controller
                 $userInfo['gender'] = "女";
             }
 
+            if(!empty($updateUser->pictures))
+            {
+                if(substr(trim($updateUser->pictures),-1) == ',')
+                {
+                    $data['pictures'] = explode(',',$updateUser->pictures);
+                }else
+                {
+                    $data['pictures'] = explode(',',$updateUser->pictures);
+                }
+
+            }
+            else
+            {
+                $data['pictures'] = [];
+            }
+
 
             $userInfo['province'] = "福建";
             $userInfo['city'] = "厦门";
