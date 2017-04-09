@@ -67,4 +67,9 @@ class User extends Model implements
     {
         return $this->belongsTo('App\Gender','gender');
     }
+
+    public function college()
+    {
+        return $this->belongsTo('App\College','college_id');
+    }
 }
