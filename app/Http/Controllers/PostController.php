@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\College;
 use App\Comment;
 use App\CommentToComment;
 use App\Post;
@@ -118,7 +119,7 @@ class PostController extends Controller
                     $userInfo['avatarUrl'] = $user->avatarUrl;
                     if(!empty($user->college_id))
                     {
-                        $userInfo['college'] = $user->college_id;
+                        $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
                     }
                     else
                     {
@@ -245,7 +246,7 @@ class PostController extends Controller
                     $userInfo['avatarUrl'] = $user->avatarUrl;
                     if(!empty($user->college_id))
                     {
-                        $userInfo['college'] = $user->college_id;
+                        $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
                     }
                     else
                     {
@@ -376,7 +377,7 @@ class PostController extends Controller
                     $userInfo['avatarUrl'] =  $user->avatarUrl;
                     if(!empty($user->college_id))
                     {
-                        $userInfo['college'] = $user->college_id;
+                        $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
                     }
                     else
                     {
@@ -488,7 +489,7 @@ class PostController extends Controller
                     $userInfo['avatarUrl'] = $user->avatarUrl;
                     if(!empty($user->college_id))
                     {
-                        $userInfo['college'] = $user->college_id;
+                        $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
                     }
                     else
                     {
@@ -622,7 +623,7 @@ class PostController extends Controller
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 if(!empty($post->user->college_id))
                 {
-                    $userInfo['college'] = $post->user->college_id;
+                    $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
                 }
                 else
                 {
@@ -773,7 +774,7 @@ class PostController extends Controller
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 if(!empty($post->user->college_id))
                 {
-                    $userInfo['college'] = $post->user->college_id;
+                    $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
                 }
                 else
                 {
@@ -954,9 +955,9 @@ class PostController extends Controller
                     $userInfo['id'] = $user->id;
                     $userInfo['nickName'] = $user->nickname;
                     $userInfo['avatarUrl'] = $user->avatarUrl;
-                    if(!empty($user->college_id))
+                    if(!empty($post->user->college_id))
                     {
-                        $userInfo['college'] = $user->college->name;
+                        $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
                     }
                     else
                     {

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\College;
 use App\Country;
 use App\Gender;
+use App\Grade;
 use App\Profile;
 use App\Repositories\BaseRepository;
 use App\Repositories\UserRepository;
@@ -290,7 +292,18 @@ class UserController extends Controller
                 $userInfo['realname'] = '';
             }
 
-            $userInfo['college'] = '';
+            if(!$updateUser->college_id)
+            {
+                $userInfo['college'] = '';
+                $userInfo['college_name'] = '';
+            }
+            else
+            {
+                $userInfo['college'] = (int)($updateUser->college_id);
+                $userInfo['college_name'] = College::where('id',(int)($updateUser->college_id))->first()->name;
+            }
+
+
             if($updateUser->major)
             {
                 $userInfo['major'] = $updateUser->major;
@@ -302,10 +315,12 @@ class UserController extends Controller
 
             if($updateUser->grade)
             {
-                $userInfo['grade'] = $updateUser->grade;
+                $userInfo['grade'] = (int)($updateUser->grade);
+                $userInfo['grade_name'] = Grade::where('id',(int)($updateUser->grade))->first()->name;
             }else
             {
                 $userInfo['grade'] = '';
+                $userInfo['grade_name'] = '';
             }
 
             if($updateUser->wechat)
@@ -476,7 +491,17 @@ class UserController extends Controller
                 $userInfo['realname'] = '';
             }
 
-            $userInfo['college'] = '';
+            if(!$updateUser->college_id)
+            {
+                $userInfo['college'] = '';
+                $userInfo['college_name'] = '';
+            }
+            else
+            {
+                $userInfo['college'] = (int)($updateUser->college_id);
+                $userInfo['college_name'] = College::where('id',(int)($updateUser->college_id))->first()->name;
+            }
+
             if($updateUser->major)
             {
                 $userInfo['major'] = $updateUser->major;
@@ -488,10 +513,12 @@ class UserController extends Controller
 
             if($updateUser->grade)
             {
-                $userInfo['grade'] = $updateUser->grade;
+                $userInfo['grade'] = (int)($updateUser->grade);
+                $userInfo['grade_name'] = Grade::where('id',(int)($updateUser->grade))->first()->name;
             }else
             {
                 $userInfo['grade'] = '';
+                $userInfo['grade_name'] = '';
             }
 
             if($updateUser->wechat)
