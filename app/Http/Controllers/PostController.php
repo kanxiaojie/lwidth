@@ -581,7 +581,7 @@ class PostController extends Controller
             if($post)
             {
                 $userInfo = array();
-                $images = array();
+
                 $commentOfUserInfo = array();
 
                 $data['id'] = $post->id;
@@ -629,6 +629,8 @@ class PostController extends Controller
                     $userInfo['college'] = '';
                 }
                 $data['userInfo'] = $userInfo;
+
+                $data['created_at'] = $this->postRepository->getTime($post->created_at);
 
                 if($post->likenum)
                 {
@@ -746,7 +748,6 @@ class PostController extends Controller
                         $data['images'] = explode(',',$post->pictures);
                     }
 
-//                    $data['images'] = $images;
                 }
                 else
                 {
@@ -779,6 +780,8 @@ class PostController extends Controller
                     $userInfo['college'] = '';
                 }
                 $data['userInfo'] = $userInfo;
+
+                $data['created_at'] = $this->postRepository->getTime($post->created_at);
 
                 if($post->likenum)
                 {
