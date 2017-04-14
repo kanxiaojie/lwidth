@@ -1167,7 +1167,7 @@ class PostController extends Controller
             $data = array();
             $datas = array();
 
-            $posts = $this->postRepository->getPostListZero();
+            $posts = $this->postRepository->getLocationLoves();
 
             if(empty($posts))
             {
@@ -1179,10 +1179,11 @@ class PostController extends Controller
                 {
 
                     $data['id'] = $post->id;
-                    $data['iconPath'] = $post->user->avatarUrl;
+//                    $data['iconPath'] = $post->user->avatarUrl;
                     if($post->location)
                     {
                         $location = explode(',',$post->location);
+
                         $data['location']['longitude'] = $location[1];
                         $data['location']['latitude'] = $location[0];
                     }
@@ -1192,8 +1193,19 @@ class PostController extends Controller
                         $data['latitude'] = '';
                     }
 
-                    $data['width'] = 50;
-                    $data['height'] = 70;
+                    if($post->user->gender)
+                    {
+                        if($post->user->gender == 1)
+                        {
+                            $data['gender'] = "男";
+                        }else
+                        {
+                            $data['gender'] = "女";
+                        }
+                    }
+
+//                    $data['width'] = 50;
+//                    $data['height'] = 70;
 
                     $datas[] = $data;
                 }
