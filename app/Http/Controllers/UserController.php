@@ -686,6 +686,7 @@ class UserController extends Controller
         $users = $this->userRepository->getPictures();
 
         $data = [];
+        $pictures = [];
 
         if($users)
         {
@@ -702,7 +703,8 @@ class UserController extends Controller
 
                         foreach ($pictures as $picture)
                         {
-                            $data['pictures'] = $picture;
+                            $pictures[] = $picture;
+                            $data['pictures'] = $pictures;
                         }
                     }else
                     {
@@ -712,7 +714,8 @@ class UserController extends Controller
 
                         foreach ($pictures as $picture)
                         {
-                            $data['pictures'] = $picture;
+                            $pictures[] = $picture;
+                            $data['pictures'] = $pictures;
                         }
                     }
                 }
