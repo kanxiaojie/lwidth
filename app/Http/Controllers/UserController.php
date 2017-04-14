@@ -697,10 +697,23 @@ class UserController extends Controller
                 {
                     if(substr(trim($user->pictures),-1) == ',')
                     {
-                        $data['pictures'] = explode(',',$user->pictures);
+//                        $data['pictures'] = explode(',',$user->pictures);
+                        $pictures = explode(',',$user->pictures);
+
+                        foreach ($pictures as $picture)
+                        {
+                            $data['pictures'] = $picture;
+                        }
                     }else
                     {
-                        $data['pictures'] = explode(',',$user->pictures);
+//                        $data['pictures'] = explode(',',$user->pictures);
+
+                        $pictures = explode(',',$user->pictures);
+
+                        foreach ($pictures as $picture)
+                        {
+                            $data['pictures'] = $picture;
+                        }
                     }
                 }
                 else
