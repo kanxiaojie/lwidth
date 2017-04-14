@@ -175,8 +175,8 @@ class PostController extends Controller
 
                         $data['location']['name'] = $location[0];
                         $data['location']['address'] = $location[1];
-                        $data['location']['latitude'] = $location[2];
-                        $data['location']['longitude'] = $location[3];
+                        $data['location']['longitude'] = $location[2];
+                        $data['location']['latitude'] = $location[3];
 
                     }
                     else
@@ -302,8 +302,8 @@ class PostController extends Controller
 
                         $data['location']['name'] = $location[0];
                         $data['location']['address'] = $location[1];
-                        $data['location']['latitude'] = $location[2];
-                        $data['location']['longitude'] = $location[3];
+                        $data['location']['longitude'] = $location[2];
+                        $data['location']['latitude'] = $location[3];
 
                     }
                     else
@@ -433,8 +433,8 @@ class PostController extends Controller
 
                         $data['location']['name'] = $location[0];
                         $data['location']['address'] = $location[1];
-                        $data['location']['latitude'] = $location[2];
-                        $data['location']['longitude'] = $location[3];
+                        $data['location']['longitude'] = $location[2];
+                        $data['location']['latitude'] = $location[3];
 
                     }
                     else
@@ -545,8 +545,8 @@ class PostController extends Controller
 
                         $data['location']['name'] = $location[0];
                         $data['location']['address'] = $location[1];
-                        $data['location']['latitude'] = $location[2];
-                        $data['location']['longitude'] = $location[3];
+                        $data['location']['longitude'] = $location[2];
+                        $data['location']['latitude'] = $location[3];
                     }
                     else
                     {
@@ -609,8 +609,8 @@ class PostController extends Controller
 
                     $data['location']['name'] = $location[0];
                     $data['location']['address'] = $location[1];
-                    $data['location']['latitude'] = $location[2];
-                    $data['location']['longitude'] = $location[3];
+                    $data['location']['longitude'] = $location[2];
+                    $data['location']['latitude'] = $location[3];
 
                 }
                 else
@@ -761,8 +761,8 @@ class PostController extends Controller
 
                     $data['location']['name'] = $location[0];
                     $data['location']['address'] = $location[1];
-                    $data['location']['latitude'] = $location[2];
-                    $data['location']['longitude'] = $location[3];
+                    $data['location']['longitude'] = $location[2];
+                    $data['location']['latitude'] = $location[3];
                 }
                 else
                 {
