@@ -70,4 +70,48 @@ class BaseRepository
         return $res;
 
     }
+
+    public function calcAge($birthday) {
+        $iage = 0;
+        if (!empty($birthday)) {
+            $year = date('Y',strtotime($birthday));
+            $month = date('m',strtotime($birthday));
+            $day = date('d',strtotime($birthday));
+
+            $now_year = date('Y');
+            $now_month = date('m');
+            $now_day = date('d');
+
+            if ($now_year > $year) {
+                $iage = $now_year - $year - 1;
+                if ($now_month > $month) {
+                    $iage++;
+                } else if ($now_month == $month) {
+                    if ($now_day >= $day) {
+                        $iage++;
+                    }
+                }
+            }
+        }
+        return $iage;
+    }
+
+    public function get_constellation($month, $day)
+    {
+        $signs = array(
+            array('20' => '宝瓶座'), array('19' => '双鱼座'),
+            array('21' => '白羊座'), array('20' => '金牛座'),
+            array('21' => '双子座'), array('22' => '巨蟹座'),
+            array('23' => '狮子座'), array('23' => '处女座'),
+            array('23' => '天秤座'), array('24' => '天蝎座'),
+            array('22' => '射手座'), array('22' => '摩羯座')
+        );
+        $key = (int)$month - 1;
+        list($startSign, $signName) = each($signs[$key]);
+        if ($day < $startSign) {
+            $key = $month - 2 < 0 ? $month = 11 : $month -= 2;
+            list($startSign, $signName) = each($signs[$key]);
+        }
+        return $signName;
+    }
 }
