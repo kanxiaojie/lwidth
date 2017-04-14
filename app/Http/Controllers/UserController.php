@@ -686,7 +686,7 @@ class UserController extends Controller
         $users = $this->userRepository->getPictures();
 
         $data = [];
-        $pictures = [];
+        $datas = [];
 
         if($users)
         {
@@ -698,31 +698,18 @@ class UserController extends Controller
                 {
                     if(substr(trim($user->pictures),-1) == ',')
                     {
-//                        $data['pictures'] = explode(',',$user->pictures);
-                        $pictures = explode(',',$user->pictures);
-
-                        foreach ($pictures as $picture)
-                        {
-                            $pictures[] = $picture;
-                            $data['pictures'] = $pictures;
-                        }
+                        $data['pictures'] = explode(',',$user->pictures);
                     }else
                     {
-//                        $data['pictures'] = explode(',',$user->pictures);
-
-                        $pictures = explode(',',$user->pictures);
-
-                        foreach ($pictures as $picture)
-                        {
-                            $pictures[] = $picture;
-                            $data['pictures'] = $pictures;
-                        }
+                        $data['pictures'] = explode(',',$user->pictures);
                     }
                 }
                 else
                 {
                     $data['pictures'] = [];
+
                 }
+                $datas[] = $data;
             }
 
             return response()->json(['status' => 200,'data' => $data]);
