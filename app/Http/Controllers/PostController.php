@@ -1154,10 +1154,6 @@ class PostController extends Controller
 
     public function getLocationLoves(Request $request)
     {
-
-        $posts = $this->postRepository->getLocationLoves();
-
-        dd($posts);
         $wesecret = $request->get('wesecret');
 
         if (!empty($wesecret))
