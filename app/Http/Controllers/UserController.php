@@ -704,11 +704,7 @@ class UserController extends Controller
                         $data['pictures'] = explode(',',$user->pictures);
                     }
                 }
-                else
-                {
-                    $data['pictures'] = [];
 
-                }
                 $datas[] = $data;
             }
 
