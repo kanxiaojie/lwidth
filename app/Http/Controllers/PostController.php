@@ -571,12 +571,14 @@ class PostController extends Controller
             $openid = $this->baseRepository->decryptCode($wesecret);
             $user = $this->userRepository->getUserByOpenId($openid);
         }
+        $dataComment = [];
 
         if(empty($wesecret))
         {
             $post = $this->postRepository->getPost($id);
             $data = array();
             $datas =[];
+
             $postComments = array();
             $post_Comments = $this->commentRepository->getPostComments($post->id);
             if($post)
@@ -708,8 +710,9 @@ class PostController extends Controller
 
 
                         //在评论循环操作$data1,2,3,4,5,6,7
-                        $datas['comments'] = $postComments;
+                        $dataComment[] = $postComments;
                     }
+                    $datas['comments'] = $dataComment;
                 }
                 else
                 {
@@ -888,8 +891,9 @@ class PostController extends Controller
                         }
 
                         //在评论循环操作$data1,2,3,4,5,6,7
-                        $datas['comments'] = $postComments;
+                        $dataComment[] = $postComments;
                     }
+                    $datas['comments'] = $dataComment;
                 }
                 else
                 {
@@ -1146,6 +1150,15 @@ class PostController extends Controller
         {
             return response()->json(['status' => 200,'message' => 'User does not exist']);
         }
+    }
+
+    public function getLocationLoves(Request $request)
+    {
+        $inputs = $request->all();
+        $openid = Crypt::decrypt($inputs['wesecret']);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+
     }
 
 
