@@ -35,7 +35,7 @@ class PostRepository
 
     public function getLocationLoves()
     {
-        $posts = $this->post->whereNot('location','')->get();
+        $posts = $this->post->whereNotNull('location')->get();
 
         return $posts;
     }
