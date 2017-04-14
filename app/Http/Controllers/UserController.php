@@ -712,10 +712,10 @@ class UserController extends Controller
                 $datas[] = $data;
             }
 
-            return response()->json(['status' => 200,'data' => $data]);
+            return response()->json(['status' => 200,'data' => $datas]);
         }else
         {
-            return response()->json(['status' => 200,'data' => $data]);
+            return response()->json(['status' => 200,'data' => $datas]);
         }
 
     }
