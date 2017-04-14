@@ -7,6 +7,7 @@ use App\User;
 class UserRepository
 {
     protected $user;
+    protected $baseRepository;
     /**
      * Create a new UserRepository instance.
      *
@@ -15,10 +16,12 @@ class UserRepository
      * @return void
      */
     public function __construct(
-        User $user
+        User $user,
+        BaseRepository $baseRepository
     )
     {
         $this->user = $user;
+        $this->baseRepository = $baseRepository;
     }
 
     public function getUserByOpenId($openId)
@@ -172,7 +175,11 @@ class UserRepository
         if (isset($inputs['birthday']) && (!empty($inputs['birthday'])))
         {
             $profile->birthday = $inputs['birthday'];
-            //推算年纪,生肖
+
+            $profile->age = $this->baseRepository->calcAge($inputs['birthday']);
+            $m = date('m',strtotime($inputs['birthday']));
+            $d = date('d',strtotime($inputs['birthday']));
+            $profile->constellation = $this->baseRepository->get_constellation($m,$d);
         }
 
         if(isset($inputs['height']) && (!empty($inputs['height'])))
