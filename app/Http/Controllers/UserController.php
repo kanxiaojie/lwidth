@@ -692,10 +692,10 @@ class UserController extends Controller
         {
             foreach ($users as $user)
             {
-                $data['id'] = $user->id;
 
                 if(!empty($user->pictures))
                 {
+                    $data['id'] = $user->id;
                     if(substr(trim($user->pictures),-1) == ',')
                     {
                         $data['pictures'] = explode(',',$user->pictures);
@@ -703,9 +703,11 @@ class UserController extends Controller
                     {
                         $data['pictures'] = explode(',',$user->pictures);
                     }
+
+                    $datas[] = $data;
                 }
 
-                $datas[] = $data;
+
             }
 
             return response()->json(['status' => 200,'data' => $datas]);
