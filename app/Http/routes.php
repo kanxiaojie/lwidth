@@ -66,6 +66,9 @@ $app->get('/api/pictures','UserController@getPictures');
 //获取最热门的表白（排列顺序是  评论数*2 + 点赞数）
 $app->get('/api/hotLoves','PostController@getHotPosts');
 
+//通过地图查看附近的表白
+$app->get('/api/locationLoves','PostController@getLocationLoves');
+
 //提交/或者更新 个人详细信息
 $app->post('/api/users','UserController@updateUser');
 $app->post('/api/users/pictures','UserController@uploadUserImage');

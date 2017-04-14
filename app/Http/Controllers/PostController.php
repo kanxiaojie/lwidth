@@ -1154,11 +1154,97 @@ class PostController extends Controller
 
     public function getLocationLoves(Request $request)
     {
-        $inputs = $request->all();
-        $openid = Crypt::decrypt($inputs['wesecret']);
-        $user = $this->userRepository->getUserByOpenId($openid);
 
+        $posts = $this->postRepository->getLocationLoves();
 
+        dd($posts);
+        $wesecret = $request->get('wesecret');
+
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        }
+
+        if(empty($wesecret))
+        {
+            $data = array();
+            $datas = array();
+
+            $posts = $this->postRepository->getPostListZero();
+
+            if(empty($posts))
+            {
+                $datas = [];
+            }
+            else
+            {
+                foreach ($posts as $post)
+                {
+
+                    $data['id'] = $post->id;
+                    $data['iconPath'] = $post->user->avatarUrl;
+                    if($post->location)
+                    {
+                        $location = explode(',',$post->location);
+                        $data['longitude'] = $location[2];
+                        $data['latitude'] = $location[3];
+                    }
+                    else
+                    {
+                        $data['longitude'] = '';
+                        $data['latitude'] = '';
+                    }
+
+                    $data['width'] = 50;
+                    $data['height'] = 70;
+
+                    $datas[] = $data;
+                }
+
+            }
+
+            return response()->json(['status' => 200,'data' => $datas]);
+        }elseif ((!empty($wesecret)) && ($user))
+        {
+            $data = array();
+            $datas = array();
+
+            $posts = $this->postRepository->getLocationLoves();
+
+            if(empty($posts))
+            {
+                $datas = [];
+            }
+            else
+            {
+                foreach ($posts as $post)
+                {
+
+                    $data['id'] = $post->id;
+                    $data['iconPath'] = $post->user->avatarUrl;
+                    if($post->location)
+                    {
+                        $location = explode(',',$post->location);
+                        $data['longitude'] = $location[2];
+                        $data['latitude'] = $location[3];
+                    }
+                    else
+                    {
+                        $data['longitude'] = '';
+                        $data['latitude'] = '';
+                    }
+
+                    $data['width'] = 50;
+                    $data['height'] = 70;
+
+                    $datas[] = $data;
+                }
+
+            }
+
+            return response()->json(['status' => 200,'data' => $datas]);
+        }
     }
 
 
