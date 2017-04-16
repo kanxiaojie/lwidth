@@ -957,9 +957,9 @@ class PostController extends Controller
                         $data['images'] = [];
                     }
 
-                    $userInfo['id'] = $user->id;
-                    $userInfo['nickName'] = $user->nickname;
-                    $userInfo['avatarUrl'] = $user->avatarUrl;
+                    $userInfo['id'] = $post->user_id;
+                    $userInfo['nickName'] = $post->user->nickname;
+                    $userInfo['avatarUrl'] = $post->user->avatarUrl;
                     if(!empty($post->user->college_id))
                     {
                         $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
@@ -988,7 +988,7 @@ class PostController extends Controller
                         $data['comment_nums'] = 0;
                     }
 
-                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$post->user_id)->first();
                     if($if_my_comment)
                     {
                         $data['if_my_comment'] = 1;
@@ -998,7 +998,7 @@ class PostController extends Controller
                         $data['if_my_comment'] = 0;
                     }
 
-                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$post->user_id)->first();
                     if($if_my_praise)
                     {
                         $data['if_my_praise'] = 1;
@@ -1045,7 +1045,7 @@ class PostController extends Controller
                             }
 
 
-                            $if_my_comment = CommentToComment::where('comment_id',$postComment->id)->where('user_id',$user->id)->first();
+                           $if_my_comment = CommentToComment::where('comment_id',$postComment->id)->where('user_id',$post->user_id)->first();
                             if($if_my_comment)
                             {
                                 $postComments['if_my_comment'] = 1;
@@ -1055,7 +1055,7 @@ class PostController extends Controller
                                 $postComments['if_my_comment'] = 0;
                             }
 
-                            $if_my_praise = PraiseToComment::where('comment_id',$postComment->id)->where('user_id',$user->id)->first();
+                            $if_my_praise = PraiseToComment::where('comment_id',$postComment->id)->where('user_id',$post->user_id)->first();
                             if($if_my_praise)
                             {
                                 $postComments['if_my_praise'] = 1;
