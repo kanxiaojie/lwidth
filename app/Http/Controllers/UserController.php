@@ -56,12 +56,12 @@ class UserController extends Controller
         $inputs = $request->all();
 
         $openid = Crypt::decrypt($inputs['wesecret']);
+        $input = $inputs['userInfo'];
 
         $user = $this->userRepository->getUserByOpenId($openid);
         if($user)
         {
-
-            $this->userRepository->updateUser($inputs,$user);
+            $this->userRepository->updateUser($input,$user);
 
             return response()->json(['status' => 200]);
 
