@@ -1167,7 +1167,7 @@ class PostController extends Controller
             $data = array();
             $datas = array();
 
-            $posts = $this->postRepository->getLocationLoves();
+            $posts = $this->postRepository->getPostListZero();
 
             if(empty($posts))
             {
