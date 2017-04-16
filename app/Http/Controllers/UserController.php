@@ -316,9 +316,41 @@ class UserController extends Controller
                 $userInfo['gender'] = "女";
             }
 
+            if(!empty($updateUser->pictures))
+            {
+                if(substr(trim($updateUser->pictures),-1) == ',')
+                {
+                    $userInfo['pictures'] = explode(',',$updateUser->pictures);
+                }else
+                {
+                    $userInfo['pictures'] = explode(',',$updateUser->pictures);
+                }
 
-            $userInfo['province'] = "福建";
-            $userInfo['city'] = "厦门";
+            }
+            else
+            {
+                $userInfo['pictures'] = [];
+            }
+
+            if($updateUser->province_id)
+            {
+                $userInfo['province'] = $updateUser->province_id;
+            }
+            else
+            {
+                $userInfo['province'] = "";
+            }
+
+            if($updateUser->city_id)
+            {
+                $userInfo['city'] = $updateUser->city_id;
+            }
+            else
+            {
+                $userInfo['city'] = "";
+            }
+
+
             if($updateUser->country_id)
             {
                 $userInfo['country'] = $updateUser->country_id;
