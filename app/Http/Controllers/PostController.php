@@ -927,6 +927,7 @@ class PostController extends Controller
             if(isset($res['postIds']) && !empty($res['postIds']))
             {
                 $datas =[];
+                dd($res['postIds']);
                 foreach ($res['postIds'] as $postId)
                 {
                     $post = $this->postRepository->getPost($postId);
