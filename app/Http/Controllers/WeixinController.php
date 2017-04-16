@@ -116,45 +116,7 @@ class WeixinController extends Controller
             $data['status'] = 200;
             $data['user_id'] = $res->id;
             $data['wesecret'] = $token;
-//            $data['nickName'] = $res->nickname;
-//            $data['avatarUrl'] = $res->avatarUrl;
-//            if(!empty($res->gender))
-//            {
-//                $data['gender'] = Gender::where('id',$res->gender)->first()->name;
-//            }
-//            else
-//            {
-//                $data['gender'] = '未知';
-//            }
-//
-//            if(!empty($res->province_id))
-//            {
-////                $data['province'] = $res->country->province->name;
-//                $data['province'] = "福建";
-//            }
-//            else
-//            {
-//                $data['province'] = '';
-//            }
-//            if(!empty($res->city_id))
-//            {
-////                $data['city'] = $res->country->city->name;
-//                $data['city'] = "厦门";
-//            }else
-//            {
-//                $data['city'] = '';
-//            }
-//            if(!empty($res->country_id))
-//            {
-////                $data['country'] = $res->country->name;
-//                $data['country'] = "中国";
-//            }else
-//            {
-//                $data['country'] = '';
-//            }
-//
-//            $userInfo['wesecret'] = $token;
-//            $userInfo['userInfo'] = $data;
+
 
             return $token;
 

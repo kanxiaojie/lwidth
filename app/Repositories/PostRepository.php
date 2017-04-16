@@ -184,6 +184,35 @@ class PostRepository
         }
     }
 
+    public function getNoWesecretHotPost()
+    {
+        $res = [];
+        $posts = $this->getPostListZero();
+
+        $hotPost = [];
+
+        if(!empty($posts))
+        {
+            foreach ($posts as $id=>$post)
+            {
+                $hots = $post->commentnum * 2 + $post->likenum;
+
+                $hotPost[$id] = $hots;
+            }
+
+            $postId = array_search(max($hotPost),$hotPost);
+
+            $res['status'] = 200;
+            $res['postId'] = $postId;
+        }
+        else
+        {
+            $res['status'] = 201;
+        }
+
+        return $res;
+    }
+
     public function getHotPost()
     {
         $res = [];
