@@ -76,4 +76,7 @@ $app->post('/api/users/pictures','UserController@uploadUserImage');
 $app->get('/api/users/{id}','UserController@getUserInfo');
 $app->get('/api/user','UserController@getUserInfoByOpenId');
 
+//删除个人照片
+$app->post('/api/delete/user/picture','UserController@deletePicture');
+
 

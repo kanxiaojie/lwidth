@@ -578,7 +578,7 @@ class UserController extends Controller
         }
         else
         {
-            return response()->json(['status' => 200,'message' => 'User does not exist']);
+            return response()->json(['status' => 201,'message' => 'User does not exist']);
         }
     }
 
@@ -617,5 +617,46 @@ class UserController extends Controller
             return response()->json(['status' => 200,'data' => $datas]);
         }
 
+    }
+
+    public function deletePicture(Request $request)
+    {
+        $inputs = $request->all();
+
+        $openid = Crypt::decrypt($inputs['wesecret']);
+
+        $user = $this->userRepository->getUserByOpenId($openid);
+        if ($user)
+        {
+            $user = $this->userRepository->getUserById($user->id);
+
+            if(!empty($user->pictures))
+            {
+                $pictures = explode(',',$user->pictures);
+                if(in_array($inputs['picture'],$pictures))
+                {
+                    $key = array_search($inputs['picture'],$pictures);
+
+                    array_splice($pictures,$key,1);
+
+                    $user->pictures = implode(',',$pictures);
+                    $user->save();
+
+                    return response()->json(['status' => 200]);
+                }else
+                {
+                    return response()->json(['status' => 201,'message' => $inputs['picture'].' does not exist in user pictures']);
+                }
+            }else
+            {
+                return response()->json(['status' => 201,'message' => "User's pictures do not exist"]);
+
+            }
+
+        }
+        else
+        {
+            return response()->json(['status' => 201,'message' => 'User does not exist']);
+        }
     }
 }
