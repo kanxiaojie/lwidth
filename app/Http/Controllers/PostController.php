@@ -1177,37 +1177,22 @@ class PostController extends Controller
             {
                 foreach ($posts as $post)
                 {
-
-                    $data['id'] = $post->id;
-//                    $data['iconPath'] = $post->user->avatarUrl;
                     if($post->location)
                     {
+                        $data['id'] = $post->id;
                         $location = explode(',',$post->location);
-
-                        $data['location']['longitude'] = $location[1];
-                        $data['location']['latitude'] = $location[0];
-                    }
-                    else
-                    {
-                        $data['longitude'] = '';
-                        $data['latitude'] = '';
-                    }
-
-                    if($post->user->gender)
-                    {
-                        if($post->user->gender == 1)
-                        {
-                            $data['gender'] = "男";
-                        }else
-                        {
-                            $data['gender'] = "女";
+                        $data['latitude'] = floatval($location[0]);
+                        $data['longitude'] = floatval($location[1]);
+                        if($post->user->gender == 1) {
+                            $data['iconPath'] = "/pages/images/map_female.png";
+                        } else {
+                            $data['iconPath'] = "/pages/images/map_male.png";
                         }
+                        // $data['title'] = $post->user->nickname;
+                        $data['width'] = 70;
+                        $data['height'] = 70;                        
+                        $datas[] = $data;
                     }
-
-//                    $data['width'] = 50;
-//                    $data['height'] = 70;
-
-                    $datas[] = $data;
                 }
 
             }
@@ -1228,37 +1213,23 @@ class PostController extends Controller
             {
                 foreach ($posts as $post)
                 {
-
-                    $data['id'] = $post->id;
-//                    $data['iconPath'] = $post->user->avatarUrl;
                     if($post->location)
                     {
+                        $data['id'] = $post->id;
                         $location = explode(',',$post->location);
-
-                        $data['location']['longitude'] = $location[1];
-                        $data['location']['latitude'] = $location[0];
-                    }
-                    else
-                    {
-                        $data['longitude'] = '';
-                        $data['latitude'] = '';
-                    }
-
-                    if($post->user->gender)
-                    {
-                        if($post->user->gender == 1)
-                        {
-                            $data['gender'] = "男";
-                        }else
-                        {
-                            $data['gender'] = "女";
+                        $data['latitude'] = floatval($location[0]);
+                        $data['longitude'] = floatval($location[1]);
+                        if($post->user->gender == 1) {
+                            $data['iconPath'] = "/pages/images/map_female.png";
+                        } else {
+                            $data['iconPath'] = "/pages/images/map_male.png";
                         }
+                        // $data['title'] = $post->user->nickname;
+                        $data['width'] = 70;
+                        $data['height'] = 70;                        
+                        $datas[] = $data;
                     }
-
-//                    $data['width'] = 50;
-//                    $data['height'] = 70;
-
-                    $datas[] = $data;
+                    
                 }
 
             }
