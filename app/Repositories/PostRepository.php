@@ -193,16 +193,16 @@ class PostRepository
 
         if(!empty($posts))
         {
-            foreach ($posts as $id=>$post)
+            foreach ($posts as $post)
             {
                 $hots = $post->commentnum * 2 + $post->likenum;
 
-                $hotPost[$id] = $hots;
+                $hotPost[$post->id] = $hots;
             }
 
-            $postIds = rsort($hotPost);
+            arsort($hotPost);
             $res['status'] = 200;
-            $res['postIds'] = $postIds;
+            $res['postIds'] = $hotPost;
         }
         else
         {
@@ -221,17 +221,16 @@ class PostRepository
 
         if(!empty($posts))
         {
-            foreach ($posts as $id=>$post)
+            foreach ($posts as $post)
             {
                 $hots = $post->commentnum * 2 + $post->likenum;
 
-                $hotPost[$id] = $hots;
+                $hotPost[$post->id] = $hots;
             }
 
-//            $postId = array_search(max($hotPost),$hotPost);
-            $postIds = rsort($hotPost);
+            arsort($hotPost);
             $res['status'] = 200;
-            $res['postIds'] = $postIds;
+            $res['postIds'] = $hotPost;
         }
         else
         {
