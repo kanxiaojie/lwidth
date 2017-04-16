@@ -229,10 +229,10 @@ class PostRepository
                 $hotPost[$id] = $hots;
             }
 
-            $postId = array_search(max($hotPost),$hotPost);
-
+//            $postId = array_search(max($hotPost),$hotPost);
+            $postIds = rsort($hotPost);
             $res['status'] = 200;
-            $res['postId'] = $postId;
+            $res['postIds'] = $postIds;
         }
         else
         {
