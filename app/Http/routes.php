@@ -79,4 +79,7 @@ $app->get('/api/user','UserController@getUserInfoByOpenId');
 //删除个人照片
 $app->post('/api/delete/user/picture','UserController@deletePicture');
 
+//删除表白
+$app->post('/api/delete/love','PostController@deletePost');
+
 

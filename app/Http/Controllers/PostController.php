@@ -1403,5 +1403,41 @@ class PostController extends Controller
         }
     }
 
+    public function deletePost(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $post_id = $request->get('love_id');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
+        }else{
+            $post = $this->postRepository->getPost($post_id);
+
+            if($post)
+            {
+               if($post->user_id == $user->id)
+               {
+                   $post->delete();
+                   return response()->json(['status' => 200]);
+
+               }else
+               {
+                   return response()->json(['status' => 200,'message' => 'You have no authorize to delete this love!']);
+
+               }
+            }
+            else
+            {
+                return response()->json(['status' => 200,'message' => 'Love Does Not Exist!']);
+
+            }
+        }
+
+    }
+
 
 }
