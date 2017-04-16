@@ -1015,7 +1015,7 @@ class PostController extends Controller
                         if (!($post_Comments->isEmpty()))
                         {
                             foreach ($post_Comments as $postComment)
-                            {dd("sdf");
+                            {
                                 $postComments['id'] = $postComment->id;
                                 $postComments['content'] = $postComment->content;
 
