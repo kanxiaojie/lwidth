@@ -307,13 +307,16 @@ class UserController extends Controller
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
             if (!$updateUser->gender)
             {
-                $userInfo['gender'] = "未知";
+                $userInfo['gender'] = 0;
+                $userInfo['gender_name'] = "未知";
             }elseif($updateUser->gender == 1)
             {
-                $userInfo['gender'] = "男";
+                $userInfo['gender'] = 1;
+                $userInfo['gender_name'] = "男";
             }else
             {
-                $userInfo['gender'] = "女";
+                $userInfo['gender'] = 2;
+                $userInfo['gender_name'] = "女";
             }
 
             if(!empty($updateUser->pictures))
