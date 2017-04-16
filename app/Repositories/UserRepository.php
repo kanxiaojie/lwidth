@@ -79,11 +79,19 @@ class UserRepository
             $user->language_id = 1;
         }
 
-        if(isset($inputs['city']))
+        if(isset($inputs['city']) && !empty($inputs['city']))
         {
-            $user->city_id = 1;
-            $user->province_id = 1;
-            $user->country_id = 1;
+            $user->city_id = $inputs['city'];
+        }
+
+        if(isset($inputs['province']) && !empty($inputs['province']))
+        {
+            $user->province_id = $inputs['province'];
+        }
+
+        if(isset($inputs['country']) && !empty($inputs['country']))
+        {
+            $user->country_id = $inputs['country'];
         }
 
         if(isset($inputs['avatarUrl']))
