@@ -298,7 +298,13 @@ class UserController extends Controller
                 $userInfo['love_selecting'] = '';
             }
 
-            $userInfo['age'] = $profile->age;
+            if($profile->age)
+            {
+                $userInfo['age'] = $profile->age;
+            }else
+            {
+                $userInfo['age'] = '';
+            }
             $userInfo['constellation'] = $profile->constellation;
 
             return response()->json(['status'=>200,'data'=>$userInfo]);
@@ -534,7 +540,14 @@ class UserController extends Controller
                 $userInfo['love_selecting'] = '';
             }
 
-            $userInfo['age'] = $profile->age;
+            if($profile->age)
+            {
+                $userInfo['age'] = $profile->age;
+            }else
+            {
+                $userInfo['age'] = '';
+            }
+
             $userInfo['constellation'] = $profile->constellation;
 
             return response()->json(['status'=>200,'data'=>$userInfo]);
