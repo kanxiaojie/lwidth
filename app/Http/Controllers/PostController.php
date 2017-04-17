@@ -454,7 +454,8 @@ class PostController extends Controller
         {
             $data = array();
             $datas = [];
-            $posts = $this->postRepository->getPostLists($inputs,$user);
+//            $posts = $this->postRepository->getPostLists($inputs,$user);
+            $posts = $this->postRepository->getAllPosts();
 
             if(empty($posts))
             {

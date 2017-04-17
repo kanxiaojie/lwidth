@@ -47,6 +47,13 @@ class PostRepository
         return $posts;
     }
 
+    public function getAllPosts($orderby = 'created_at', $direction = 'desc')
+    {
+        $posts = Post::all();
+
+        return $posts;
+    }
+
     public function getPostLists($inputs,$user,$orderby = 'created_at', $direction = 'desc')
     {
         if((!$user->gender) && (!$user->college_id))
