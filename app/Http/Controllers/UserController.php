@@ -86,8 +86,8 @@ class UserController extends Controller
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
             if (!$updateUser->gender)
             {
-                $userInfo['gender'] = 0;
-                $userInfo['gender_name'] = "未知";
+                $userInfo['gender'] = "";
+                $userInfo['gender_name'] = "";
             }elseif($updateUser->gender == 1)
             {
                 $userInfo['gender'] = 1;
@@ -324,8 +324,8 @@ class UserController extends Controller
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
             if (!$updateUser->gender)
             {
-                $userInfo['gender'] = 0;
-                $userInfo['gender_name'] = "未知";
+                $userInfo['gender'] = "";
+                $userInfo['gender_name'] = "";
             }elseif($updateUser->gender == 1)
             {
                 $userInfo['gender'] = 1;
