@@ -39,6 +39,7 @@ class PraiseRepository
             $praise->user_id = $inputs['user_id'];
             $praise->post_id = $post_id;
             $praise->like = 1;
+            $praise->save();
 
             $code['code'] = 200;
 
