@@ -69,6 +69,8 @@ class PraiseRepository
                 $post->likenum -= 1;
             }
 
+            $post->save();
+
             $res['status'] = 200;
         }
         else
