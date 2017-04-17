@@ -33,9 +33,9 @@ class PostRepository
         return $posts;
     }
 
-    public function getLocationLoves()
+    public function getLocationLoves( $orderby = 'created_at', $direction = 'desc')
     {
-        $posts = $this->post->whereNotNull('location')->get();
+        $posts = $this->post->whereNotNull('location')->orderBy($orderby,$direction)->get();
 
         return $posts;
     }
@@ -49,7 +49,7 @@ class PostRepository
 
     public function getAllPosts($orderby = 'created_at', $direction = 'desc')
     {
-        $posts = Post::all();
+        $posts = Post::orderBy($orderby,$direction)->get();
 
         return $posts;
     }
