@@ -241,12 +241,12 @@ class PostController extends Controller
                         $data['images'] = [];
                     }
 
-                    $userInfo['id'] = $user->id;
-                    $userInfo['nickName'] = $user->nickname;
-                    $userInfo['avatarUrl'] = $user->avatarUrl;
-                    if(!empty($user->college_id))
+                    $userInfo['id'] = $post->user_id;
+                    $userInfo['nickName'] = $post->user->nickname;
+                    $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                    if(!empty($post->user->college_id))
                     {
-                        $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
+                        $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
                     }
                     else
                     {
