@@ -151,6 +151,11 @@ class UserRepository
             $user->wechat = $inputs['wechat'];
         }
 
+        if(isset($inputs['gender']) && (!empty($inputs['gender'])))
+        {
+            $user->gender = $inputs['gender'];
+        }
+
         if(isset($inputs['qq']) && (!empty($inputs['qq'])))
         {
             $user->QQ = $inputs['qq'];
