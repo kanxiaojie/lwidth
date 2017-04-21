@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\PostConsole::class
     ];
 
     /**
@@ -24,6 +24,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        $schedule->command('post')->dailyAt('3:15');
+        $schedule->command('post2')->dailyAt('6:15');
+        $schedule->command('post2')->dailyAt('9:15');
+        $schedule->command('post2')->dailyAt('12:15');
+        $schedule->command('post2')->dailyAt('15:15');
+        $schedule->command('post2')->dailyAt('18:15');
+        $schedule->command('post2')->dailyAt('21:15');
+        $schedule->command('post2')->dailyAt('23:55');
+
     }
 }
