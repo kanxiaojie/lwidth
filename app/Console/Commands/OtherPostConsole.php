@@ -61,15 +61,15 @@ class OtherPostConsole extends Command
                     }elseif ($diff == 3)
                     {
                         $post->commentnum += rand(100,200);
-                        $post->commentnum += rand(10,20);
+                        $post->likenum += rand(10,20);
                     }elseif ($diff == 4)
                     {
                         $post->commentnum += rand(1,50);
-                        $post->commentnum += rand(5,10);
+                        $post->likenum += rand(5,10);
                     }elseif ($diff > 5)
                     {
                         $post->commentnum += rand(1,20);
-                        $post->commentnum += rand(1,5);
+                        $post->likenum += rand(1,5);
                     }
 
                     $post->save();
