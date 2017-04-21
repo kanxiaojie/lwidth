@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\PostConsole::class
+        \App\Console\Commands\PostConsole::class,
+        \App\Console\Commands\OtherPostConsole::class
     ];
 
     /**
