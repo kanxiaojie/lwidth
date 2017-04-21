@@ -122,6 +122,27 @@ class PostRepository
         return $Post;
     }
 
+    public function updatePostPicture($id, $picturePath = null)
+    {
+        $post = $this->post->where('id',$id)->firstOrFail();
+
+        if ($picturePath)
+        {
+            if($post->pictures)
+            {
+                $post->pictures .= ','.$picturePath;
+            }
+            else
+            {
+                $post->pictures = $picturePath;
+            }
+        }
+
+        $post->save();
+
+        return $post;
+    }
+
     public function save($post,$inputs,$picturePath = null)
     {
         if (isset($inputs['user_id']) && !empty($inputs['user_id']))

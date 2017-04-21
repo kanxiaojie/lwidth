@@ -1335,5 +1335,31 @@ class PostController extends Controller
 
     }
 
+    public function virtualPublishPost(Request $request)
+    {
+        $inputs = $request->all();
+
+        $post = $this->postRepository->savePost($inputs);
+
+        $res = $this->baseRepository->uploadToQiniu($inputs);
+
+        if($res['status'] == 201)
+        {
+            return response()->json(['status' => 201,'message' => 'pictures upload failed']);
+        }else
+        {
+            $post = $this->postRepository->updatePostPicture($post->id,$res['picturePath']);
+
+            if($post)
+            {
+                return response()->json(['status' => 200]);
+            }
+            else
+            {
+                return response()->json(['status' => 201,'message' => 'upload failed']);
+            }
+        }
+    }
+
 
 }

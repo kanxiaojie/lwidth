@@ -32,6 +32,8 @@ $app->post('/api/register','WeixinController@firstLogin');
 //发表白接口
 $app->post('/api/loves','PostController@publishPost');
 $app->post('/api/loves/images','PostController@uploadPostImages');
+//虚拟用户发布帖子
+$app->post('/api/virtual/loves','PostController@virtualPublishPost');
 
 //所有帖子
 $app->get('/api/posts','PostController@index');
