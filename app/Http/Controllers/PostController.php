@@ -1341,6 +1341,15 @@ class PostController extends Controller
 
         $post = $this->postRepository->savePost($inputs);
 
+        return response()->json(['status' => 200,'love_id'=>$post->id]);
+
+
+    }
+
+    public function virtualUploadPostImages(Request $request)
+    {
+        $inputs = $request->all();
+
         $res = $this->baseRepository->uploadToQiniu($inputs);
 
         if($res['status'] == 201)
@@ -1348,7 +1357,7 @@ class PostController extends Controller
             return response()->json(['status' => 201,'message' => 'pictures upload failed']);
         }else
         {
-            $post = $this->postRepository->updatePostPicture($post->id,$res['picturePath']);
+            $post = $this->postRepository->updatePostPicture($inputs['post_id'],$res['picturePath']);
 
             if($post)
             {
