@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Post;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
