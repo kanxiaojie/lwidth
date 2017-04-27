@@ -85,4 +85,7 @@ $app->post('/api/delete/user/picture','UserController@deletePicture');
 //删除表白
 $app->post('/api/delete/love','PostController@deletePost');
 
+$app->get('/api/colleges','ExampleController@getColleges');
+$app->get('/api/grades','ExampleController@getGrades');
+
 
