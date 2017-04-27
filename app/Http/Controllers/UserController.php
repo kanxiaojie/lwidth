@@ -606,21 +606,22 @@ class UserController extends Controller
         {
             foreach ($users as $user)
             {
-
-                if(!empty($user->pictures))
+                if($user->available)
                 {
-                    $data['id'] = $user->id;
-                    if(substr(trim($user->pictures),-1) == ',')
+                    if(!empty($user->pictures))
                     {
-                        $data['pictures'] = explode(',',$user->pictures);
-                    }else
-                    {
-                        $data['pictures'] = explode(',',$user->pictures);
+                        $data['id'] = $user->id;
+                        if(substr(trim($user->pictures),-1) == ',')
+                        {
+                            $data['pictures'] = explode(',',$user->pictures);
+                        }else
+                        {
+                            $data['pictures'] = explode(',',$user->pictures);
+                        }
+
+                        $datas[] = $data;
                     }
-
-                    $datas[] = $data;
                 }
-
 
             }
 
