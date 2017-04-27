@@ -223,95 +223,99 @@ class PostController extends Controller
                 {
                     $userInfo = array();
 
-                    $data['id'] = $post->id;
-                    $data['content'] = $post->content;
-                    if(!empty($post->pictures))
+                    if($post->user->available)
                     {
-                        if(substr(trim($post->pictures),-1) == ',')
+                        $data['id'] = $post->id;
+                        $data['content'] = $post->content;
+                        if(!empty($post->pictures))
                         {
-                            $data['images'] = explode(',',$post->pictures);
-                        }else
+                            if(substr(trim($post->pictures),-1) == ',')
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }else
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }
+
+                        }
+                        else
                         {
-                            $data['images'] = explode(',',$post->pictures);
+                            $data['images'] = [];
                         }
 
-                    }
-                    else
-                    {
-                        $data['images'] = [];
+                        $userInfo['id'] = $post->user_id;
+                        $userInfo['nickName'] = $post->user->nickname;
+                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        if(!empty($post->user->college_id))
+                        {
+                            $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
+                        }
+                        else
+                        {
+                            $userInfo['college'] = '';
+                        }
+                        $data['userInfo'] = $userInfo;
+
+                        $diff_time = $this->postRepository->getTime($post->created_at);
+
+                        $data['created_at'] = $diff_time;
+
+                        if($post->likenum)
+                        {
+                            $data['praise_nums'] = $post->likenum;
+                        }
+                        else
+                        {
+                            $data['praise_nums'] = 0;
+                        }
+
+                        if($post->commentnum)
+                        {
+                            $data['comment_nums'] = $post->commentnum;
+                        }
+                        else
+                        {
+                            $data['comment_nums'] = 0;
+                        }
+
+                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_comment)
+                        {
+                            $data['if_my_comment'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_comment'] = 0;
+                        }
+
+                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_praise)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_praise'] = 0;
+                        }
+
+                        if($post->location)
+                        {
+                            $location = explode(',',$post->location);
+
+                            $data['location']['name'] = $location[2];
+                            $data['location']['address'] = $location[3];
+                            $data['location']['longitude'] = $location[1];
+                            $data['location']['latitude'] = $location[0];
+
+                        }
+                        else
+                        {
+                            $data['location'] = '';
+                        }
+
+                        $datas[] = $data;
                     }
 
-                    $userInfo['id'] = $post->user_id;
-                    $userInfo['nickName'] = $post->user->nickname;
-                    $userInfo['avatarUrl'] = $post->user->avatarUrl;
-                    if(!empty($post->user->college_id))
-                    {
-                        $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
-                    }
-                    else
-                    {
-                        $userInfo['college'] = '';
-                    }
-                    $data['userInfo'] = $userInfo;
-
-                    $diff_time = $this->postRepository->getTime($post->created_at);
-
-                    $data['created_at'] = $diff_time;
-
-                    if($post->likenum)
-                    {
-                        $data['praise_nums'] = $post->likenum;
-                    }
-                    else
-                    {
-                        $data['praise_nums'] = 0;
-                    }
-
-                    if($post->commentnum)
-                    {
-                        $data['comment_nums'] = $post->commentnum;
-                    }
-                    else
-                    {
-                        $data['comment_nums'] = 0;
-                    }
-
-                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_comment)
-                    {
-                        $data['if_my_comment'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_comment'] = 0;
-                    }
-
-                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_praise)
-                    {
-                        $data['if_my_praise'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_praise'] = 0;
-                    }
-
-                    if($post->location)
-                    {
-                        $location = explode(',',$post->location);
-
-                        $data['location']['name'] = $location[2];
-                        $data['location']['address'] = $location[3];
-                        $data['location']['longitude'] = $location[1];
-                        $data['location']['latitude'] = $location[0];
-
-                    }
-                    else
-                    {
-                        $data['location'] = '';
-                    }
-
-                    $datas[] = $data;
                 }
 
             }
@@ -353,96 +357,100 @@ class PostController extends Controller
                 foreach ($posts as $post)
                 {
                     $userInfo = array();
-
-                    $data['id'] = $post->id;
-                    $data['content'] = $post->content;
-
-                    if(!empty($post->pictures))
+                    if($post->user->available)
                     {
-                        if(substr(trim($post->pictures),-1) == ',')
+                        $data['id'] = $post->id;
+                        $data['content'] = $post->content;
+
+                        if(!empty($post->pictures))
                         {
-                            $data['images'] = explode(',',$post->pictures);
-                        }else {
-                            $data['images'] = explode(',',$post->pictures);
+                            if(substr(trim($post->pictures),-1) == ',')
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }else {
+                                $data['images'] = explode(',',$post->pictures);
+                            }
                         }
-                    }
-                    else
-                    {
-                        $data['images'] = [];
+                        else
+                        {
+                            $data['images'] = [];
+                        }
+
+                        $userInfo['id'] = $post->user_id;
+                        $user =User::where('id',$post->user_id)->first();
+                        $userInfo['nickName'] = $user->nickname;
+                        $userInfo['avatarUrl'] =  $user->avatarUrl;
+                        if(!empty($user->college_id))
+                        {
+                            $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
+                        }
+                        else
+                        {
+                            $userInfo['college'] = '';
+                        }
+                        $data['userInfo'] = $userInfo;
+
+                        $diff_time = $this->postRepository->getTime($post->created_at);
+
+                        $data['created_at'] = $diff_time;
+
+                        if($post->likenum)
+                        {
+                            $data['praise_nums'] = $post->likenum;
+                        }
+                        else
+                        {
+                            $data['praise_nums'] = 0;
+                        }
+
+                        if($post->commentnum)
+                        {
+                            $data['comment_nums'] = $post->commentnum;
+                        }
+                        else
+                        {
+                            $data['comment_nums'] = 0;
+                        }
+
+                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_comment)
+                        {
+                            $data['if_my_comment'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_comment'] = 0;
+                        }
+
+                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_praise)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_praise'] = 0;
+                        }
+
+                        if($post->location)
+                        {
+                            $location = explode(',',$post->location);
+
+                            $data['location']['name'] = $location[2];
+                            $data['location']['address'] = $location[3];
+                            $data['location']['longitude'] = $location[1];
+                            $data['location']['latitude'] = $location[0];
+
+                        }
+                        else
+                        {
+                            $data['location'] = '';
+                        }
+
+                        $datas[] = $data;
+
                     }
 
-                    $userInfo['id'] = $post->user_id;
-                    $user =User::where('id',$post->user_id)->first();
-                    $userInfo['nickName'] = $user->nickname;
-                    $userInfo['avatarUrl'] =  $user->avatarUrl;
-                    if(!empty($user->college_id))
-                    {
-                        $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
-                    }
-                    else
-                    {
-                        $userInfo['college'] = '';
-                    }
-                    $data['userInfo'] = $userInfo;
-
-                    $diff_time = $this->postRepository->getTime($post->created_at);
-
-                    $data['created_at'] = $diff_time;
-
-                    if($post->likenum)
-                    {
-                        $data['praise_nums'] = $post->likenum;
-                    }
-                    else
-                    {
-                        $data['praise_nums'] = 0;
-                    }
-
-                    if($post->commentnum)
-                    {
-                        $data['comment_nums'] = $post->commentnum;
-                    }
-                    else
-                    {
-                        $data['comment_nums'] = 0;
-                    }
-
-                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_comment)
-                    {
-                        $data['if_my_comment'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_comment'] = 0;
-                    }
-
-                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_praise)
-                    {
-                        $data['if_my_praise'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_praise'] = 0;
-                    }
-
-                    if($post->location)
-                    {
-                        $location = explode(',',$post->location);
-
-                        $data['location']['name'] = $location[2];
-                        $data['location']['address'] = $location[3];
-                        $data['location']['longitude'] = $location[1];
-                        $data['location']['latitude'] = $location[0];
-
-                    }
-                    else
-                    {
-                        $data['location'] = '';
-                    }
-
-                    $datas[] = $data;
                 }
 
             }
@@ -466,95 +474,98 @@ class PostController extends Controller
                 foreach ($posts as $post)
                 {
                     $userInfo = array();
-
-                    $data['id'] = $post->id;
-                    $data['content'] = $post->content;
-                    if(!empty($post->pictures))
+                    if($post->user->available)
                     {
-                        if(substr(trim($post->pictures),-1) == ',')
+                        $data['id'] = $post->id;
+                        $data['content'] = $post->content;
+                        if(!empty($post->pictures))
                         {
-                            $data['images'] = explode(',',$post->pictures);
-                        }else
+                            if(substr(trim($post->pictures),-1) == ',')
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }else
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }
+
+                        }
+                        else
                         {
-                            $data['images'] = explode(',',$post->pictures);
+                            $data['images'] = [];
                         }
 
-                    }
-                    else
-                    {
-                        $data['images'] = [];
+                        $userInfo['id'] = $post->user_id;
+                        $userInfo['nickName'] = $post->user->nickname;
+                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        if(!empty($post->user->college_id))
+                        {
+                            $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
+                        }
+                        else
+                        {
+                            $userInfo['college'] = '';
+                        }
+                        $data['userInfo'] = $userInfo;
+
+                        $diff_time = $this->postRepository->getTime($post->created_at);
+
+                        $data['created_at'] = $diff_time;
+
+                        if($post->likenum)
+                        {
+                            $data['praise_nums'] = $post->likenum;
+                        }
+                        else
+                        {
+                            $data['praise_nums'] = 0;
+                        }
+
+                        if($post->commentnum)
+                        {
+                            $data['comment_nums'] = $post->commentnum;
+                        }
+                        else
+                        {
+                            $data['comment_nums'] = 0;
+                        }
+
+                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_comment)
+                        {
+                            $data['if_my_comment'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_comment'] = 0;
+                        }
+
+                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_praise)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_praise'] = 0;
+                        }
+
+                        if($post->location)
+                        {
+                            $location = explode(',',$post->location);
+
+                            $data['location']['name'] = $location[2];
+                            $data['location']['address'] = $location[3];
+                            $data['location']['longitude'] = $location[1];
+                            $data['location']['latitude'] = $location[0];
+                        }
+                        else
+                        {
+                            $data['location'] = '';
+                        }
+
+                        $datas[] = $data;
                     }
 
-                    $userInfo['id'] = $post->user_id;
-                    $userInfo['nickName'] = $post->user->nickname;
-                    $userInfo['avatarUrl'] = $post->user->avatarUrl;
-                    if(!empty($post->user->college_id))
-                    {
-                        $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
-                    }
-                    else
-                    {
-                        $userInfo['college'] = '';
-                    }
-                    $data['userInfo'] = $userInfo;
-
-                    $diff_time = $this->postRepository->getTime($post->created_at);
-
-                    $data['created_at'] = $diff_time;
-
-                    if($post->likenum)
-                    {
-                        $data['praise_nums'] = $post->likenum;
-                    }
-                    else
-                    {
-                        $data['praise_nums'] = 0;
-                    }
-
-                    if($post->commentnum)
-                    {
-                        $data['comment_nums'] = $post->commentnum;
-                    }
-                    else
-                    {
-                        $data['comment_nums'] = 0;
-                    }
-
-                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_comment)
-                    {
-                        $data['if_my_comment'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_comment'] = 0;
-                    }
-
-                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_praise)
-                    {
-                        $data['if_my_praise'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_praise'] = 0;
-                    }
-
-                    if($post->location)
-                    {
-                        $location = explode(',',$post->location);
-
-                        $data['location']['name'] = $location[2];
-                        $data['location']['address'] = $location[3];
-                        $data['location']['longitude'] = $location[1];
-                        $data['location']['latitude'] = $location[0];
-                    }
-                    else
-                    {
-                        $data['location'] = '';
-                    }
-
-                    $datas[] = $data;
                 }
 
             }
@@ -935,96 +946,99 @@ class PostController extends Controller
                     $post = $this->postRepository->getPost($postId);
 
                     $userInfo = array();
-
-                    $data['id'] = $post->id;
-                    $data['content'] = $post->content;
-
-                    if(!empty($post->pictures))
+                    if($post->user->available)
                     {
-                        if(substr(trim($post->pictures),-1) == ',')
+                        $data['id'] = $post->id;
+                        $data['content'] = $post->content;
+
+                        if(!empty($post->pictures))
                         {
-                            $data['images'] = explode(',',$post->pictures);
-                        }else {
-                            $data['images'] = explode(',',$post->pictures);
+                            if(substr(trim($post->pictures),-1) == ',')
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }else {
+                                $data['images'] = explode(',',$post->pictures);
+                            }
                         }
-                    }
-                    else
-                    {
-                        $data['images'] = [];
+                        else
+                        {
+                            $data['images'] = [];
+                        }
+
+                        $userInfo['id'] = $post->user_id;
+                        $user =User::where('id',$post->user_id)->first();
+                        $userInfo['nickName'] = $user->nickname;
+                        $userInfo['avatarUrl'] =  $user->avatarUrl;
+                        if(!empty($user->college_id))
+                        {
+                            $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
+                        }
+                        else
+                        {
+                            $userInfo['college'] = '';
+                        }
+                        $data['userInfo'] = $userInfo;
+
+                        $diff_time = $this->postRepository->getTime($post->created_at);
+
+                        $data['created_at'] = $diff_time;
+
+                        if($post->likenum)
+                        {
+                            $data['praise_nums'] = $post->likenum;
+                        }
+                        else
+                        {
+                            $data['praise_nums'] = 0;
+                        }
+
+                        if($post->commentnum)
+                        {
+                            $data['comment_nums'] = $post->commentnum;
+                        }
+                        else
+                        {
+                            $data['comment_nums'] = 0;
+                        }
+
+                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_comment)
+                        {
+                            $data['if_my_comment'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_comment'] = 0;
+                        }
+
+                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_praise)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_praise'] = 0;
+                        }
+
+                        if($post->location)
+                        {
+                            $location = explode(',',$post->location);
+
+                            $data['location']['name'] = $location[2];
+                            $data['location']['address'] = $location[3];
+                            $data['location']['longitude'] = $location[1];
+                            $data['location']['latitude'] = $location[0];
+
+                        }
+                        else
+                        {
+                            $data['location'] = '';
+                        }
+
+                        $datas[] = $data;
                     }
 
-                    $userInfo['id'] = $post->user_id;
-                    $user =User::where('id',$post->user_id)->first();
-                    $userInfo['nickName'] = $user->nickname;
-                    $userInfo['avatarUrl'] =  $user->avatarUrl;
-                    if(!empty($user->college_id))
-                    {
-                        $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
-                    }
-                    else
-                    {
-                        $userInfo['college'] = '';
-                    }
-                    $data['userInfo'] = $userInfo;
-
-                    $diff_time = $this->postRepository->getTime($post->created_at);
-
-                    $data['created_at'] = $diff_time;
-
-                    if($post->likenum)
-                    {
-                        $data['praise_nums'] = $post->likenum;
-                    }
-                    else
-                    {
-                        $data['praise_nums'] = 0;
-                    }
-
-                    if($post->commentnum)
-                    {
-                        $data['comment_nums'] = $post->commentnum;
-                    }
-                    else
-                    {
-                        $data['comment_nums'] = 0;
-                    }
-
-                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_comment)
-                    {
-                        $data['if_my_comment'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_comment'] = 0;
-                    }
-
-                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_praise)
-                    {
-                        $data['if_my_praise'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_praise'] = 0;
-                    }
-
-                    if($post->location)
-                    {
-                        $location = explode(',',$post->location);
-
-                        $data['location']['name'] = $location[2];
-                        $data['location']['address'] = $location[3];
-                        $data['location']['longitude'] = $location[1];
-                        $data['location']['latitude'] = $location[0];
-
-                    }
-                    else
-                    {
-                        $data['location'] = '';
-                    }
-
-                    $datas[] = $data;
                 }
                 return response()->json(['status' => 200,'data' => $datas]);
 
@@ -1048,94 +1062,98 @@ class PostController extends Controller
 
                     $userInfo = array();
 
-                    $data['id'] = $post->id;
-                    $data['content'] = $post->content;
-                    if(!empty($post->pictures))
+                    if($post->user->available)
                     {
-                        if(substr(trim($post->pictures),-1) == ',')
+                        $data['id'] = $post->id;
+                        $data['content'] = $post->content;
+                        if(!empty($post->pictures))
                         {
-                            $data['images'] = explode(',',$post->pictures);
-                        }else
+                            if(substr(trim($post->pictures),-1) == ',')
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }else
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }
+
+                        }
+                        else
                         {
-                            $data['images'] = explode(',',$post->pictures);
+                            $data['images'] = [];
                         }
 
-                    }
-                    else
-                    {
-                        $data['images'] = [];
+                        $userInfo['id'] = $post->user_id;
+                        $userInfo['nickName'] = $post->user->nickname;
+                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        if(!empty($post->user->college_id))
+                        {
+                            $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
+                        }
+                        else
+                        {
+                            $userInfo['college'] = '';
+                        }
+                        $data['userInfo'] = $userInfo;
+
+                        $diff_time = $this->postRepository->getTime($post->created_at);
+
+                        $data['created_at'] = $diff_time;
+
+                        if($post->likenum)
+                        {
+                            $data['praise_nums'] = $post->likenum;
+                        }
+                        else
+                        {
+                            $data['praise_nums'] = 0;
+                        }
+
+                        if($post->commentnum)
+                        {
+                            $data['comment_nums'] = $post->commentnum;
+                        }
+                        else
+                        {
+                            $data['comment_nums'] = 0;
+                        }
+
+                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_comment)
+                        {
+                            $data['if_my_comment'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_comment'] = 0;
+                        }
+
+                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_praise)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_praise'] = 0;
+                        }
+
+                        if($post->location)
+                        {
+                            $location = explode(',',$post->location);
+
+                            $data['location']['name'] = $location[2];
+                            $data['location']['address'] = $location[3];
+                            $data['location']['longitude'] = $location[1];
+                            $data['location']['latitude'] = $location[0];
+                        }
+                        else
+                        {
+                            $data['location'] = '';
+                        }
+
+                        $datas[] = $data;
                     }
 
-                    $userInfo['id'] = $post->user_id;
-                    $userInfo['nickName'] = $post->user->nickname;
-                    $userInfo['avatarUrl'] = $post->user->avatarUrl;
-                    if(!empty($post->user->college_id))
-                    {
-                        $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
-                    }
-                    else
-                    {
-                        $userInfo['college'] = '';
-                    }
-                    $data['userInfo'] = $userInfo;
-
-                    $diff_time = $this->postRepository->getTime($post->created_at);
-
-                    $data['created_at'] = $diff_time;
-
-                    if($post->likenum)
-                    {
-                        $data['praise_nums'] = $post->likenum;
-                    }
-                    else
-                    {
-                        $data['praise_nums'] = 0;
-                    }
-
-                    if($post->commentnum)
-                    {
-                        $data['comment_nums'] = $post->commentnum;
-                    }
-                    else
-                    {
-                        $data['comment_nums'] = 0;
-                    }
-
-                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_comment)
-                    {
-                        $data['if_my_comment'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_comment'] = 0;
-                    }
-
-                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                    if($if_my_praise)
-                    {
-                        $data['if_my_praise'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_praise'] = 0;
-                    }
-
-                    if($post->location)
-                    {
-                        $location = explode(',',$post->location);
-
-                        $data['location']['name'] = $location[2];
-                        $data['location']['address'] = $location[3];
-                        $data['location']['longitude'] = $location[1];
-                        $data['location']['latitude'] = $location[0];
-                    }
-                    else
-                    {
-                        $data['location'] = '';
-                    }
-
-                    $datas[] = $data;
                 }
                 return response()->json(['status' => 200,'data' => $datas]);
 
@@ -1238,22 +1256,26 @@ class PostController extends Controller
             {
                 foreach ($posts as $post)
                 {
-                    if($post->location)
+                    if($post->user->available)
                     {
-                        $data['id'] = $post->id;
-                        $location = explode(',',$post->location);
-                        $data['latitude'] = floatval($location[0]);
-                        $data['longitude'] = floatval($location[1]);
-                        if($post->user->gender == 1) {
-                            $data['iconPath'] = "/pages/images/map_female.png";
-                        } else {
-                            $data['iconPath'] = "/pages/images/map_male.png";
+                        if($post->location)
+                        {
+                            $data['id'] = $post->id;
+                            $location = explode(',',$post->location);
+                            $data['latitude'] = floatval($location[0]);
+                            $data['longitude'] = floatval($location[1]);
+                            if($post->user->gender == 1) {
+                                $data['iconPath'] = "/pages/images/map_female.png";
+                            } else {
+                                $data['iconPath'] = "/pages/images/map_male.png";
+                            }
+                            // $data['title'] = $post->user->nickname;
+                            $data['width'] = 70;
+                            $data['height'] = 70;
+                            $datas[] = $data;
                         }
-                        // $data['title'] = $post->user->nickname;
-                        $data['width'] = 70;
-                        $data['height'] = 70;                        
-                        $datas[] = $data;
                     }
+
                 }
 
             }
@@ -1274,22 +1296,26 @@ class PostController extends Controller
             {
                 foreach ($posts as $post)
                 {
-                    if($post->location)
+                    if($post->user->available)
                     {
-                        $data['id'] = $post->id;
-                        $location = explode(',',$post->location);
-                        $data['latitude'] = floatval($location[0]);
-                        $data['longitude'] = floatval($location[1]);
-                        if($post->user->gender == 1) {
-                            $data['iconPath'] = "/pages/images/map_female.png";
-                        } else {
-                            $data['iconPath'] = "/pages/images/map_male.png";
+                        if($post->location)
+                        {
+                            $data['id'] = $post->id;
+                            $location = explode(',',$post->location);
+                            $data['latitude'] = floatval($location[0]);
+                            $data['longitude'] = floatval($location[1]);
+                            if($post->user->gender == 1) {
+                                $data['iconPath'] = "/pages/images/map_female.png";
+                            } else {
+                                $data['iconPath'] = "/pages/images/map_male.png";
+                            }
+                            // $data['title'] = $post->user->nickname;
+                            $data['width'] = 70;
+                            $data['height'] = 70;
+                            $datas[] = $data;
                         }
-                        // $data['title'] = $post->user->nickname;
-                        $data['width'] = 70;
-                        $data['height'] = 70;                        
-                        $datas[] = $data;
                     }
+
                     
                 }
 
