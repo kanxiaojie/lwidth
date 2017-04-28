@@ -344,6 +344,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'AddColumnsToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
         'AddGradeToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_04_071309_add_grade_to_users_table.php',
         'AddNullToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_14_032329_add_null_to_postings_table.php',
+        'AddReadnumToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_28_063050_add_readnum_to_postings_table.php',
         'AddStringToProfilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_14_154518_add_string_to_profiles_table.php',
         'AddVisiableToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_31_134724_add_visiable_to_postings_table.php',
         'CollegeTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CollegeTableSeeder.php',

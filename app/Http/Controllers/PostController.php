@@ -184,7 +184,7 @@ class PostController extends Controller
                         $data['location'] = '';
                     }
 
-                    $data['read_nums'] = 10;
+                    $data['read_nums'] = $post->readnum;
 
                     $datas[] = $data;
                 }

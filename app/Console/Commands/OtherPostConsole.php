@@ -52,23 +52,23 @@ class OtherPostConsole extends Command
                     $diff = $nowTime - $created_time;
                     if($diff <= 1)
                     {
-                        $post->commentnum += rand(300,400);
+                        $post->readnum += rand(300,400);
                         $post->likenum += rand(10,20);
                     }elseif ($diff == 2)
                     {
-                        $post->commentnum += rand(200,300);
+                        $post->readnum += rand(200,300);
                         $post->likenum += rand(5,10);
                     }elseif ($diff == 3)
                     {
-                        $post->commentnum += rand(100,200);
+                        $post->readnum += rand(100,200);
                         $post->likenum += rand(10,20);
                     }elseif ($diff == 4)
                     {
-                        $post->commentnum += rand(1,50);
+                        $post->readnum += rand(1,50);
                         $post->likenum += rand(5,10);
                     }elseif ($diff > 5)
                     {
-                        $post->commentnum += rand(1,20);
+                        $post->readnum += rand(1,20);
                         $post->likenum += rand(1,5);
                     }
 
