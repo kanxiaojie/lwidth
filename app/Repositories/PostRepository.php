@@ -223,7 +223,8 @@ class PostRepository
         {
             foreach ($posts as $post)
             {
-                $hots = $post->commentnum * 2 + $post->likenum;
+//                $hots = $post->commentnum * 2 + $post->likenum;
+                $hots = $post->commentnum;
 
                 $hotPost[$post->id] = $hots;
             }
@@ -251,7 +252,8 @@ class PostRepository
         {
             foreach ($posts as $post)
             {
-                $hots = $post->commentnum * 2 + $post->likenum;
+//                $hots = $post->commentnum * 2 + $post->likenum;
+                $hots = $post->commentnum;
 
                 $hotPost[$post->id] = $hots;
             }
