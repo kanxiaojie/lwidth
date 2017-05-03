@@ -218,7 +218,11 @@ class PostRepository
 
         $diff = $date*24*60 + $hour*60 + $minute + $second/60;
 
-        if (($diff>0) && ($diff<60))
+        if($diff<0)
+        {
+            return '刚刚';
+        }
+        elseif (($diff>0) && ($diff<60))
         {
 
             return round($diff).'分钟前';
