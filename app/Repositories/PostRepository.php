@@ -47,9 +47,18 @@ class PostRepository
         return $posts;
     }
 
-    public function getAllPosts($orderby = 'created_at', $direction = 'desc')
+    public function getAllPosts($search = null,$orderby = 'created_at', $direction = 'desc')
     {
-        $posts = Post::orderBy($orderby,$direction)->get();
+        $posts = Post::where(function ($query) use($search){
+            if(!empty($search))
+            {
+                $query->whereHas('user',function ($queryUser) use ($search){
+                    $queryUser->where('realname','LIKE','%'.$search.'%')
+                        ->orWhere('nickname','LIKE','%'.$search.'%');
+                })
+                    ->orWhere('title','LIKE','%'.$search.'%');
+            }
+        })->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -84,9 +93,19 @@ class PostRepository
         return $posts;
     }
 
-    public function getPostListZero($orderby = 'created_at', $direction = 'desc')
+    public function getPostListZero($search = null,$orderby = 'created_at', $direction = 'desc')
     {
-        $posts = $this->post->where('visiable',0)->orderBy($orderby,$direction)->get();
+        $posts = $this->post->where(function ($query) use($search){
+                if(!empty($search))
+                {
+                    $query->whereHas('user',function ($queryUser) use ($search){
+                            $queryUser->where('realname','LIKE','%'.$search.'%')
+                                ->orWhere('nickname','LIKE','%'.$search.'%');
+                        })
+                        ->orWhere('title','LIKE','%'.$search.'%');
+                }
+            })
+            ->where('visiable',0)->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }

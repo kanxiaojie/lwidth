@@ -332,7 +332,7 @@ class PostController extends Controller
     public function lists(Request $request)
     {
         $wesecret = $request->get('wesecret');
-
+        $search = $request->get('search');
         if (!empty($wesecret))
         {
             $openid = $this->baseRepository->decryptCode($wesecret);
@@ -346,7 +346,7 @@ class PostController extends Controller
             $data = array();
             $datas = array();
 
-            $posts = $this->postRepository->getPostListZero();
+            $posts = $this->postRepository->getPostListZero($search);
 
             if(empty($posts))
             {
@@ -463,7 +463,7 @@ class PostController extends Controller
             $data = array();
             $datas = [];
 //            $posts = $this->postRepository->getPostLists($inputs,$user);
-            $posts = $this->postRepository->getAllPosts();
+            $posts = $this->postRepository->getAllPosts($search);
 
             if(empty($posts))
             {
