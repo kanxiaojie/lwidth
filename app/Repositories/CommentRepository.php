@@ -38,9 +38,9 @@ class CommentRepository
         return $comments;
     }
 
-    public function getCommentToComments($parent_id)
+    public function getCommentToComments($comment_id)
     {
-        $commentToComments = $this->commentToComment->where('parent_id',$parent_id)->get();
+        $commentToComments = $this->commentToComment->where('comment_id',$comment_id)->get();
 
         return $commentToComments;
     }
@@ -78,6 +78,10 @@ class CommentRepository
         $commentToComment->comment_id = $comment->id;
         $commentToComment->content = $inputs['content'];
         $commentToComment->save();
+
+        $comment = Comment::where('id',$comment->id)->first();
+        $comment->r_commentnum += 1;
+        $comment->save();
 
         $res['status'] = 200;
 
