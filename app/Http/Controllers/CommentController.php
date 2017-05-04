@@ -116,7 +116,7 @@ class CommentController extends Controller
             $data['praise_nums'] = $comment->r_likenum;
             $data['comment_nums'] = $comment->r_r_commentnum;
 
-            $if_my_comment = CommentToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
+            $if_my_comment = CommentToComment::where('comment_id',$comment->id)->where('user_id',$comment->user_id)->first();
             if($if_my_comment)
             {
                 $data['if_my_comment'] = 1;
@@ -126,7 +126,7 @@ class CommentController extends Controller
                 $data['if_my_comment'] = 0;
             }
 
-            $if_my_praise = PraiseToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
+            $if_my_praise = PraiseToComment::where('comment_id',$comment->id)->where('user_id',$comment->user_id)->first();
             if($if_my_praise)
             {
                 $data['if_my_praise'] = 1;
