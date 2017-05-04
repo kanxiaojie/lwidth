@@ -3,6 +3,7 @@
 
 use App\Profile;
 use App\User;
+use Illuminate\Support\Facades\Crypt;
 
 class UserRepository
 {
@@ -246,6 +247,28 @@ class UserRepository
     {
         $users = User::all();
 
+        return $users;
+    }
+
+    public function getMaleOrFemalePictures($wesecret)
+    {
+        $openid = Crypt::decrypt($wesecret);
+        $user = $this->getUserByOpenId($openid);
+
+        if($user->gender)
+        {
+            if($user->gender == 1)
+            {
+                $users = User::where('gender',2)->get();
+            }else
+            {
+                $users = User::where('gender',1)->get();
+            }
+        }
+        else
+        {
+            $users = User::all();
+        }
         return $users;
     }
 }
