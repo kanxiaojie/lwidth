@@ -160,7 +160,7 @@ class CommentController extends Controller
 
                     $objectUserInfo['id'] = $comment->user_id;
                     $objectUserInfo['nickName'] = $commentUser->nickname;
-                    $data2['objectUserInfo'][] = $objectUserInfo;
+                    $data2['objectUserInfo'] = $objectUserInfo;
 
                     $diff_time = $this->postRepository->getTime($commentToComment->created_at);
                     $data2['created_at'] = $diff_time;
