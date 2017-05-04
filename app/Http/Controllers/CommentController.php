@@ -91,97 +91,86 @@ class CommentController extends Controller
 
     public function getCommentToComments($id, Request $request)
     {
-        $wesecret = $request->get('wesecret');
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
-
         $data = [];
         $userInfo1 = [];
 
 
-        if($user)
+        $comment = $this->commentRepository->getCommentById($id);
+        if(!$comment)
         {
-            $comment = $this->commentRepository->getCommentById($id);
-            if(!$comment)
-            {
-                return response()->json(['status' => 201,'message' => 'comment does not exist,check the argument!']);
-            }
-            else
-            {
-                $commentUser = $this->userRepository->getUserById($comment->user_id);
-                $data['content'] = $comment->content;
-
-                $userInfo1['id'] = $comment->user_id;
-                $userInfo1['nickName'] = $commentUser->nickname;
-                $userInfo1['avatarUrl'] = $commentUser->avatarUrl;
-                $data['userInfo'] = $userInfo1;
-
-                $diff_time = $this->postRepository->getTime($comment->created_at);
-                $data['created_at'] = $diff_time;
-
-                $data['praise_nums'] = $comment->r_likenum;
-                $data['comment_nums'] = $comment->r_r_commentnum;
-
-                $if_my_comment = CommentToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
-                if($if_my_comment)
-                {
-                    $data['if_my_comment'] = 1;
-                }
-                else
-                {
-                    $data['if_my_comment'] = 0;
-                }
-
-                $if_my_praise = PraiseToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
-                if($if_my_praise)
-                {
-                    $data['if_my_praise'] = 1;
-                }
-                else
-                {
-                    $data['if_my_praise'] = 0;
-                }
-
-
-
-                $commentToComments = $this->commentRepository->getCommentToComments($comment->id);
-                if(empty($commentToComments))
-                {
-                    $data['comment_comments'] = [];
-                }
-                else
-                {
-                    $userInfo2 = [];
-                    $data2 = [];
-                    $objectUserInfo = [];
-
-                    foreach ($commentToComments as $commentToComment)
-                    {
-                        $data2['content'] = $commentToComment->content;
-
-                        $user1 = $this->userRepository->getUserById($commentToComment->user_id);
-                        $userInfo2['id'] = $user1->id;
-                        $userInfo2['nickName'] = $user1->nickname;
-                        $userInfo2['avatarUrl'] = $user1->avatarUrl;
-                        $data2['userInfo'] = $userInfo2;
-
-                        $objectUserInfo['id'] = $comment->user_id;
-                        $objectUserInfo['nickName'] = $commentUser->nickname;
-                        $data2['objectUserInfo'] = $objectUserInfo;
-
-                        $diff_time = $this->postRepository->getTime($commentToComment->created_at);
-                        $data2['created_at'] = $diff_time;
-
-                        $data['comment_comments'] = $data2;
-                    }
-                }
-
-                return response()->json(['status' => 200,'data' => $data]);
-            }
+            return response()->json(['status' => 201,'message' => 'comment does not exist,check the argument!']);
         }
         else
         {
-            return response()->json(['status' => 201,'message' => 'user does not exist!']);
+            $commentUser = $this->userRepository->getUserById($comment->user_id);
+            $data['content'] = $comment->content;
+
+            $userInfo1['id'] = $comment->user_id;
+            $userInfo1['nickName'] = $commentUser->nickname;
+            $userInfo1['avatarUrl'] = $commentUser->avatarUrl;
+            $data['userInfo'] = $userInfo1;
+
+            $diff_time = $this->postRepository->getTime($comment->created_at);
+            $data['created_at'] = $diff_time;
+
+            $data['praise_nums'] = $comment->r_likenum;
+            $data['comment_nums'] = $comment->r_r_commentnum;
+
+            $if_my_comment = CommentToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
+            if($if_my_comment)
+            {
+                $data['if_my_comment'] = 1;
+            }
+            else
+            {
+                $data['if_my_comment'] = 0;
+            }
+
+            $if_my_praise = PraiseToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
+            if($if_my_praise)
+            {
+                $data['if_my_praise'] = 1;
+            }
+            else
+            {
+                $data['if_my_praise'] = 0;
+            }
+
+
+
+            $commentToComments = $this->commentRepository->getCommentToComments($comment->id);
+            if(empty($commentToComments))
+            {
+                $data['comment_comments'] = [];
+            }
+            else
+            {
+                $userInfo2 = [];
+                $data2 = [];
+                $objectUserInfo = [];
+
+                foreach ($commentToComments as $commentToComment)
+                {
+                    $data2['content'] = $commentToComment->content;
+
+                    $user1 = $this->userRepository->getUserById($commentToComment->user_id);
+                    $userInfo2['id'] = $user1->id;
+                    $userInfo2['nickName'] = $user1->nickname;
+                    $userInfo2['avatarUrl'] = $user1->avatarUrl;
+                    $data2['userInfo'] = $userInfo2;
+
+                    $objectUserInfo['id'] = $comment->user_id;
+                    $objectUserInfo['nickName'] = $commentUser->nickname;
+                    $data2['objectUserInfo'] = $objectUserInfo;
+
+                    $diff_time = $this->postRepository->getTime($commentToComment->created_at);
+                    $data2['created_at'] = $diff_time;
+
+                    $data['comment_comments'] = $data2;
+                }
+            }
+
+            return response()->json(['status' => 200,'data' => $data]);
         }
     }
 }
