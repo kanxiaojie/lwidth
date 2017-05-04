@@ -114,7 +114,7 @@ class CommentController extends Controller
             $data['created_at'] = $diff_time;
 
             $data['praise_nums'] = $comment->r_likenum;
-            $data['comment_nums'] = $comment->r_r_commentnum;
+            $data['comment_nums'] = $comment->r_commentnum;
 
             $if_my_comment = CommentToComment::where('comment_id',$comment->id)->where('user_id',$comment->user_id)->first();
             if($if_my_comment)
