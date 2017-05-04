@@ -58,7 +58,7 @@ class PostRepository
                     })
                     ->orWhere('title','LIKE','%'.$search.'%');
             }
-        })->orderBy($orderby,$direction)->paginate(15);
+        })->orderBy($orderby,$direction)->paginate(5);
 
         return $posts;
     }
@@ -105,7 +105,7 @@ class PostRepository
                         ->orWhere('title','LIKE','%'.$search.'%');
                 }
             })
-            ->where('visiable',0)->orderBy($orderby,$direction)->paginate(15);
+            ->where('visiable',0)->orderBy($orderby,$direction)->paginate(5);
 
         return $posts;
     }
