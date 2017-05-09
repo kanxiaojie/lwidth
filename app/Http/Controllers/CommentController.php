@@ -104,6 +104,7 @@ class CommentController extends Controller
         {
             $commentUser = $this->userRepository->getUserById($comment->user_id);
             $data['content'] = $comment->content;
+            $data['comment_id'] = $comment->id;
 
             $userInfo1['id'] = $comment->user_id;
             $userInfo1['nickName'] = $commentUser->nickname;
@@ -151,6 +152,7 @@ class CommentController extends Controller
                 foreach ($commentToComments as $commentToComment)
                 {
                     $data2['content'] = $commentToComment->content;
+                    $data2['comment_id'] = $commentToComment->id;
 
                     $user1 = $this->userRepository->getUserById($commentToComment->user_id);
                     $userInfo2['id'] = $user1->id;
