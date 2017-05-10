@@ -139,6 +139,7 @@ class CommentController extends Controller
 
 
             $commentToComments = $this->commentRepository->getCommentToComments($comment->id);
+            dd($commentToComments);
             if(empty($commentToComments))
             {dd("123");
                 $data['replies'][] = [];
