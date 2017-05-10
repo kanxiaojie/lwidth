@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\CommentToComment;
 use App\PraiseToComment;
+use App\PraiseToReply;
 use App\Repositories\BaseRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
@@ -115,7 +116,7 @@ class CommentController extends Controller
             $data['created_at'] = $diff_time;
 
             $data['praise_nums'] = $comment->r_likenum;
-            $data['comment_nums'] = $comment->r_commentnum;
+            $data['reply_nums'] = $comment->r_commentnum;
 
             $if_my_comment = CommentToComment::where('comment_id',$comment->id)->where('user_id',$comment->user_id)->first();
             if($if_my_comment)
@@ -165,6 +166,17 @@ class CommentController extends Controller
                     $objectUser = $this->userRepository->getUserById($commentToComment->parent_id);
                     $objectUserInfo['nickName'] = $objectUser->nickname;
                     $data2['objectUserInfo'] = $objectUserInfo;
+                    $data2['praise_nums'] = $commentToComment->praise_nums;
+
+                    $if_my_praise = PraiseToReply::where('reply_id',$commentToComment->id)->where('user_id',$comment->user_id)->first();
+
+                    if(count($if_my_praise))
+                    {
+                        $data2['if_my_praise'] = 1;
+                    }else
+                    {
+                        $data2['if_my_praise'] = 0;
+                    }
 
                     $diff_time = $this->postRepository->getTime($commentToComment->created_at);
                     $data2['created_at'] = $diff_time;

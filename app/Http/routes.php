@@ -63,6 +63,8 @@ $app->post('/api/comments/{id}/replies','CommentController@commentToComment');
 //获取某条评论的所有再评论 改为回复
 $app->get('/api/comments/{id}/replies','CommentController@getCommentToComments');
 
+//给某条回复点赞/或取消点赞
+$app->post('/api/replies/{id}/praises','PraiseController@praiseToReplies');
 //获取照片墙
 $app->get('/api/pictures','UserController@getPictures');
 

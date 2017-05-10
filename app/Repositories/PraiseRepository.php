@@ -10,7 +10,9 @@ namespace App\Repositories;
 
 
 
+use App\CommentToComment;
 use App\Praise;
+use App\PraiseToReply;
 
 class PraiseRepository
 {
@@ -71,6 +73,62 @@ class PraiseRepository
             }
 
             $post->save();
+
+            $res['status'] = 200;
+        }
+        else
+        {
+            $res['status'] = 201;
+        }
+
+        return $res;
+    }
+
+    public function getReplyById($inputs, $reply_id)
+    {
+
+        $code = array('code'=>'');
+
+        $praise = PraiseToReply::where('reply_id',$reply_id)->where('user_id',$inputs['user_id'])->first();
+
+        if((!$praise))
+        {
+            $praise = new PraiseToReply();
+            $praise->user_id = $inputs['user_id'];
+            $praise->reply_id = $reply_id;
+            $praise->save();
+
+            $code['code'] = 200;
+
+            return $code;
+        }else
+        {
+            $praise->delete();
+            $code['code'] = 202;
+
+            return $code;
+        }
+
+    }
+
+    public function praiseToReply($inputs, $reply_id)
+    {
+        $res = array('status' => '');
+
+        $reply = CommentToComment::where('id',$reply_id)->first();
+        if ($reply)
+        {
+            $code = $this->getReplyById($inputs,$reply_id);
+
+            if ($code['code'] == 200)
+            {
+                $reply->praise_nums += 1;
+            }elseif($code['code'] == 202)
+            {
+                $reply->praise_nums -= 1;
+            }
+
+            $reply->save();
 
             $res['status'] = 200;
         }
