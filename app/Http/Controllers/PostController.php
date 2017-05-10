@@ -114,9 +114,20 @@ class PostController extends Controller
                         $data['images'] = [];
                     }
 
-                    $userInfo['id'] = $user->id;
-                    $userInfo['nickName'] = $user->nickname;
-                    $userInfo['avatarUrl'] = $user->avatarUrl;
+                    if($post->anonymous == 1)
+                    {
+                        $anonymousUser = User::where('college_id',$user->college_id)->first();
+                        $userInfo['id'] = $anonymousUser->id;
+                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+
+                    }else
+                    {
+                        $userInfo['id'] = $user->id;
+                        $userInfo['nickName'] = $user->nickname;
+                        $userInfo['avatarUrl'] = $user->avatarUrl;
+                    }
+
                     if(!empty($user->college_id))
                     {
                         $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
@@ -242,10 +253,20 @@ class PostController extends Controller
                         {
                             $data['images'] = [];
                         }
+                        if($post->anonymous == 1)
+                        {
+                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $userInfo['id'] = $anonymousUser->id;
+                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
-                        $userInfo['id'] = $post->user_id;
-                        $userInfo['nickName'] = $post->user->nickname;
-                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        }else
+                        {
+                            $userInfo['id'] = $post->user_id;
+                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        }
+
                         if(!empty($post->user->college_id))
                         {
                             $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
@@ -374,10 +395,22 @@ class PostController extends Controller
                             $data['images'] = [];
                         }
 
-                        $userInfo['id'] = $post->user_id;
                         $user =User::where('id',$post->user_id)->first();
-                        $userInfo['nickName'] = $user->nickname;
-                        $userInfo['avatarUrl'] =  $user->avatarUrl;
+                        if($post->anonymous == 1)
+                        {
+                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $userInfo['id'] = $anonymousUser->id;
+                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+
+                        }else
+                        {
+                            $userInfo['id'] = $post->user_id;
+                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['avatarUrl'] =  $user->avatarUrl;
+                        }
+
+
                         if(!empty($user->college_id))
                         {
                             $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
@@ -491,9 +524,20 @@ class PostController extends Controller
                             $data['images'] = [];
                         }
 
-                        $userInfo['id'] = $post->user_id;
-                        $userInfo['nickName'] = $post->user->nickname;
-                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        if($post->anonymous == 1)
+                        {
+                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $userInfo['id'] = $anonymousUser->id;
+                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+
+                        }else
+                        {
+                            $userInfo['id'] = $post->user_id;
+                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        }
+
                         if(!empty($post->user->college_id))
                         {
                             $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
@@ -962,10 +1006,21 @@ class PostController extends Controller
                             $data['images'] = [];
                         }
 
-                        $userInfo['id'] = $post->user_id;
                         $user =User::where('id',$post->user_id)->first();
-                        $userInfo['nickName'] = $user->nickname;
-                        $userInfo['avatarUrl'] =  $user->avatarUrl;
+
+                        if($post->anonymous == 1)
+                        {
+                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $userInfo['id'] = $anonymousUser->id;
+                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+                        }else
+                        {
+                            $userInfo['id'] = $post->user_id;
+                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['avatarUrl'] =  $user->avatarUrl;
+                        }
+
                         if(!empty($user->college_id))
                         {
                             $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
@@ -1079,9 +1134,20 @@ class PostController extends Controller
                             $data['images'] = [];
                         }
 
-                        $userInfo['id'] = $post->user_id;
-                        $userInfo['nickName'] = $post->user->nickname;
-                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        if($post->anonymous == 1)
+                        {
+                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $userInfo['id'] = $anonymousUser->id;
+                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+                        }else
+                        {
+                            $userInfo['id'] = $post->user_id;
+                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                        }
+
+
                         if(!empty($post->user->college_id))
                         {
                             $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;

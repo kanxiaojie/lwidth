@@ -204,6 +204,16 @@ class PostRepository
             $post->visiable = $inputs['visiable'];
         }
 
+        if(isset($inputs['video_url']) && !empty($inputs['video_url']))
+        {
+            $post->video_url = $inputs['video_url'];
+        }
+
+        if(isset($inputs['anonymous']) && !empty($inputs['anonymous']))
+        {
+            $post->anonymous = $inputs['anonymous'];
+        }
+
         $post->save();
 
         return $post;

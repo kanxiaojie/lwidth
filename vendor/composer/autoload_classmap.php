@@ -14,6 +14,7 @@ return array(
     'AddPraiseNumsToCommentToCommentsTable' => $baseDir . '/database/migrations/2017_05_10_055239_add_praise_nums_to_commentToComments_table.php',
     'AddReadnumToPostingsTable' => $baseDir . '/database/migrations/2017_04_28_063050_add_readnum_to_postings_table.php',
     'AddStringToProfilesTable' => $baseDir . '/database/migrations/2017_04_14_154518_add_string_to_profiles_table.php',
+    'AddVideoAnonymousToPostingsTable' => $baseDir . '/database/migrations/2017_05_10_145930_add_video_anonymous_to_postings_table.php',
     'AddVisiableToPostingsTable' => $baseDir . '/database/migrations/2017_03_31_134724_add_visiable_to_postings_table.php',
     'CollegeTableSeeder' => $baseDir . '/database/seeds/CollegeTableSeeder.php',
     'CountryTableSeeder' => $baseDir . '/database/seeds/CountryTableSeeder.php',
