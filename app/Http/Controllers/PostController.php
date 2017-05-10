@@ -339,8 +339,6 @@ class PostController extends Controller
             $user = $this->userRepository->getUserByOpenId($openid);
         }
 
-        $inputs = [];
-
         if(empty($wesecret))
         {
             $data = array();
@@ -462,7 +460,6 @@ class PostController extends Controller
         {
             $data = array();
             $datas = [];
-//            $posts = $this->postRepository->getPostLists($inputs,$user);
             $posts = $this->postRepository->getAllPosts($search);
 
             if(empty($posts))

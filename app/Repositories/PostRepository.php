@@ -56,7 +56,11 @@ class PostRepository
                         $queryUser->where('realname','LIKE','%'.$search.'%')
                         ->orWhere('nickname','LIKE','%'.$search.'%');
                     })
-                    ->orWhere('title','LIKE','%'.$search.'%');
+                    ->orWhereHas('user.college',function ($queryCollege) use ($search){
+                        $queryCollege->where('name','LIKE','%'.$search.'%');
+                    })
+                    ->orWhere('content','LIKE','%'.$search.'%')
+                ;
             }
         })->orderBy($orderby,$direction)->paginate(5);
 
@@ -102,7 +106,10 @@ class PostRepository
                             $queryUser->where('realname','LIKE','%'.$search.'%')
                                 ->orWhere('nickname','LIKE','%'.$search.'%');
                         })
-                        ->orWhere('title','LIKE','%'.$search.'%');
+                        ->orWhereHas('user.college',function ($queryCollege) use ($search){
+                            $queryCollege->where('name','LIKE','%'.$search.'%');
+                        })
+                        ->orWhere('content','LIKE','%'.$search.'%');
                 }
             })
             ->where('visiable',0)->orderBy($orderby,$direction)->paginate(5);
