@@ -140,7 +140,7 @@ class CommentController extends Controller
 
 
             $commentToComments = $this->commentRepository->getCommentToComments($comment->id);
-//
+
             if(count($commentToComments) == 0)
             {
                 $data['replies'] = [];

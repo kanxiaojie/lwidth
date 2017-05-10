@@ -25,6 +25,35 @@ class PraiseController extends Controller
         $this->userRepository = $userRepository;
     }
 
+    public function praiseToComment(Request $request, $id)
+    {
+        $inputs = [];
+        $inputs['wesecret'] = $request->get('wesecret');
+        $inputs['praise'] = $request->get('praise');
+
+        $openid = $this->baseRepository->decryptCode($inputs['wesecret']);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 201,'message' => 'user does not exist!']);
+        }
+        else
+        {
+            $inputs['user_id'] = $user->id;
+            $res = $this->praiseRepository->praiseToComment($inputs,$id);
+
+            if ($res['status'] == 200)
+            {
+                return response()->json(['status' => 200]);
+            }else
+            {
+                return response()->json(['status' => 201,'message' => 'Praise failed,please check the argument!']);
+            }
+
+        }
+    }
+
     public function praiseToPost(Request $request, $id)
     {
         $inputs = [];

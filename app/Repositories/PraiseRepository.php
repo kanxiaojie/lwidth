@@ -10,8 +10,10 @@ namespace App\Repositories;
 
 
 
+use App\Comment;
 use App\CommentToComment;
 use App\Praise;
+use App\PraiseToComment;
 use App\PraiseToReply;
 
 class PraiseRepository
@@ -27,6 +29,31 @@ class PraiseRepository
     {
         $this->praise = $praise;
         $this->postRepository = $postRepository;
+    }
+
+    public function getPraiseByCommentId($inputs, $comment_id)
+    {
+        $code = array('code'=>'');
+
+        $praise = PraiseToComment::where('comment_id',$comment_id)->where('user_id',$inputs['user_id'])->first();
+
+        if((!$praise))
+        {
+            $praise = new PraiseToComment();
+            $praise->user_id = $inputs['user_id'];
+            $praise->comment_id = $comment_id;
+            $praise->save();
+
+            $code['code'] = 200;
+
+            return $code;
+        }else
+        {
+            $praise->delete();
+            $code['code'] = 202;
+
+            return $code;
+        }
     }
 
     public function getPraiseByPostId($inputs, $post_id)
@@ -53,6 +80,35 @@ class PraiseRepository
 
             return $code;
         }
+    }
+
+    public function praiseToComment($inputs, $comment_id)
+    {
+        $res = array('status' => '');
+
+        $comment = Comment::where('id',$comment_id)->first();
+        if ($comment)
+        {
+            $code = $this->getPraiseByCommentId($inputs,$comment_id);
+
+            if ($code['code'] == 200)
+            {
+                $comment->r_likenum += 1;
+            }elseif($code['code'] == 202)
+            {
+                $comment->r_likenum -= 1;
+            }
+
+            $comment->save();
+
+            $res['status'] = 200;
+        }
+        else
+        {
+            $res['status'] = 201;
+        }
+
+        return $res;
     }
 
     public function praiseToPost($inputs, $post_id)
