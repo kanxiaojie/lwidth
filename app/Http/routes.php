@@ -57,8 +57,8 @@ $app->post('/api/loves/{id}/comments','CommentController@publishComments');
 //给某条表白点赞/或取消点赞
 $app->post('/api/loves/{id}/praises','PraiseController@praiseToPost');
 
-//给某条评论再评论
-$app->post('/api/comments/{id}/comments','CommentController@commentToComment');
+//给某条评论再评论 改为回复
+$app->post('/api/comments/{id}/replies','CommentController@commentToComment');
 
 //获取某条评论的所有再评论
 $app->get('/api/comments/{id}/comments','CommentController@getCommentToComments');
