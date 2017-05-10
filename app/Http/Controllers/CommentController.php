@@ -140,11 +140,11 @@ class CommentController extends Controller
 
             $commentToComments = $this->commentRepository->getCommentToComments($comment->id);
             if(empty($commentToComments))
-            {
+            {dd("123");
                 $data['replies'][] = [];
             }
             else
-            {
+            {dd("321");
                 $userInfo2 = [];
                 $data2 = [];
                 $objectUserInfo = [];
