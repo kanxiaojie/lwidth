@@ -188,4 +188,82 @@ class CommentController extends Controller
             return response()->json(['status' => 200,'data' => $data]);
         }
     }
+
+    public function deleteComment(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $comment_id = $request->get('comment_id');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
+        }else{
+            $comment = $this->commentRepository->getCommentById($comment_id);
+
+            if(count($comment))
+            {
+                if($comment->user_id == $user->id)
+                {
+                    $comment->delete();
+
+                    $replies = CommentToComment::where('comment_id',$comment_id)->get();
+                    if(count($replies))
+                    {
+                        foreach ($replies as $reply)
+                        {
+                            $reply->delete();
+                        }
+                    }
+
+                    return response()->json(['status' => 200]);
+                }else
+                {
+                    return response()->json(['status' => 201,'message' => 'You have no authorize to delete this love!']);
+
+                }
+            }
+            else
+            {
+                return response()->json(['status' => 201,'message' => 'Comment Does Not Exist!']);
+
+            }
+        }
+    }
+
+    public function deleteReply(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $reply_id = $request->get('reply_id');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
+        }else{
+            $reply = $this->commentRepository->getCommentToCommentById($reply_id);
+
+            if(count($reply))
+            {
+                if($reply->user_id == $user->id)
+                {
+                    $reply->delete();
+
+                    return response()->json(['status' => 200]);
+                }else
+                {
+                    return response()->json(['status' => 201,'message' => 'You have no authorize to delete this love!']);
+                }
+            }
+            else
+            {
+                return response()->json(['status' => 201,'message' => 'Reply Does Not Exist!']);
+
+            }
+        }
+    }
 }

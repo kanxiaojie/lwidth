@@ -94,4 +94,9 @@ $app->post('/api/delete/love','PostController@deletePost');
 $app->get('/api/colleges','ExampleController@getColleges');
 $app->get('/api/grades','ExampleController@getGrades');
 
+//删除某条评论
+$app->post('/api/delete/comment','CommentController@deleteComment');
+//删除某条回复
+$app->post('/api/delete/reply','CommentController@deleteReply');
+
 

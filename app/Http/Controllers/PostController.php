@@ -1343,6 +1343,15 @@ class PostController extends Controller
             {
                if($post->user_id == $user->id)
                {
+                   $replies = CommentToComment::where('post_id',$post->id)->get();
+                   if(count($replies))
+                   {
+                       foreach ($replies as $reply)
+                       {
+                           $reply->delete();
+                       }
+                   }
+
                    $post->delete();
                    return response()->json(['status' => 200]);
 
