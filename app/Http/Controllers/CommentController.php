@@ -141,7 +141,7 @@ class CommentController extends Controller
             $commentToComments = $this->commentRepository->getCommentToComments($comment->id);
             if(empty($commentToComments))
             {
-                $data['comment_comments'][] = [];
+                $data['replies'][] = [];
             }
             else
             {
@@ -168,7 +168,7 @@ class CommentController extends Controller
                     $diff_time = $this->postRepository->getTime($commentToComment->created_at);
                     $data2['created_at'] = $diff_time;
 
-                    $data['comment_comments'][] = $data2;
+                    $data['replies'][] = $data2;
                 }
             }
 
