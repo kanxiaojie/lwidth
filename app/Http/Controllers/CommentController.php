@@ -142,7 +142,7 @@ class CommentController extends Controller
 //
             if(count($commentToComments) == 0)
             {
-                $data['replies'][] = [];
+                $data['replies'] = [];
             }
             else
             {
