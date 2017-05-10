@@ -212,7 +212,7 @@ class PostRepository
 
         $diff = $date*24*60 + $hour*60 + $minute + $second/60;
 
-        if($diff<0)
+        if($diff<=0)
         {
             return '刚刚';
         }
