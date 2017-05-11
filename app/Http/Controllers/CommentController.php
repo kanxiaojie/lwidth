@@ -153,35 +153,39 @@ class CommentController extends Controller
 
                 foreach ($commentToComments as $commentToComment)
                 {
-                    $data2['content'] = $commentToComment->content;
-                    $data2['id'] = $commentToComment->id;
-
-                    $user1 = $this->userRepository->getUserById($commentToComment->user_id);
-                    $userInfo2['id'] = $user1->id;
-                    $userInfo2['nickName'] = $user1->nickname;
-                    $userInfo2['avatarUrl'] = $user1->avatarUrl;
-                    $data2['userInfo'] = $userInfo2;
-
-                    $objectUserInfo['id'] = $commentToComment->parent_id;
-                    $objectUser = $this->userRepository->getUserById($commentToComment->parent_id);
-                    $objectUserInfo['nickName'] = $objectUser->nickname;
-                    $data2['objectUserInfo'] = $objectUserInfo;
-                    $data2['praise_nums'] = $commentToComment->praise_nums;
-
-                    $if_my_praise = PraiseToReply::where('reply_id',$commentToComment->id)->where('user_id',$comment->user_id)->first();
-
-                    if(count($if_my_praise))
+                    if($commentToComment->available)
                     {
-                        $data2['if_my_praise'] = 1;
-                    }else
-                    {
-                        $data2['if_my_praise'] = 0;
+                        $data2['content'] = $commentToComment->content;
+                        $data2['id'] = $commentToComment->id;
+
+                        $user1 = $this->userRepository->getUserById($commentToComment->user_id);
+                        $userInfo2['id'] = $user1->id;
+                        $userInfo2['nickName'] = $user1->nickname;
+                        $userInfo2['avatarUrl'] = $user1->avatarUrl;
+                        $data2['userInfo'] = $userInfo2;
+
+                        $objectUserInfo['id'] = $commentToComment->parent_id;
+                        $objectUser = $this->userRepository->getUserById($commentToComment->parent_id);
+                        $objectUserInfo['nickName'] = $objectUser->nickname;
+                        $data2['objectUserInfo'] = $objectUserInfo;
+                        $data2['praise_nums'] = $commentToComment->praise_nums;
+
+                        $if_my_praise = PraiseToReply::where('reply_id',$commentToComment->id)->where('user_id',$comment->user_id)->first();
+
+                        if(count($if_my_praise))
+                        {
+                            $data2['if_my_praise'] = 1;
+                        }else
+                        {
+                            $data2['if_my_praise'] = 0;
+                        }
+
+                        $diff_time = $this->postRepository->getTime($commentToComment->created_at);
+                        $data2['created_at'] = $diff_time;
+
+                        $data['replies'][] = $data2;
                     }
 
-                    $diff_time = $this->postRepository->getTime($commentToComment->created_at);
-                    $data2['created_at'] = $diff_time;
-
-                    $data['replies'][] = $data2;
                 }
             }
 

@@ -725,45 +725,49 @@ class PostController extends Controller
                 {
                     foreach ($post_Comments as $postComment)
                     {
-                        $postComments['id'] = $postComment->id;
-                        $postComments['content'] = $postComment->content;
-
-                        $userOfComment = User::where('id',$postComment->user_id)->first();
-                        $commentOfUserInfo['id'] = $userOfComment->id;
-                        $commentOfUserInfo['nickName'] = $userOfComment->nickname;
-                        $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
-                        $postComments['userInfo'] = $commentOfUserInfo;
-
-                        $postComments['created_at'] = $this->postRepository->getTime($postComment->created_at);
-
-                        if($postComment->r_likenum)
+                        if($postComment->available)
                         {
-                            $postComments['praise_nums'] = $postComment->r_likenum;
+                            $postComments['id'] = $postComment->id;
+                            $postComments['content'] = $postComment->content;
+
+                            $userOfComment = User::where('id',$postComment->user_id)->first();
+                            $commentOfUserInfo['id'] = $userOfComment->id;
+                            $commentOfUserInfo['nickName'] = $userOfComment->nickname;
+                            $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
+                            $postComments['userInfo'] = $commentOfUserInfo;
+
+                            $postComments['created_at'] = $this->postRepository->getTime($postComment->created_at);
+
+                            if($postComment->r_likenum)
+                            {
+                                $postComments['praise_nums'] = $postComment->r_likenum;
+                            }
+                            else
+                            {
+                                $postComments['praise_nums'] = 0;
+                            }
+
+                            if($postComment->r_commentnum)
+                            {
+                                $postComments['comment_nums'] = $postComment->r_commentnum;
+                            }
+                            else
+                            {
+                                $postComments['comment_nums'] = 0;
+                            }
+
+
+                            $postComments['if_my_comment'] = 0;
+
+
+
+                            $postComments['if_my_praise'] = 0;
+
+
+                            //在评论循环操作$data1,2,3,4,5,6,7
+                            $dataComment[] = $postComments;
                         }
-                        else
-                        {
-                            $postComments['praise_nums'] = 0;
-                        }
 
-                        if($postComment->r_commentnum)
-                        {
-                            $postComments['comment_nums'] = $postComment->r_commentnum;
-                        }
-                        else
-                        {
-                            $postComments['comment_nums'] = 0;
-                        }
-
-
-                        $postComments['if_my_comment'] = 0;
-
-
-
-                        $postComments['if_my_praise'] = 0;
-
-
-                        //在评论循环操作$data1,2,3,4,5,6,7
-                        $dataComment[] = $postComments;
                     }
                     $datas['comments'] = $dataComment;
                 }
@@ -893,58 +897,62 @@ class PostController extends Controller
                 {
                     foreach ($post_Comments as $postComment)
                     {
-                        $postComments['id'] = $postComment->id;
-                        $postComments['content'] = $postComment->content;
-
-                        $userOfComment = User::where('id',$postComment->user_id)->first();
-                        $commentOfUserInfo['id'] = $userOfComment->id;
-                        $commentOfUserInfo['nickName'] = $userOfComment->nickname;
-                        $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
-                        $postComments['userInfo'] = $commentOfUserInfo;
-
-                        $postComments['created_at'] = $this->postRepository->getTime($postComment->created_at);
-
-                        if($postComment->r_likenum)
+                        if($postComment->available)
                         {
-                            $postComments['praise_nums'] = $postComment->r_likenum;
-                        }
-                        else
-                        {
-                            $postComments['praise_nums'] = 0;
+                            $postComments['id'] = $postComment->id;
+                            $postComments['content'] = $postComment->content;
+
+                            $userOfComment = User::where('id',$postComment->user_id)->first();
+                            $commentOfUserInfo['id'] = $userOfComment->id;
+                            $commentOfUserInfo['nickName'] = $userOfComment->nickname;
+                            $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
+                            $postComments['userInfo'] = $commentOfUserInfo;
+
+                            $postComments['created_at'] = $this->postRepository->getTime($postComment->created_at);
+
+                            if($postComment->r_likenum)
+                            {
+                                $postComments['praise_nums'] = $postComment->r_likenum;
+                            }
+                            else
+                            {
+                                $postComments['praise_nums'] = 0;
+                            }
+
+                            if($postComment->r_commentnum)
+                            {
+                                $postComments['comment_nums'] = $postComment->r_commentnum;
+                            }
+                            else
+                            {
+                                $postComments['comment_nums'] = 0;
+                            }
+
+
+                            $if_my_comment = CommentToComment::where('comment_id',$postComment->id)->where('user_id',$user->id)->first();
+                            if($if_my_comment)
+                            {
+                                $postComments['if_my_comment'] = 1;
+                            }
+                            else
+                            {
+                                $postComments['if_my_comment'] = 0;
+                            }
+
+                            $if_my_praise = PraiseToComment::where('comment_id',$postComment->id)->where('user_id',$user->id)->first();
+                            if($if_my_praise)
+                            {
+                                $postComments['if_my_praise'] = 1;
+                            }
+                            else
+                            {
+                                $postComments['if_my_praise'] = 0;
+                            }
+
+                            //在评论循环操作$data1,2,3,4,5,6,7
+                            $dataComment[] = $postComments;
                         }
 
-                        if($postComment->r_commentnum)
-                        {
-                            $postComments['comment_nums'] = $postComment->r_commentnum;
-                        }
-                        else
-                        {
-                            $postComments['comment_nums'] = 0;
-                        }
-
-
-                        $if_my_comment = CommentToComment::where('comment_id',$postComment->id)->where('user_id',$user->id)->first();
-                        if($if_my_comment)
-                        {
-                            $postComments['if_my_comment'] = 1;
-                        }
-                        else
-                        {
-                            $postComments['if_my_comment'] = 0;
-                        }
-
-                        $if_my_praise = PraiseToComment::where('comment_id',$postComment->id)->where('user_id',$user->id)->first();
-                        if($if_my_praise)
-                        {
-                            $postComments['if_my_praise'] = 1;
-                        }
-                        else
-                        {
-                            $postComments['if_my_praise'] = 0;
-                        }
-
-                        //在评论循环操作$data1,2,3,4,5,6,7
-                        $dataComment[] = $postComments;
                     }
                     $datas['comments'] = $dataComment;
                 }

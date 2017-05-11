@@ -339,6 +339,8 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
     );
 
     public static $classMap = array (
+        'AddAvailableToCommentToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_003438_add_available_to_commentToComments_table.php',
+        'AddAvailableToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_003257_add_available_to_comments_table.php',
         'AddChangeToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_14_054240_add_change_to_postings_table.php',
         'AddColumnsToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_024341_add_columns_to_comments_table.php',
         'AddColumnsToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
