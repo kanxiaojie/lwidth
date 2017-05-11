@@ -9,7 +9,10 @@ use App\CommentToComment;
 use App\Post;
 use App\Praise;
 use App\PraiseToComment;
+use App\ReportComment;
 use App\ReportPost;
+use App\ReportReply;
+use App\ReportUser;
 use App\Repositories\BaseRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
@@ -95,6 +98,149 @@ class BadReportTypeController extends Controller
 
                 }
                 $reportPost->save();
+
+                return response()->json(['code' => 200,'message' => 'report successfully.']);
+
+            }
+            else
+            {
+                return response()->json(['code' => 201,'message' => 'Post does not exist.']);
+            }
+        }
+    }
+
+    public function reportComment(Request $request, $id)
+    {
+        $wesecret = $request->get('wesecret');
+        $badReport_type = $request->get('badReport_type');
+        $badReport_content = $request->get('badReport_content');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 201,'message' => 'User Does Not Exist!']);
+        }
+        else
+        {
+            $comment = $this->commentRepository->getCommentById($id);
+            $bad_report_type = BadReportType::where('id',$badReport_type)->first();
+            if(count($comment))
+            {
+                $reportComment = new ReportComment();
+                $reportComment->badReport_type = $badReport_type;
+                $reportComment->badReport_name = $bad_report_type->name;
+                $reportComment->badReport_content = $badReport_content;
+                $reportComment->reported_userId = $comment->user_id;
+                if($comment->user->nickname)
+                {
+                    $reportComment->reported_userName = $comment->user->nickname;
+                }
+
+                $reportComment->comment_id = $comment->id;
+                $reportComment->comment_content =$comment->content ;
+                $reportComment->report_userId = $user->nickname;
+                if($user->nickname)
+                {
+                    $reportComment->report_userName = $user->nickname;
+                }
+                $reportComment->save();
+
+                return response()->json(['code' => 200,'message' => 'report successfully.']);
+
+            }
+            else
+            {
+                return response()->json(['code' => 201,'message' => 'Post does not exist.']);
+            }
+        }
+    }
+
+    public function reportReply(Request $request, $id)
+    {
+        $wesecret = $request->get('wesecret');
+        $badReport_type = $request->get('badReport_type');
+        $badReport_content = $request->get('badReport_content');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 201,'message' => 'User Does Not Exist!']);
+        }
+        else
+        {
+            $reply = $this->commentRepository->getCommentToCommentById($id);
+            $bad_report_type = BadReportType::where('id',$badReport_type)->first();
+            if(count($reply))
+            {
+                $reportReply = new ReportReply();
+                $reportReply->badReport_type = $badReport_type;
+                $reportReply->badReport_name = $bad_report_type->name;
+                $reportReply->badReport_content = $badReport_content;
+                $reportReply->reported_userId = $reply->user_id;
+                $User = User::where('id',$reply->user_id)->first();
+                if($User->nickname)
+                {
+                    $reportReply->reported_userName = $User->nickname;
+                }
+
+                $reportReply->reply_id = $reply->id;
+                $reportReply->reply_content =$reply->content ;
+                $reportReply->report_userId = $user->nickname;
+                if($user->nickname)
+                {
+                    $reportReply->report_userName = $user->nickname;
+                }
+                $reportReply->save();
+
+                return response()->json(['code' => 200,'message' => 'report successfully.']);
+
+            }
+            else
+            {
+                return response()->json(['code' => 201,'message' => 'Post does not exist.']);
+            }
+        }
+    }
+
+    public function reportUser(Request $request, $id)
+    {
+        $wesecret = $request->get('wesecret');
+        $badReport_type = $request->get('badReport_type');
+        $badReport_content = $request->get('badReport_content');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 201,'message' => 'User Does Not Exist!']);
+        }
+        else
+        {
+            $ReportedUser = $this->userRepository->getUserById($id);
+            $bad_report_type = BadReportType::where('id',$badReport_type)->first();
+            if(count($ReportedUser))
+            {
+                $reportUser = new ReportUser();
+                $reportUser->badReport_type = $badReport_type;
+                $reportUser->badReport_name = $bad_report_type->name;
+                $reportUser->badReport_content = $badReport_content;
+                $reportUser->reported_userId = $ReportedUser->id;
+                if($ReportedUser->nickname)
+                {
+                    $reportUser->reported_userName = $ReportedUser->nickname;
+                }
+
+                $reportUser->report_userId = $user->nickname;
+                if($user->nickname)
+                {
+                    $reportUser->report_userName = $user->nickname;
+                }
+                $reportUser->save();
 
                 return response()->json(['code' => 200,'message' => 'report successfully.']);
 

@@ -104,4 +104,7 @@ $app->get('/api/badReportTypes','BadReportTypeController@getBadReportTypes');
 
 //举报某条帖子
 $app->post('api/badReports/love/{id}','BadReportTypeController@reportPost');
+$app->post('api/badReports/comment/{id}','BadReportTypeController@reportComment');
+$app->post('api/badReports/reply/{id}','BadReportTypeController@reportReply');
+$app->post('api/badReports/user/{id}','BadReportTypeController@reportUser');
 
