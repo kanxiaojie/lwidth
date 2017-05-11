@@ -99,4 +99,6 @@ $app->post('/api/delete/comment','CommentController@deleteComment');
 //删除某条回复
 $app->post('/api/delete/reply','CommentController@deleteReply');
 
+//获取所有的举报类型
+$app->get('/api/badReportTypes','BadReportTypeController@getBadReportTypes');
 
