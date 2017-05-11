@@ -102,3 +102,6 @@ $app->post('/api/delete/reply','CommentController@deleteReply');
 //获取所有的举报类型
 $app->get('/api/badReportTypes','BadReportTypeController@getBadReportTypes');
 
+//举报某条帖子
+$app->post('api/badReports/love/{id}','BadReportTypeController@reportPost');
+
