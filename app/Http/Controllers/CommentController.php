@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\CommentToComment;
 use App\PraiseToComment;
 use App\PraiseToReply;
@@ -211,6 +212,11 @@ class CommentController extends Controller
             {
                 if($comment->user_id == $user->id)
                 {
+                    if($comment->post->commentnum >= 1)
+                    {
+                        $comment->post->commentnum -= 1;
+                        $comment->post->save();
+                    }
                     $comment->delete();
 
                     $replies = CommentToComment::where('comment_id',$comment_id)->get();
@@ -255,6 +261,12 @@ class CommentController extends Controller
             {
                 if($reply->user_id == $user->id)
                 {
+                    $comment = Comment::where('id',$reply->comment_id)->first();
+                    if($comment->r_commentnum)
+                    {
+                        $comment->r_commentnum -= 1;
+                        $comment->save();
+                    }
                     $reply->delete();
 
                     return response()->json(['status' => 200]);
