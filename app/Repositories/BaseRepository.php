@@ -40,7 +40,7 @@ class BaseRepository
         $accessKey= "WR4zSNb376JZyEq6TQx9pJ9DSherW9xFKO9Ls2zB";
         $secretKey= "z7_Jx8-sCMGUFmrP5bPqM_GOT2FiIq3AEeEoQKZE";
         $auth=new Auth($accessKey, $secretKey);
-        $bucket= "lovewall";//上传空间名称
+        $bucket= "shangongyuan";//上传空间名称
         //设置put policy的其他参数
         //$opts=['callbackUrl'=>'http://www.callback.com/','callbackBody'=>'name=$(fname)&hash=$(etag)','returnUrl'=>"http://www.baidu.com"];
         return $auth->uploadToken($bucket);//生成token
@@ -61,7 +61,7 @@ class BaseRepository
             $res['status'] = 201;
             return $res;
         }else{
-            $picturePath = 'http://onh8wwwjp.bkt.clouddn.com/'.$ret["key"];
+            $picturePath = 'http://opwb0u316.bkt.clouddn.com/'.$ret["key"];
         }
 
 
