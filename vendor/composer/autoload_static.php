@@ -349,6 +349,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'AddPraiseNumsToCommentToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_10_055239_add_praise_nums_to_commentToComments_table.php',
         'AddReadnumToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_28_063050_add_readnum_to_postings_table.php',
         'AddReportUserToReportPostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_012913_add_report_user_to_reportPosts_table.php',
+        'AddRoleToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_19_141419_add_role_to_users_table.php',
         'AddStringToProfilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_14_154518_add_string_to_profiles_table.php',
         'AddVideoAnonymousToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_10_145930_add_video_anonymous_to_postings_table.php',
         'AddVisiableToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_31_134724_add_visiable_to_postings_table.php',
