@@ -36,6 +36,7 @@ return array(
     'CreatePostsTable' => $baseDir . '/database/migrations/2017_03_13_130837_create_posts_table.php',
     'CreatePraiseToCommentsTable' => $baseDir . '/database/migrations/2017_03_26_024551_create_praiseToComments_table.php',
     'CreatePraiseToReplyTable' => $baseDir . '/database/migrations/2017_05_10_054421_create_praiseToReply_table.php',
+    'CreatePraiseUsersTable' => $baseDir . '/database/migrations/2017_05_20_154034_create_praiseUsers_table.php',
     'CreatePraisesTable' => $baseDir . '/database/migrations/2017_03_24_024030_create_praises_table.php',
     'CreateProfilesTable' => $baseDir . '/database/migrations/2017_03_16_074534_create_profiles_table.php',
     'CreateProvincesTable' => $baseDir . '/database/migrations/2017_03_28_072011_create_provinces_table.php',

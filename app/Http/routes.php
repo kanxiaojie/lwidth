@@ -118,3 +118,6 @@ $app->get('/api/uptoken','UploadToQiniuController@getUpToken');
 
 //获取我未读的帖子数
 $app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');
+
+//对用户点赞/取消点赞
+$app->post('/api/users/{id}/praises','PraiseController@praiseToUser');

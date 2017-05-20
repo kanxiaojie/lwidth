@@ -369,6 +369,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'CreatePostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_13_130837_create_posts_table.php',
         'CreatePraiseToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_024551_create_praiseToComments_table.php',
         'CreatePraiseToReplyTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_10_054421_create_praiseToReply_table.php',
+        'CreatePraiseUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_20_154034_create_praiseUsers_table.php',
         'CreatePraisesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_24_024030_create_praises_table.php',
         'CreateProfilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_16_074534_create_profiles_table.php',
         'CreateProvincesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_28_072011_create_provinces_table.php',

@@ -6,6 +6,7 @@ use App\College;
 use App\Country;
 use App\Gender;
 use App\Grade;
+use App\PraiseUser;
 use App\Profile;
 use App\Repositories\BaseRepository;
 use App\Repositories\UserRepository;
@@ -75,6 +76,7 @@ class UserController extends Controller
     public function getUserInfo(Request $request, $id)
     {
         $user = $this->userRepository->getUserById($id);
+        $wesecret = $request->get('wesecret');
 
         $userInfo = [];
         if($user)
@@ -310,6 +312,26 @@ class UserController extends Controller
                 $userInfo['age'] = '';
             }
             $userInfo['constellation'] = $profile->constellation;
+            if($wesecret)
+            {
+                $openid = $this->baseRepository->decryptCode($wesecret);
+                $whoPraise = $this->userRepository->getUserByOpenId($openid);
+
+                $praiseUser = PraiseUser::where('praise_user_id',$whoPraise->id)->where('praised_user_id',$user->id)->first();
+                if($praiseUser)
+                {
+                    $userInfo['if_my_praise'] = 1;
+                }else
+                {
+                    $userInfo['if_my_praise'] = 0;
+                }
+            }
+            else
+            {
+                $userInfo['if_my_praise'] = 0;
+            }
+
+
 
             return response()->json(['status'=>200,'data'=>$userInfo]);
         }else
