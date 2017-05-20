@@ -214,6 +214,10 @@ class UserController extends Controller
             {
                 $userInfo['mobilePhone'] = '';
             }
+            $userInfo['role'] = $updateUser->role;
+            $userInfo['trust'] = $updateUser->trust;
+            $userInfo['available'] = $updateUser->available;
+
 
             $profile = Profile::where('user_id',$updateUser->id)->first();
 
