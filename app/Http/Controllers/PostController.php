@@ -367,7 +367,7 @@ class PostController extends Controller
 
             $posts = $this->postRepository->getPostListZero($search);
 
-            if(empty($posts))
+            if(count($posts) == 0)
             {
                 $datas = [];
             }
