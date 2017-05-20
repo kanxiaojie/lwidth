@@ -129,4 +129,13 @@ class UploadToQiniuController extends Controller
 
     }
 
+    public function getUpToken()
+    {
+        $data = [];
+        $token = $this->getToken();
+        $data['uptoken'] = $token;
+
+        return response()->json(['code' => 100,'message' => 'success','data' => $data]);
+    }
+
 }
