@@ -115,3 +115,5 @@ $app->get('api/myCommentLoves','CommentController@getMyComments');
 //从后端获取上传图片到七牛云所需要的 uptoken
 $app->get('/api/uptoken','UploadToQiniuController@getUpToken');
 
+//获取我未读的帖子数
+$app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');

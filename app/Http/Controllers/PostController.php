@@ -1476,5 +1476,41 @@ class PostController extends Controller
         }
     }
 
+    public function getUnreadLoveNums(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $post_id = $request->get('love_id');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 201,'message' => 'User Does Not Exist!']);
+        }else{
+            $post = $this->postRepository->getPost($post_id);
+
+            if($post)
+            {
+                $created_time = $post->created_at;
+
+                $nums = count(Post::where('created_at','>',$created_time)->get());
+                if($nums)
+                {
+                    $unreadLoveNums = $nums;
+                }else
+                {
+                    $unreadLoveNums = 0;
+                }
+
+                return response()->json(['status' => 200,'message' => 'success','unreadLoveNums' => $unreadLoveNums]);
+
+            }else
+            {
+                return response()->json(['status' => 201,'message' => 'Post Does Not Exist.']);
+            }
+        }
+    }
+
 
 }
