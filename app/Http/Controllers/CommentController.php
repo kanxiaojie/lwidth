@@ -442,4 +442,159 @@ class CommentController extends Controller
             return response()->json(['status' => 200,'data' => $datas]);
         }
     }
+
+    public function getMyPraisePosts(Request $request)
+    {
+        $search = $request->get('search');
+        $wesecret = $request->get('wesecret');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
+        }else
+        {
+            $postIds = Praise::where('user_id',$user->id)->pluck('post_id');
+
+            $posts = Post::where(function ($query) use($search){
+                if(!empty($search))
+                {
+                    $query->whereHas('user',function ($queryUser) use ($search){
+                        $queryUser->where('realname','LIKE','%'.$search.'%')
+                            ->orWhere('nickname','LIKE','%'.$search.'%');
+                    })
+                        ->orWhereHas('user.college',function ($queryCollege) use ($search){
+                            $queryCollege->where('name','LIKE','%'.$search.'%');
+                        })
+                        ->orWhere('content','LIKE','%'.$search.'%');
+                }
+            })
+                ->where('visiable',0)
+                ->whereIn('id',$postIds)
+                ->orderBy('created_at','desc')->paginate(5);
+
+            $data = array();
+            $datas = array();
+
+            if(count($posts))
+            {
+                foreach ($posts as $post)
+                {
+                    $userInfo = array();
+                    if($post->user->available)
+                    {
+                        $data['id'] = $post->id;
+                        $data['content'] = $post->content;
+
+                        if(!empty($post->pictures))
+                        {
+                            if(substr(trim($post->pictures),-1) == ',')
+                            {
+                                $data['images'] = explode(',',$post->pictures);
+                            }else {
+                                $data['images'] = explode(',',$post->pictures);
+                            }
+                        }
+                        else
+                        {
+                            $data['images'] = [];
+                        }
+
+                        $user =User::where('id',$post->user_id)->first();
+                        if($post->anonymous == 1)
+                        {
+                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $userInfo['id'] = $anonymousUser->id;
+                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+
+                        }else
+                        {
+                            $userInfo['id'] = $post->user_id;
+                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['avatarUrl'] =  $user->avatarUrl;
+                        }
+
+
+                        if(!empty($user->college_id))
+                        {
+                            $userInfo['college'] = College::where('id',(int)($user->college_id))->first()->name;
+                        }
+                        else
+                        {
+                            $userInfo['college'] = '';
+                        }
+                        $data['userInfo'] = $userInfo;
+
+                        $diff_time = $this->postRepository->getTime($post->created_at);
+
+                        $data['created_at'] = $diff_time;
+
+                        if($post->likenum)
+                        {
+                            $data['praise_nums'] = $post->likenum;
+                        }
+                        else
+                        {
+                            $data['praise_nums'] = 0;
+                        }
+
+                        if($post->commentnum)
+                        {
+                            $data['comment_nums'] = $post->commentnum;
+                        }
+                        else
+                        {
+                            $data['comment_nums'] = 0;
+                        }
+
+                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_comment)
+                        {
+                            $data['if_my_comment'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_comment'] = 0;
+                        }
+
+                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_praise)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_praise'] = 0;
+                        }
+
+                        if($post->location)
+                        {
+                            $location = explode(',',$post->location);
+
+                            $data['location']['name'] = $location[2];
+                            $data['location']['address'] = $location[3];
+                            $data['location']['longitude'] = $location[1];
+                            $data['location']['latitude'] = $location[0];
+
+                        }
+                        else
+                        {
+                            $data['location'] = '';
+                        }
+
+                        $datas[] = $data;
+
+                    }
+                }
+            }else
+            {
+                $datas = [];
+            }
+
+            return response()->json(['status' => 200,'data' => $datas]);
+        }
+    }
 }

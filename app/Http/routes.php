@@ -110,7 +110,8 @@ $app->post('api/badReports/user/{id}','BadReportTypeController@reportUser');
 
 
 //获取我评论过的帖子/我赞过的帖子  (新增需求提示  只要是获取表白列表的  都需要支持 page search  wesecret参数)
-$app->get('api/myCommentLoves','CommentController@getMyComments');
+$app->get('api/myCommentLoves','CommentController@getMyCommentPosts');
+$app->get('api/myPraiseLoves','CommentController@getMyPraisePosts');
 
 //从后端获取上传图片到七牛云所需要的 uptoken
 $app->get('/api/uptoken','UploadToQiniuController@getUpToken');
