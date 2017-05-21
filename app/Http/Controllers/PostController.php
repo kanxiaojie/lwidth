@@ -8,6 +8,7 @@ use App\CommentToComment;
 use App\Post;
 use App\Praise;
 use App\PraiseToComment;
+use App\PraiseToReply;
 use App\Repositories\BaseRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
@@ -1508,6 +1509,391 @@ class PostController extends Controller
             }else
             {
                 return response()->json(['status' => 201,'message' => 'Post Does Not Exist.']);
+            }
+        }
+    }
+
+    public function getLonePost(Request $request, $id)
+    {
+        $wesecret = $request->get('wesecret');
+
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        }
+
+        $data = array();
+        $datas = array();
+
+        if(empty($wesecret))
+        {
+            $post = $this->postRepository->getPost($id);
+
+            if(count($post))
+            {
+                $userInfo = array();
+                if($post->user->available)
+                {
+                    $data['id'] = $post->id;
+                    $data['content'] = $post->content;
+
+                    if(!empty($post->pictures))
+                    {
+                        if(substr(trim($post->pictures),-1) == ',')
+                        {
+                            $data['images'] = explode(',',$post->pictures);
+                        }else {
+                            $data['images'] = explode(',',$post->pictures);
+                        }
+                    }
+                    else
+                    {
+                        $data['images'] = [];
+                    }
+
+                    if($post->location)
+                    {
+                        $location = explode(',',$post->location);
+
+                        $data['location']['name'] = $location[2];
+                        $data['location']['address'] = $location[3];
+                        $data['location']['longitude'] = $location[1];
+                        $data['location']['latitude'] = $location[0];
+
+                    }
+                    else
+                    {
+                        $data['location'] = '';
+                    }
+
+                    $user =User::where('id',$post->user_id)->first();
+//                    if($post->anonymous == 1)
+//                    {
+//                        $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+//                        $userInfo['id'] = $anonymousUser->id;
+//                        $userInfo['nickName'] = $anonymousUser->nickname;
+//                        $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+//
+//                    }else
+//                    {
+                        $userInfo['id'] = $post->user_id;
+                        $userInfo['nickName'] = $user->nickname;
+                        $userInfo['avatarUrl'] =  $user->avatarUrl;
+//                    }
+
+                    $data['userInfo'] = $userInfo;
+
+                    $diff_time = $this->postRepository->getTime($post->created_at);
+
+                    $data['created_at'] = $diff_time;
+
+                    $data['readnum'] = $post->readnum;
+
+                    if($post->likenum)
+                    {
+                        $data['praise_nums'] = $post->likenum;
+                    }
+                    else
+                    {
+                        $data['praise_nums'] = 0;
+                    }
+
+                    if($post->commentnum)
+                    {
+                        $data['comment_nums'] = $post->commentnum;
+                    }
+                    else
+                    {
+                        $data['comment_nums'] = 0;
+                    }
+
+                    $data['if_my_comment'] = 0;
+
+                    $data['if_my_praise'] = 0;
+
+                    $datas[] = $data;
+
+                }
+            }
+            else
+            {
+                $datas = [];
+            }
+
+            return response()->json(['status' => 200,'data' => $datas]);
+        }elseif ((!empty($wesecret)) && ($user))
+        {
+            $post = $this->postRepository->getPost($id);
+
+            if(count($post))
+            {
+                $userInfo = array();
+                if($post->user->available)
+                {
+                    $data['id'] = $post->id;
+                    $data['content'] = $post->content;
+
+                    if(!empty($post->pictures))
+                    {
+                        if(substr(trim($post->pictures),-1) == ',')
+                        {
+                            $data['images'] = explode(',',$post->pictures);
+                        }else {
+                            $data['images'] = explode(',',$post->pictures);
+                        }
+                    }
+                    else
+                    {
+                        $data['images'] = [];
+                    }
+
+                    if($post->location)
+                    {
+                        $location = explode(',',$post->location);
+
+                        $data['location']['name'] = $location[2];
+                        $data['location']['address'] = $location[3];
+                        $data['location']['longitude'] = $location[1];
+                        $data['location']['latitude'] = $location[0];
+
+                    }
+                    else
+                    {
+                        $data['location'] = '';
+                    }
+
+                    $postuser =User::where('id',$post->user_id)->first();
+
+                    $userInfo['id'] = $post->user_id;
+                    $userInfo['nickName'] = $postuser->nickname;
+                    $userInfo['avatarUrl'] =  $postuser->avatarUrl;
+
+                    $data['userInfo'] = $userInfo;
+
+                    $diff_time = $this->postRepository->getTime($post->created_at);
+
+                    $data['created_at'] = $diff_time;
+
+                    $data['readnum'] = $post->readnum;
+
+                    if($post->likenum)
+                    {
+                        $data['praise_nums'] = $post->likenum;
+                    }
+                    else
+                    {
+                        $data['praise_nums'] = 0;
+                    }
+
+                    if($post->commentnum)
+                    {
+                        $data['comment_nums'] = $post->commentnum;
+                    }
+                    else
+                    {
+                        $data['comment_nums'] = 0;
+                    }
+
+                    $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    if($if_my_comment)
+                    {
+                        $data['if_my_comment'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_comment'] = 0;
+                    }
+
+                    $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    if($if_my_praise)
+                    {
+                        $data['if_my_praise'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_praise'] = 0;
+                    }
+
+                    $datas[] = $data;
+
+                }
+            }
+            else
+            {
+                $datas = [];
+            }
+
+            return response()->json(['status' => 200,'data' => $datas]);
+        }
+    }
+
+
+    public function getPostAllComments(Request $request, $id)
+    {
+        $wesecret = $request->get('wesecret');
+
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        }
+
+        $data = array();
+        $datas = array();
+
+        $commentUserInfo = array();
+        $replyUserInfo = array();
+        $replys = [];
+        $objectUserInfo = [];
+
+        if(empty($wesecret))
+        {
+            $comments = Comment::where('post_id',$id)->paginate(10);
+            if(count($comments))
+            {
+                foreach ($comments as $comment)
+                {
+                    $data['id'] =  $comment->id;
+                    $data['content'] = $comment->content;
+                    $commentuser =User::where('id',$comment->user_id)->first();
+
+                    $commentUserInfo['id'] = $commentuser->user_id;
+                    $commentUserInfo['nickName'] = $commentuser->nickname;
+                    $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
+                    $data['userInfo'] = $commentUserInfo;
+
+                    $diff_time = $this->postRepository->getTime($comment->created_at);
+                    $data['created_at'] = $diff_time;
+
+                    $data['reply_nums'] = $comment->r_commentnum;
+                    $replies = CommentToComment::where('comment_id',$comment->id)->limit(3)->get();
+                    if(count($replies))
+                    {
+                        foreach ($replies as $reply)
+                        {
+                            $replys['id'] = $reply->id;
+                            $replys['content'] = $reply->content;
+
+                            $user1 = $this->userRepository->getUserById($reply->user_id);
+                            $replyUserInfo['id'] = $user1->id;
+                            $replyUserInfo['nickName'] = $user1->nickname;
+                            $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
+                            $replys['userInfo'] = $replyUserInfo;
+
+                            $objectUserInfo['id'] = $reply->parent_id;
+                            $objectUser = $this->userRepository->getUserById($reply->parent_id);
+                            $objectUserInfo['nickName'] = $objectUser->nickname;
+                            $replys['objectUserInfo'] = $objectUserInfo;
+                            $replys['praise_nums'] = $reply->praise_nums;
+                            $replys['if_my_praise'] = 0;
+
+                            $diff_time = $this->postRepository->getTime($reply->created_at);
+                            $replys['created_at'] = $diff_time;
+                            $data['replies'][] = $replys;
+                        }
+                    }else
+                    {
+                        $data['replies'] = [];
+                    }
+
+                    $data['praise_nums'] = $comment->r_likenum;
+                    $data['if_my_comment'] = 0;
+                    $data['if_my_praise'] = 0;
+                }
+
+                return response()->json(['status' => 200,'data' => $datas]);
+            }
+            else
+            {
+                return response()->json(['status' => 200,'data' => $datas]);
+            }
+        }
+        elseif ((!empty($wesecret)) && ($user))
+        {
+            $comments = Comment::where('post_id',$id)->paginate(10);
+            if(count($comments))
+            {
+                foreach ($comments as $comment)
+                {
+                    $data['id'] =  $comment->id;
+                    $data['content'] = $comment->content;
+                    $commentuser =User::where('id',$comment->user_id)->first();
+
+                    $commentUserInfo['id'] = $commentuser->user_id;
+                    $commentUserInfo['nickName'] = $commentuser->nickname;
+                    $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
+                    $data['userInfo'] = $commentUserInfo;
+
+                    $diff_time = $this->postRepository->getTime($comment->created_at);
+                    $data['created_at'] = $diff_time;
+
+                    $data['reply_nums'] = $comment->r_commentnum;
+                    $replies = CommentToComment::where('comment_id',$comment->id)->limit(3)->get();
+                    if(count($replies))
+                    {
+                        foreach ($replies as $reply)
+                        {
+                            $replys['id'] = $reply->id;
+                            $replys['content'] = $reply->content;
+
+                            $user1 = $this->userRepository->getUserById($reply->user_id);
+                            $replyUserInfo['id'] = $user1->id;
+                            $replyUserInfo['nickName'] = $user1->nickname;
+                            $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
+                            $replys['userInfo'] = $replyUserInfo;
+
+                            $objectUserInfo['id'] = $reply->parent_id;
+                            $objectUser = $this->userRepository->getUserById($reply->parent_id);
+                            $objectUserInfo['nickName'] = $objectUser->nickname;
+                            $replys['objectUserInfo'] = $objectUserInfo;
+                            $replys['praise_nums'] = $reply->praise_nums;
+
+                            $praiseToReply = PraiseToReply::where('reply_id',$reply->id)
+                                ->where('user_id',$user->id)->first();
+                            if(count($praiseToReply))
+                            {
+                                $replys['if_my_praise'] = 1;
+                            }else
+                            {
+                                $replys['if_my_praise'] = 0;
+                            }
+
+                            $diff_time = $this->postRepository->getTime($reply->created_at);
+                            $replys['created_at'] = $diff_time;
+                            $data['replies'][] = $replys;
+                        }
+                    }else
+                    {
+                        $data['replies'] = [];
+                    }
+
+                    $data['praise_nums'] = $comment->r_likenum;
+                    $if_my_comment = Comment::where('user_id',$user->id)
+                        ->where('post_id',$id)->first();
+                    if(count($if_my_comment))
+                    {
+                        $data['if_my_comment'] = 1;
+                    }else
+                    {
+                        $data['if_my_comment'] = 0;
+                    }
+
+                    $if_my_praise = Praise::where('post_id',$id)->where('user_id',$user->id)->first();
+                    if($if_my_praise)
+                    {
+                        $data['if_my_praise'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_praise'] = 0;
+                    }
+
+                }
+            }
+            else
+            {
+                return response()->json(['status' => 200,'data' => $datas]);
             }
         }
     }

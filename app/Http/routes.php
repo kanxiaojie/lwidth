@@ -121,3 +121,9 @@ $app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');
 
 //对用户点赞/取消点赞
 $app->post('/api/users/{id}/praises','PraiseController@praiseToUser');
+
+//22-1-1   获取单个表白
+$app->get('/api/loves/{id}','PostController@getLonePost');
+
+//获取某个表白的所有评论
+$app->get('/api/loves/{id}/comments','PostController@getPostAllComments');
