@@ -502,7 +502,7 @@ class CommentController extends Controller
                             $data['images'] = [];
                         }
 
-                        $user =User::where('id',$post->user_id)->first();
+                        $User =User::where('id',$post->user_id)->first();
                         if($post->anonymous == 1)
                         {
                             $anonymousUser = User::where('college_id',$post->user->college_id)->first();
@@ -513,8 +513,8 @@ class CommentController extends Controller
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $user->nickname;
-                            $userInfo['avatarUrl'] =  $user->avatarUrl;
+                            $userInfo['nickName'] = $User->nickname;
+                            $userInfo['avatarUrl'] =  $User->avatarUrl;
                         }
 
 
@@ -596,5 +596,140 @@ class CommentController extends Controller
 
             return response()->json(['status' => 200,'data' => $datas]);
         }
+    }
+
+    public function getCommentInfo(Request $request,$id)
+    {
+        $wesecret = $request->get('wesecret');
+
+        $data = array();
+        $userInfo = array();
+
+        $comment = $this->commentRepository->getCommentById($id);
+        if(count($comment))
+        {
+            $data['id'] = $comment->id;
+            $data['content'] = $comment->content;
+
+            $user = User::where('id',$comment->user_id)->first();
+            $userInfo['id'] = $user->id;
+            $userInfo['nickName'] = $user->nickname;
+            $userInfo['avatarUrl'] =  $user->avatarUrl;
+            $data['userInfo'] = $userInfo;
+
+            $diff_time = $this->postRepository->getTime($comment->created_at);
+            $data['created_at'] = $diff_time;
+
+            $data['reply_nums'] = $comment->r_commentnum;
+            if(empty($wesecret))
+            {
+                $data['if_my_comment'] = 0;
+                $data['if_my_praise'] = 0;
+            }else
+            {
+                $openid = $this->baseRepository->decryptCode($wesecret);
+                $wesecretUser = $this->userRepository->getUserByOpenId($openid);
+
+                if($wesecretUser)
+                {
+                    $if_my_comment = CommentToComment::where('comment_id',$comment->id)
+                        ->where('user_id',$wesecretUser->id)->first();
+                    if($if_my_comment)
+                    {
+                        $data['if_my_comment'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_comment'] = 0;
+                    }
+
+                    $if_my_praise = PraiseToComment::where('comment_id',$comment->id)
+                        ->where('user_id',$wesecretUser->id)->first();
+                    if($if_my_praise)
+                    {
+                        $data['if_my_praise'] = 1;
+                    }
+                    else
+                    {
+                        $data['if_my_praise'] = 0;
+                    }
+                }
+                else
+                {
+                    $data['if_my_comment'] = 0;
+                    $data['if_my_praise'] = 0;
+                }
+            }
+
+            return response()->json(['status' => 200,'message' => 'success.','data' => $data]);
+        }
+        else
+        {
+            return response()->json(['status' => 201,'message' => 'The Comment Doest Not Exist.']);
+        }
+
+    }
+
+    public function getCommentReplyInfos(Request $request,$id)
+    {
+        $wesecret = $request->get('wesecret');
+
+        $data = array();
+        $datas = array();
+        $userInfo = array();
+        $objectUserInfo = array();
+
+        $replies = CommentToComment::where('comment_id',$id)->paginate(10);
+        if($replies)
+        {
+            foreach ($replies as $reply)
+            {
+                $data['id'] = $reply->id;
+                $data['content'] = $reply->content;
+
+                $replyUser = User::where('id',$reply->user_id)->first();
+                $userInfo['id'] = $replyUser->id;
+                $userInfo['nickName'] = $replyUser->nickname;
+                $userInfo['avatarUrl'] = $replyUser->avatarUrl;
+                $data['userInfo'] = $userInfo;
+
+                $objectUser = User::where('id',$reply->parent_id)->first();
+                $objectUserInfo['id'] = $objectUser->id;
+                $objectUserInfo['nickName'] = $objectUser->nickname;
+                $data['objectUserInfo'] = $objectUserInfo;
+
+                $data['praise_nums'] = $reply->praise_nums;
+                if(empty($wesecret))
+                {
+                    $data['if_my_praise'] = 0;
+                }else
+                {
+                    $openid = $this->baseRepository->decryptCode($wesecret);
+                    $wesecretUser = $this->userRepository->getUserByOpenId($openid);
+                    if($wesecretUser)
+                    {
+                        $praiseToReply = PraiseToReply::where('user_id',$wesecretUser->id)
+                            ->where('reply_id',$reply->id)->first();
+                        if($praiseToReply)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }else{
+                            $data['if_my_praise'] = 0;
+                        }
+                    }
+                    else
+                    {
+                        $data['if_my_praise'] = 0;
+                    }
+                }
+                $diff_time = $this->postRepository->getTime($reply->created_at);
+                $data['created_at'] = $diff_time;
+
+                $datas[] = $data;
+
+            }
+        }
+
+        return response()->json(['status' => 200,'message' => 'success','data' =>$datas]);
     }
 }

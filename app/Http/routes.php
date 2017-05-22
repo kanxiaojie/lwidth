@@ -127,3 +127,8 @@ $app->get('/api/loves/{id}','PostController@getLonePost');
 
 //获取某个表白的所有评论
 $app->get('/api/loves/{id}/comments','PostController@getPostAllComments');
+
+//获取单条评论
+$app->get('/api/comments/{id}','CommentController@getCommentInfo');
+//获取某条评论的所有回复
+$app->get('/api/comments/{id}/replies','CommentController@getCommentReplyInfos');
