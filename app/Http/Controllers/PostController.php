@@ -1568,19 +1568,10 @@ class PostController extends Controller
                     }
 
                     $user =User::where('id',$post->user_id)->first();
-//                    if($post->anonymous == 1)
-//                    {
-//                        $anonymousUser = User::where('college_id',$post->user->college_id)->first();
-//                        $userInfo['id'] = $anonymousUser->id;
-//                        $userInfo['nickName'] = $anonymousUser->nickname;
-//                        $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
-//
-//                    }else
-//                    {
-                        $userInfo['id'] = $post->user_id;
-                        $userInfo['nickName'] = $user->nickname;
-                        $userInfo['avatarUrl'] =  $user->avatarUrl;
-//                    }
+
+                    $userInfo['id'] = $post->user_id;
+                    $userInfo['nickName'] = $user->nickname;
+                    $userInfo['avatarUrl'] =  $user->avatarUrl;
 
                     $data['userInfo'] = $userInfo;
 
@@ -1612,16 +1603,15 @@ class PostController extends Controller
 
                     $data['if_my_praise'] = 0;
 
-                    $datas[] = $data;
 
                 }
             }
             else
             {
-                $datas = [];
+                $data = [];
             }
 
-            return response()->json(['status' => 200,'data' => $datas]);
+            return response()->json(['status' => 200,'data' => $data]);
         }elseif ((!empty($wesecret)) && ($user))
         {
             $post = $this->postRepository->getPost($id);
@@ -1715,16 +1705,15 @@ class PostController extends Controller
                         $data['if_my_praise'] = 0;
                     }
 
-                    $datas[] = $data;
 
                 }
             }
             else
             {
-                $datas = [];
+                $data = [];
             }
 
-            return response()->json(['status' => 200,'data' => $datas]);
+            return response()->json(['status' => 200,'data' => $data]);
         }
     }
 
@@ -1800,6 +1789,7 @@ class PostController extends Controller
                     $data['praise_nums'] = $comment->r_likenum;
                     $data['if_my_comment'] = 0;
                     $data['if_my_praise'] = 0;
+                    $datas[] = $data;
                 }
 
                 return response()->json(['status' => 200,'data' => $datas]);
@@ -1889,7 +1879,9 @@ class PostController extends Controller
                         $data['if_my_praise'] = 0;
                     }
 
+                    $datas[] = $data;
                 }
+                return response()->json(['status' => 200,'data' => $datas]);
             }
             else
             {
