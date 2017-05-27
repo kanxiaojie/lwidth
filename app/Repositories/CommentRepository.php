@@ -11,6 +11,7 @@ namespace App\Repositories;
 
 use App\Comment;
 use App\CommentToComment;
+use App\Notice;
 use App\Post;
 use App\User;
 
@@ -58,6 +59,16 @@ class CommentRepository
         return $commentToComment;
     }
 
+    public function saveNotice($source_type,$source_id,$user_id,$content)
+    {
+        $notice = new Notice();
+        $notice->source_type=$source_type;
+        $notice->source_id=$source_id;
+        $notice->user_id=$user_id;
+        $notice->content=$content;
+        $notice->save();
+    }
+
     public function savePublishForPost($id, $inputs)
     {
         $comment = new Comment();
@@ -66,6 +77,8 @@ class CommentRepository
         $comment->content = $inputs['content'];
 
         $comment->save();
+
+        $this->saveNotice(1,$comment->id,$inputs['user_id'],$inputs['content']);
     }
 
     public function saveCommentToComment($inputs, $comment)
@@ -79,6 +92,8 @@ class CommentRepository
         $commentToComment->parent_id = $inputs['objectUser_id'];
         $commentToComment->content = $inputs['content'];
         $commentToComment->save();
+
+        $this->saveNotice(2,$commentToComment->id,$inputs['user_id'],$inputs['content']);
 
         $comment = Comment::where('id',$comment->id)->first();
         $comment->r_commentnum += 1;

@@ -16,6 +16,7 @@ use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NoticeController extends Controller
 {
@@ -48,11 +49,13 @@ class NoticeController extends Controller
         {
             $postIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
             $commentIds = Comment::whereIn('post_id',$postIds)->pluck('id')->toArray();
-            $num1 = count(Notice::where('source_type',1)->whereIn('source_id',$commentIds)->get());
+            $num1 = count(Notice::where('source_type',1)->whereIn('source_id',$commentIds)
+                ->where('if_read',0)->get());
 
             $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
             $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
-            $num2 = count(Notice::where('source_type',2)->whereIn('source_id',$replyIds)->get());
+            $num2 = count(Notice::where('source_type',2)->whereIn('source_id',$replyIds)
+                ->where('if_read',0)->get());
 
             $notices = $num1+$num2;
 
@@ -146,6 +149,28 @@ class NoticeController extends Controller
         else
         {
             return response()->json(['status'=>201,'message' => 'User Does Not Exist.']);
+        }
+    }
+
+    public function labelRead(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $source_id = $request->get('source_id');
+        $source_type = $request->get('source_type');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if($user)
+        {
+            $sql = 'update notices set if_read=1 WHERE source_type=? AND source_id=? AND if_read != 1';
+            DB::update($sql,[$source_type,$source_id]);
+
+            return response()->json(['status' => 200,'message'=>'success']);
+        }
+        else
+        {
+        return response()->json(['status'=>201,'message' => 'User Does Not Exist.']);
         }
     }
 
