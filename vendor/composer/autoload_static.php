@@ -365,6 +365,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'CreateGendersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_31_023448_create_genders_table.php',
         'CreateGradesTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_10_025832_create_grades_table.php',
         'CreateLanguagesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_17_020843_create_languages_table.php',
+        'CreateNoticesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_26_054643_create_notices_table.php',
         'CreatePostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_23_154335_create_postings_table.php',
         'CreatePostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_13_130837_create_posts_table.php',
         'CreatePraiseToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_024551_create_praiseToComments_table.php',

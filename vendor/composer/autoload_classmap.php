@@ -32,6 +32,7 @@ return array(
     'CreateGendersTable' => $baseDir . '/database/migrations/2017_03_31_023448_create_genders_table.php',
     'CreateGradesTable' => $baseDir . '/database/migrations/2017_04_10_025832_create_grades_table.php',
     'CreateLanguagesTable' => $baseDir . '/database/migrations/2017_03_17_020843_create_languages_table.php',
+    'CreateNoticesTable' => $baseDir . '/database/migrations/2017_05_26_054643_create_notices_table.php',
     'CreatePostingsTable' => $baseDir . '/database/migrations/2017_03_23_154335_create_postings_table.php',
     'CreatePostsTable' => $baseDir . '/database/migrations/2017_03_13_130837_create_posts_table.php',
     'CreatePraiseToCommentsTable' => $baseDir . '/database/migrations/2017_03_26_024551_create_praiseToComments_table.php',

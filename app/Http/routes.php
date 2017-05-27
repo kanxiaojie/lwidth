@@ -132,3 +132,9 @@ $app->get('/api/loves/{id}/comments','PostController@getPostAllComments');
 $app->get('/api/comments/{id}','CommentController@getCommentInfo');
 //获取某条评论的所有回复
 $app->get('/api/comments/{id}/replies','CommentController@getCommentReplyInfos');
+
+//19  获取我未读的提醒数
+$app->get('/api/unreadNoticeNums','NoticeController@getUnreadNoticeNums');
+
+//获取所有的提醒
+$app->get('/api/notices','NoticeController@getNotices');
