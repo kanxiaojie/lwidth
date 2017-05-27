@@ -381,6 +381,7 @@ class PostController extends Controller
                     {
                         $data['id'] = $post->id;
                         $data['content'] = $post->content;
+                        $data['video_url'] = $post->video_url;
 
                         if(!empty($post->pictures))
                         {
@@ -509,6 +510,7 @@ class PostController extends Controller
                     {
                         $data['id'] = $post->id;
                         $data['content'] = $post->content;
+                        $data['video_url'] = $post->video_url;
                         if(!empty($post->pictures))
                         {
                             if(substr(trim($post->pictures),-1) == ',')
