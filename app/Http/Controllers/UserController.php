@@ -475,9 +475,9 @@ class UserController extends Controller
                 $userInfo['weibo'] = '';
             }
 
-            $userInfo['role'] = $updateUser->role;
-            $userInfo['trust'] = $updateUser->trust;
-            $userInfo['available'] = $updateUser->available;
+            $userInfo['role'] = $user->role;
+            $userInfo['trust'] = $user->trust;
+            $userInfo['available'] = $user->available;
 
             if($updateUser->phone)
             {
