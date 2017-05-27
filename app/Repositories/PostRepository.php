@@ -193,6 +193,11 @@ class PostRepository
             }
         }
 
+        if(isset($inputs['images']) && !empty($inputs['images']))
+        {
+            $post->pictures = implode(',',$inputs['images']);
+        }
+
         if(isset($inputs['location']) && !empty($inputs['location']))
         {
             $post->location = implode(',',$inputs['location']);
