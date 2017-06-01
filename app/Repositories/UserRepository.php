@@ -132,15 +132,36 @@ class UserRepository
             }
         }
 
+        if(isset($inputs['pictures']) && (count($inputs['pictures'])))
+        {
+            $user->pictures = implode(',',$inputs['pictures']);
+        }
+
+        if(isset($inputs['pictureOnWall']) && (count($inputs['pictureOnWall'])))
+        {
+            $user->pictureOnWall = $inputs['pictureOnWall'];
+        }
+
+        if(isset($inputs['avatarUrl']) && (!empty($inputs['avatarUrl'])))
+        {
+            $user->avatarUrl = $inputs['avatarUrl'];
+        }
+
         if(isset($inputs['realname']) && (!empty($inputs['realname'])))
         {
             $user->realname = $inputs['realname'];
+        }
+
+        if(isset($inputs['nickName']) && (!empty($inputs['nickName'])))
+        {
+            $user->nickname = $inputs['nickName'];
         }
 
         if(isset($inputs['college']) && (!empty($inputs['college'])))
         {
             $user->college_id = $inputs['college'];
         }
+
 
         if(isset($inputs['major']) && (!empty($inputs['major'])))
         {
@@ -177,14 +198,105 @@ class UserRepository
             $user->grade = $inputs['grade'];
         }
 
-        $user->save();
-
         $profile = Profile::where('user_id',$user->id)->first();
 
         if(!$profile)
         {
             $profile = new  Profile();
         }
+
+        if(isset($inputs['userInfo']) && (!empty($inputs['userInfo'])))
+        {
+            if($inputs['userInfo']->realname)
+            {
+                $user->realname = $inputs['userInfo']->realname;
+            }
+
+
+            if($inputs['userInfo']->major)
+            {
+                $user->major = $inputs['userInfo']->major;
+            }
+
+            if($inputs['userInfo']->wechat)
+            {
+                $user->wechat = $inputs['userInfo']->wechat;
+            }
+
+            if($inputs['userInfo']->gender)
+            {
+                $user->gender = $inputs['userInfo']->gender;
+            }
+
+            if($inputs['userInfo']->qq)
+            {
+                $user->QQ = $inputs['userInfo']->qq;
+            }
+
+            if($inputs['userInfo']->weibo)
+            {
+                $user->weibo = $inputs['userInfo']->weibo;
+            }
+
+            if($inputs['userInfo']->mobilePhone)
+            {
+                $user->phone = $inputs['userInfo']->mobilePhone;
+            }
+
+            if($inputs['userInfo']->grade)
+            {
+                $user->grade = $inputs['userInfo']->grade;
+            }
+
+            if($inputs['userInfo']->birthday)
+            {
+                $profile->birthday = $inputs['userInfo']->birthday;
+
+                $profile->age = $this->baseRepository->calcAge($inputs['userInfo']->birthday);
+                $m = date('m',strtotime($inputs['userInfo']->birthday));
+                $d = date('d',strtotime($inputs['userInfo']->birthday));
+                $profile->constellation = $this->baseRepository->get_constellation($m,$d);
+            }
+
+            if($inputs['userInfo']->height)
+            {
+                $profile->height = $inputs['userInfo']->height;
+            }
+
+            if($inputs['userInfo']->weight)
+            {
+                $profile->weight = $inputs['userInfo']->weight;
+            }
+
+            if($inputs['userInfo']->hometown)
+            {
+                $profile->hometown = $inputs['userInfo']->hometown;
+            }
+
+            if($inputs['userInfo']->character)
+            {
+                $profile->character = $inputs['userInfo']->character;
+            }
+
+            if($inputs['userInfo']->hobby)
+            {
+                $profile->hobby = $inputs['userInfo']->hobby;
+            }
+
+            if($inputs['userInfo']->love_history)
+            {
+                $profile->love_history = $inputs['userInfo']->love_history;
+            }
+
+            if($inputs['userInfo']->love_selecting)
+            {
+                $profile->love_selecting = $inputs['userInfo']->love_selecting;
+            }
+
+        }
+
+        $user->save();
+
 
         if (isset($inputs['birthday']) && (!empty($inputs['birthday'])))
         {
