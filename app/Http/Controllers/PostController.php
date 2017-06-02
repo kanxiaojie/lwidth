@@ -1751,7 +1751,7 @@ class PostController extends Controller
                     $data['content'] = $comment->content;
                     $commentuser =User::where('id',$comment->user_id)->first();
 
-                    $commentUserInfo['id'] = $commentuser->user_id;
+                    $commentUserInfo['id'] = $commentuser->id;
                     $commentUserInfo['nickName'] = $commentuser->nickname;
                     $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
                     $data['userInfo'] = $commentUserInfo;
