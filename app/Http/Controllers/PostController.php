@@ -676,7 +676,7 @@ class PostController extends Controller
                     $data['location'] = '';
                 }
 
-                $userInfo['id'] = $post->user->id;
+                $userInfo['id'] = $post->user_id;
                 $userInfo['nickName'] = $post->user->nickname;
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 if(!empty($post->user->college_id))
@@ -832,7 +832,7 @@ class PostController extends Controller
                     $data['location'] = '';
                 }
 
-                $userInfo['id'] = $post->user->id;
+                $userInfo['id'] = $post->user_id;
                 $userInfo['nickName'] = $post->user->nickname;
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 if(!empty($post->user->college_id))
