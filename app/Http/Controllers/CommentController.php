@@ -704,6 +704,7 @@ class CommentController extends Controller
                     $data['if_my_praise'] = 0;
                 }elseif(!empty($wesecret))
                 {
+                    dd($wesecret);
                     $openid = $this->baseRepository->decryptCode($wesecret);
                     $wesecretUser = $this->userRepository->getUserByOpenId($openid);
                     if($wesecretUser)
