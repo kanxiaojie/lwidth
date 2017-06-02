@@ -34,14 +34,14 @@ class CommentRepository
 
     public function getPostComments($post_id)
     {
-        $comments = $this->comment->where('post_id',$post_id)->get();
+        $comments = $this->comment->where('post_id',$post_id)->orderBy('created_at','desc')->get();
 
         return $comments;
     }
 
     public function getCommentToComments($comment_id)
     {
-        $commentToComments = $this->commentToComment->where('comment_id',$comment_id)->get();
+        $commentToComments = $this->commentToComment->where('comment_id',$comment_id)->orderBy('created_at','desc')->get();
 
         return $commentToComments;
     }
