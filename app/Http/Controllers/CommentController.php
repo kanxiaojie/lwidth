@@ -621,6 +621,7 @@ class CommentController extends Controller
             $data['created_at'] = $diff_time;
 
             $data['reply_nums'] = $comment->r_commentnum;
+            $data['praise_nums'] = $comment->r_likenum;
             if(empty($wesecret))
             {
                 $data['if_my_comment'] = 0;
