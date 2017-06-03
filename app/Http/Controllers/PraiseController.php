@@ -167,5 +167,38 @@ class PraiseController extends Controller
         }
     }
 
+    public function getPraiseMeUsers(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if($user)
+        {
+            $data = array();
+            $datas = array();
+
+            $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
+            if(count($praiseToUsers))
+            {
+                foreach ($praiseToUsers as $praiseToUser)
+                {
+                    $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
+                    $data['id']=$praise_user->id;
+                    $data['nickName']=$praise_user->nickname;
+                    $data['avatarUrl']=$praise_user->avatarUrl;
+                    $datas[] = $data;
+                }
+            }
+
+            return response(['status'=>200,'message'=>'successful.','data'=>$datas]);
+        }
+        else
+        {
+            return response()->json(['status'=>201,'message' => 'User does not exist,please check the argument!']);
+        }
+    }
+
 
 }

@@ -125,6 +125,9 @@ $app->post('/api/users/{id}/praises','PraiseController@praiseToUser');
 //22-1-1   获取单个表白
 $app->get('/api/loves/{id}','PostController@getLonePost');
 
+//获取点赞我的人
+$app->get('/api/praiseMeUsers','PraiseController@getPraiseMeUsers');
+
 //获取某个表白的所有评论
 $app->get('/api/loves/{id}/comments','PostController@getPostAllComments');
 
