@@ -1792,25 +1792,9 @@ class PostController extends Controller
 
                     $data['praise_nums'] = $comment->r_likenum;
 
-                    $if_my_comment = Comment::where('post_id',$id)->where('user_id',$comment->user_id)->first();
-                    if($if_my_comment)
-                    {
-                        $data['if_my_comment'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_comment'] = 0;
-                    }
+                    $data['if_my_comment'] = 0;
 
-                    $if_my_praise = Praise::where('post_id',$id)->where('user_id',$comment->user_id)->first();
-                    if($if_my_praise)
-                    {
-                        $data['if_my_praise'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_praise'] = 0;
-                    }
+                    $data['if_my_praise'] = 0;
 
                     $datas[] = $data;
                 }
