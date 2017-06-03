@@ -1742,7 +1742,7 @@ class PostController extends Controller
 
         if(empty($wesecret))
         {
-            $comments = Comment::where('post_id',$id)->paginate(10);
+            $comments = Comment::where('post_id',$id)->paginate(5);
             if(count($comments))
             {
                 foreach ($comments as $comment)
@@ -1808,7 +1808,7 @@ class PostController extends Controller
         }
         elseif ((!empty($wesecret)) && ($user))
         {
-            $comments = Comment::where('post_id',$id)->paginate(10);
+            $comments = Comment::where('post_id',$id)->paginate(5);
             if(count($comments))
             {
                 foreach ($comments as $comment)
