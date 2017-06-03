@@ -135,10 +135,15 @@ class PraiseController extends Controller
             {
                 if($inputs['praise'] == 1)
                 {
-                    $praiseToUser = new PraiseUser();
-                    $praiseToUser->praise_user_id = $user->id;
-                    $praiseToUser->praised_user_id = $praisedUser->id;
-                    $praiseToUser->save();
+                    $praisedToUser = PraiseUser::where('praise_user_id',$user->id)
+                        ->where('praised_user_id',$praisedUser->id)->first();
+                    if(!$praisedToUser)
+                    {
+                        $praiseToUser = new PraiseUser();
+                        $praiseToUser->praise_user_id = $user->id;
+                        $praiseToUser->praised_user_id = $praisedUser->id;
+                        $praiseToUser->save();
+                    }
                 }else
                 {
                     $praisedToUsers = PraiseUser::where('praise_user_id',$user->id)
