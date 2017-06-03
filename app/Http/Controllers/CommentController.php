@@ -680,7 +680,7 @@ class CommentController extends Controller
         $userInfo = array();
         $objectUserInfo = array();
 
-        $replies = CommentToComment::where('comment_id',$id)->paginate(10);
+        $replies = CommentToComment::where('comment_id',$id)->paginate(5);
         if($replies)
         {
             foreach ($replies as $reply)
