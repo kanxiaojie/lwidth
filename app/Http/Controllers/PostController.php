@@ -1867,7 +1867,7 @@ class PostController extends Controller
 
                     $data['praise_nums'] = $comment->r_likenum;
 
-                    $if_my_comment = Comment::where('post_id',$id)->where('user_id',$comment->user_id)->first();
+                    $if_my_comment = Comment::where('post_id',$id)->where('user_id',$user->id)->first();
                     if($if_my_comment)
                     {
                         $data['if_my_comment'] = 1;
@@ -1896,6 +1896,11 @@ class PostController extends Controller
                 return response()->json(['status' => 200,'data' => $datas]);
             }
         }
+    }
+
+    public function getGenderLoves(Request $request)
+    {
+
     }
 
 
