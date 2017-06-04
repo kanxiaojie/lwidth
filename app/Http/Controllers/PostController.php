@@ -1646,12 +1646,20 @@ class PostController extends Controller
                         $data['location'] = '';
                     }
 
-                    $postuser =User::where('id',$post->user_id)->first();
-                    $anonymousUser = User::where('college_id',$postuser->college_id)->first();
-                    $userInfo['id'] = $anonymousUser->id;
-                    $userInfo['nickName'] = $anonymousUser->nickname;
-                    $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
-
+                    if($post->anonymous)
+                    {
+                        $postuser =User::where('id',$post->user_id)->first();
+                        $anonymousUser = User::where('college_id',$postuser->college_id)->first();
+                        $userInfo['id'] = $anonymousUser->id;
+                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
+                    }else
+                    {
+                        $postuser =User::where('id',$post->user_id)->first();
+                        $userInfo['id'] = $postuser->id;
+                        $userInfo['nickName'] = $postuser->nickname;
+                        $userInfo['avatarUrl'] =  $postuser->avatarUrl;
+                    }
                     $data['userInfo'] = $userInfo;
 
                     $diff_time = $this->postRepository->getTime($post->created_at);
@@ -1741,12 +1749,20 @@ class PostController extends Controller
                     }
 
 
-                    $postuser =User::where('id',$post->user_id)->first();
-                    $anonymousUser = User::where('college_id',$postuser->college_id)->first();
-                    $userInfo['id'] = $anonymousUser->id;
-                    $userInfo['nickName'] = $anonymousUser->nickname;
-                    $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
-
+                    if($post->anonymous)
+                    {
+                        $postuser =User::where('id',$post->user_id)->first();
+                        $anonymousUser = User::where('college_id',$postuser->college_id)->first();
+                        $userInfo['id'] = $anonymousUser->id;
+                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
+                    }else
+                    {
+                        $postuser =User::where('id',$post->user_id)->first();
+                        $userInfo['id'] = $postuser->id;
+                        $userInfo['nickName'] = $postuser->nickname;
+                        $userInfo['avatarUrl'] =  $postuser->avatarUrl;
+                    }
                     $data['userInfo'] = $userInfo;
 
                     $diff_time = $this->postRepository->getTime($post->created_at);
