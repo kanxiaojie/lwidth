@@ -34,7 +34,7 @@ class CommentRepository
 
     public function getPostComments($post_id)
     {
-        $comments = $this->comment->where('post_id',$post_id)->orderBy('created_at','desc')->get();
+        $comments = $this->comment->where('post_id',$post_id)->orderBy('created_at','desc')->paginate(5);
 
         return $comments;
     }
