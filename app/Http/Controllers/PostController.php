@@ -99,6 +99,13 @@ class PostController extends Controller
 
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
+                    if($post->user_id == $user->id)
+                    {
+                        $data['belongsToMe'] = 1;
+                    }else
+                    {
+                        $data['belongsToMe'] = 0;
+                    }
                     if(!empty($post->pictures))
                     {
                         if(substr(trim($post->pictures),-1) == ',')
@@ -239,6 +246,13 @@ class PostController extends Controller
                     {
                         $data['id'] = $post->id;
                         $data['content'] = $post->content;
+                        if($post->user_id == $user->id)
+                        {
+                            $data['belongsToMe'] = 1;
+                        }else
+                        {
+                            $data['belongsToMe'] = 0;
+                        }
                         if(!empty($post->pictures))
                         {
                             if(substr(trim($post->pictures),-1) == ',')
@@ -1003,6 +1017,8 @@ class PostController extends Controller
                         $data['id'] = $post->id;
                         $data['content'] = $post->content;
 
+                        $data['belongsToMe'] = 0;
+
                         if(!empty($post->pictures))
                         {
                             if(substr(trim($post->pictures),-1) == ',')
@@ -1129,6 +1145,13 @@ class PostController extends Controller
                     {
                         $data['id'] = $post->id;
                         $data['content'] = $post->content;
+                        if($post->user_id == $user->id)
+                        {
+                            $data['belongsToMe'] = 1;
+                        }else
+                        {
+                            $data['belongsToMe'] = 0;
+                        }
                         if(!empty($post->pictures))
                         {
                             if(substr(trim($post->pictures),-1) == ',')
@@ -1626,6 +1649,13 @@ class PostController extends Controller
                 {
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
+                    if($post->user_id == $user->id)
+                    {
+                        $data['belongsToMe'] = 1;
+                    }else
+                    {
+                        $data['belongsToMe'] = 0;
+                    }
                     $data['video_url'] = $post->video_url;
 
                     if(!empty($post->pictures))
