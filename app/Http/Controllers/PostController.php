@@ -1546,6 +1546,7 @@ class PostController extends Controller
 
                 $nums1 = count(Post::where('visiable',0)->where('created_at','>',$created_time)->get());
                 $nums2 = 0;
+
                 if($user->college_id)
                 {
                     $userIds = User::where('college_id',$user->college_id)->pluck('id')->toArray();
@@ -1555,16 +1556,18 @@ class PostController extends Controller
                 }
 
                 $nums3 = 0;
-                if($user->gender)
+                if(($user->gender = 0) ||($user->gender = 1))
                 {
+
                     $userIds = User::where("gender",$user->gender)->pluck('id')->toArray();
+
                     if($user->gender = 1)
                     {
-                        $nums3 += count(Post::whereIn('user_id',$userIds)->whereIn('visiable',2)
+                        $nums3 += count(Post::whereIn('user_id',$userIds)->where('visiable',2)
                             ->where('created_at','>',$created_time)->get());
-                    }else
+                    }elseif ($user->gender = 0)
                     {
-                        $nums3 += count(Post::whereIn('user_id',$userIds)->whereIn('visiable',3)
+                        $nums3 += count(Post::whereIn('user_id',$userIds)->where('visiable',3)
                             ->where('created_at','>',$created_time)->get());
                     }
                 }
