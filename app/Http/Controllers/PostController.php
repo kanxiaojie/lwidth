@@ -1637,7 +1637,7 @@ class PostController extends Controller
 
                     $postuser =User::where('id',$post->user_id)->first();
                     $anonymousUser = User::where('college_id',$postuser->college_id)->first();
-                    $userInfo['id'] = $anonymousUser->user_id;
+                    $userInfo['id'] = $anonymousUser->id;
                     $userInfo['nickName'] = $anonymousUser->nickname;
                     $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
 
@@ -1732,7 +1732,7 @@ class PostController extends Controller
 
                     $postuser =User::where('id',$post->user_id)->first();
                     $anonymousUser = User::where('college_id',$postuser->college_id)->first();
-                    $userInfo['id'] = $anonymousUser->user_id;
+                    $userInfo['id'] = $anonymousUser->id;
                     $userInfo['nickName'] = $anonymousUser->nickname;
                     $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
 
