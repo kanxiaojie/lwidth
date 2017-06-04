@@ -395,6 +395,7 @@ class PostController extends Controller
                     {
                         $data['id'] = $post->id;
                         $data['content'] = $post->content;
+                        $data['belongsToMe'] = 0;
                         $data['video_url'] = $post->video_url;
 
                         if(!empty($post->pictures))
@@ -524,6 +525,13 @@ class PostController extends Controller
                     {
                         $data['id'] = $post->id;
                         $data['content'] = $post->content;
+                        if($post->user_id == $user->id)
+                        {
+                            $data['belongsToMe'] = 1;
+                        }else
+                        {
+                            $data['belongsToMe'] = 0;
+                        }
                         $data['video_url'] = $post->video_url;
                         if(!empty($post->pictures))
                         {
@@ -1818,7 +1826,7 @@ class PostController extends Controller
 
         if(empty($wesecret))
         {
-            $comments = Comment::where('post_id',$id)->paginate(5);
+            $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(5);
             if(count($comments))
             {
                 foreach ($comments as $comment)
@@ -1884,7 +1892,7 @@ class PostController extends Controller
         }
         elseif ((!empty($wesecret)) && ($user))
         {
-            $comments = Comment::where('post_id',$id)->paginate(5);
+            $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(5);
             if(count($comments))
             {
                 foreach ($comments as $comment)
