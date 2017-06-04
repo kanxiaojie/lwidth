@@ -1955,6 +1955,7 @@ class PostController extends Controller
 
                        $data['id'] = $post->id;
                        $data['content'] = $post->content;
+
                        if(!empty($post->pictures))
                        {
                            if(substr(trim($post->pictures),-1) == ',')
