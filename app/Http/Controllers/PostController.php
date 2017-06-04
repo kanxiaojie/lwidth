@@ -1507,20 +1507,21 @@ class PostController extends Controller
         $wesecret = $request->get('wesecret');
         $post_id = $request->get('love_id');
 
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
-
-        if(!$user)
+        if (!empty($wesecret))
         {
-            return response()->json(['status' => 201,'message' => 'User Does Not Exist!']);
-        }else{
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        }
+
+        if(empty($wesecret))
+        {
             $post = $this->postRepository->getPost($post_id);
 
             if($post)
             {
                 $created_time = $post->created_at;
 
-                $nums = count(Post::where('created_at','>',$created_time)->get());
+                $nums = count(Post::where('visiable',0)->where('created_at','>',$created_time)->get());
                 if($nums)
                 {
                     $unreadLoveNums = $nums;
@@ -1535,7 +1536,48 @@ class PostController extends Controller
             {
                 return response()->json(['status' => 201,'message' => 'Post Does Not Exist.']);
             }
+        }elseif ((!empty($wesecret)) && ($user))
+        {
+            $post = $this->postRepository->getPost($post_id);
+
+            if($post)
+            {
+                $created_time = $post->created_at;
+
+                $nums1 = count(Post::where('visiable',0)->where('created_at','>',$created_time)->get());
+                $nums2 = 0;
+                if($user->college_id)
+                {
+                    $userIds = User::where('college_id',$user->college_id)->pluck('id')->toArray();
+
+                    $nums2 += count(Post::whereIn('user_id',$userIds)->where('visiable',1)
+                        ->where('created_at','>',$created_time)->get());
+                }
+
+                $nums3 = 0;
+                if($user->gender)
+                {
+                    $userIds = User::where("gender",$user->gender)->pluck('id')->toArray();
+                    if($user->gender = 1)
+                    {
+                        $nums3 += count(Post::whereIn('user_id',$userIds)->whereIn('visiable',2)
+                            ->where('created_at','>',$created_time)->get());
+                    }else
+                    {
+                        $nums3 += count(Post::whereIn('user_id',$userIds)->whereIn('visiable',3)
+                            ->where('created_at','>',$created_time)->get());
+                    }
+                }
+
+                $unreadLoveNums = $nums1+$nums2+$nums3;
+                return response()->json(['status' => 200,'message' => 'success','unreadLoveNums' => $unreadLoveNums]);
+
+            }else
+            {
+                return response()->json(['status' => 201,'message' => 'Post Does Not Exist.']);
+            }
         }
+
     }
 
     public function getLonePost(Request $request, $id)
