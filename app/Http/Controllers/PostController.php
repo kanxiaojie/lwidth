@@ -1635,11 +1635,11 @@ class PostController extends Controller
                         $data['location'] = '';
                     }
 
-                    $user =User::where('id',$post->user_id)->first();
-
-                    $userInfo['id'] = $post->user_id;
-                    $userInfo['nickName'] = $user->nickname;
-                    $userInfo['avatarUrl'] =  $user->avatarUrl;
+                    $postuser =User::where('id',$post->user_id)->first();
+                    $anonymousUser = User::where('college_id',$postuser->college_id)->first();
+                    $userInfo['id'] = $anonymousUser->user_id;
+                    $userInfo['nickName'] = $anonymousUser->nickname;
+                    $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
 
                     $data['userInfo'] = $userInfo;
 
@@ -1729,11 +1729,12 @@ class PostController extends Controller
                         $data['location'] = '';
                     }
 
-                    $postuser =User::where('id',$post->user_id)->first();
 
-                    $userInfo['id'] = $post->user_id;
-                    $userInfo['nickName'] = $postuser->nickname;
-                    $userInfo['avatarUrl'] =  $postuser->avatarUrl;
+                    $postuser =User::where('id',$post->user_id)->first();
+                    $anonymousUser = User::where('college_id',$postuser->college_id)->first();
+                    $userInfo['id'] = $anonymousUser->user_id;
+                    $userInfo['nickName'] = $anonymousUser->nickname;
+                    $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
 
                     $data['userInfo'] = $userInfo;
 
