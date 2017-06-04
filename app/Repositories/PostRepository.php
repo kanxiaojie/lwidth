@@ -47,6 +47,38 @@ class PostRepository
         return $posts;
     }
 
+    public function getGenderPosts($gender,$search = null, $orderby = 'created_at', $direction = 'desc')
+    {
+        $userIds = [];
+        if($gender == 0)
+        {
+            $userIds = User::where('gender',1)->pluck('id')->toArray();
+        }elseif($gender ==1)
+        {
+            $userIds = User::where('gender',0)->pluck('id')->toArray();
+        }
+
+        $posts = Post::where(function ($query) use($gender,$search)
+            {
+                if(!empty($search))
+                {
+                    $query->whereHas('user',function ($queryUser) use ($search){
+                        $queryUser->where('realname','LIKE','%'.$search.'%')
+                            ->orWhere('nickname','LIKE','%'.$search.'%');
+                    })
+                        ->orWhereHas('user.college',function ($queryCollege) use ($search){
+                            $queryCollege->where('name','LIKE','%'.$search.'%');
+                        })
+                        ->orWhere('content','LIKE','%'.$search.'%')
+                    ;
+                }
+            })
+            ->whereIn('user_id',$userIds)
+            ->orderBy($orderby,$direction)->paginate(5);
+
+        return $posts;
+    }
+
     public function getAllPosts($search = null,$orderby = 'created_at', $direction = 'desc')
     {
         $posts = Post::where(function ($query) use($search){
