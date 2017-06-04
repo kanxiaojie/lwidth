@@ -1877,7 +1877,7 @@ class PostController extends Controller
                         $data['if_my_comment'] = 0;
                     }
 
-                    $if_my_praise = Praise::where('post_id',$id)->where('user_id',$user->id)->first();
+                    $if_my_praise = PraiseToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
                     if($if_my_praise)
                     {
                         $data['if_my_praise'] = 1;
