@@ -91,7 +91,7 @@ class BadReportTypeController extends Controller
 
                 $reportPost->post_id = $post->id;
                 $reportPost->post_content =$post->content ;
-                $reportPost->report_userId = $user->nickname;
+                $reportPost->report_userId = $user->id;
                 if($user->nickname)
                 {
                     $reportPost->report_userName = $user->nickname;
@@ -140,7 +140,7 @@ class BadReportTypeController extends Controller
 
                 $reportComment->comment_id = $comment->id;
                 $reportComment->comment_content =$comment->content ;
-                $reportComment->report_userId = $user->nickname;
+                $reportComment->report_userId = $user->id;
                 if($user->nickname)
                 {
                     $reportComment->report_userName = $user->nickname;
@@ -189,7 +189,7 @@ class BadReportTypeController extends Controller
 
                 $reportReply->reply_id = $reply->id;
                 $reportReply->reply_content =$reply->content ;
-                $reportReply->report_userId = $user->nickname;
+                $reportReply->report_userId = $user->id;
                 if($user->nickname)
                 {
                     $reportReply->report_userName = $user->nickname;
@@ -235,7 +235,7 @@ class BadReportTypeController extends Controller
                     $reportUser->reported_userName = $ReportedUser->nickname;
                 }
 
-                $reportUser->report_userId = $user->nickname;
+                $reportUser->report_userId = $user->id;
                 if($user->nickname)
                 {
                     $reportUser->report_userName = $user->nickname;
