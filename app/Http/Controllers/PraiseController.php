@@ -188,6 +188,18 @@ class PraiseController extends Controller
                     $data['id']=$praise_user->id;
                     $data['nickName']=$praise_user->nickname;
                     $data['avatarUrl']=$praise_user->avatarUrl;
+
+                    if (!$praise_user->gender)
+                    {
+                        $data['gender_name'] = "";
+                    }elseif($praise_user->gender == 1)
+                    {
+                        $data['gender_name'] = "男";
+                    }else
+                    {
+                        $data['gender_name'] = "女";
+                    }
+
                     $datas[] = $data;
                 }
             }
