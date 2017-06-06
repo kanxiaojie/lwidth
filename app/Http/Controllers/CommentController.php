@@ -604,6 +604,8 @@ class CommentController extends Controller
 
         $data = array();
         $userInfo = array();
+        $replys = [];
+        $objectUserInfo = [];
 
         $comment = $this->commentRepository->getCommentById($id);
         if(count($comment))
@@ -660,6 +662,36 @@ class CommentController extends Controller
                     $data['if_my_comment'] = 0;
                     $data['if_my_praise'] = 0;
                 }
+            }
+
+            $replies = CommentToComment::where('comment_id',$comment->id)->paginate(5);
+            if(count($replies))
+            {
+                foreach ($replies as $reply)
+                {
+                    $replys['id'] = $reply->id;
+                    $replys['content'] = $reply->content;
+
+                    $user1 = $this->userRepository->getUserById($reply->user_id);
+                    $replyUserInfo['id'] = $user1->id;
+                    $replyUserInfo['nickName'] = $user1->nickname;
+                    $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
+                    $replys['userInfo'] = $replyUserInfo;
+
+                    $objectUserInfo['id'] = $reply->parent_id;
+                    $objectUser = $this->userRepository->getUserById($reply->parent_id);
+                    $objectUserInfo['nickName'] = $objectUser->nickname;
+                    $replys['objectUserInfo'] = $objectUserInfo;
+                    $replys['praise_nums'] = $reply->praise_nums;
+                    $replys['if_my_praise'] = 0;
+
+                    $diff_time = $this->postRepository->getTime($reply->created_at);
+                    $replys['created_at'] = $diff_time;
+                    $data['replies'][] = $replys;
+                }
+            }else
+            {
+                $data['replies'] = [];
             }
 
             return response()->json(['status' => 200,'message' => 'success.','data' => $data]);
