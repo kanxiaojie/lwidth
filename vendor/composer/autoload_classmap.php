@@ -25,6 +25,7 @@ return array(
     'CollegeTableSeeder' => $baseDir . '/database/seeds/CollegeTableSeeder.php',
     'CountryTableSeeder' => $baseDir . '/database/seeds/CountryTableSeeder.php',
     'CreateBadReportTypesTable' => $baseDir . '/database/migrations/2017_05_11_004725_create_badReportTypes_table.php',
+    'CreateBlacklistsTable' => $baseDir . '/database/migrations/2017_06_07_065204_create_blacklists_table.php',
     'CreateCityTable' => $baseDir . '/database/migrations/2017_03_30_021416_create_city_table.php',
     'CreateCollegesTable' => $baseDir . '/database/migrations/2017_04_09_142154_create_colleges_table.php',
     'CreateCommentToCommentsTable' => $baseDir . '/database/migrations/2017_03_26_014705_create_commentToComments_table.php',

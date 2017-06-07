@@ -358,6 +358,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'CollegeTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CollegeTableSeeder.php',
         'CountryTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CountryTableSeeder.php',
         'CreateBadReportTypesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_004725_create_badReportTypes_table.php',
+        'CreateBlacklistsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_07_065204_create_blacklists_table.php',
         'CreateCityTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_30_021416_create_city_table.php',
         'CreateCollegesTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_09_142154_create_colleges_table.php',
         'CreateCommentToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_014705_create_commentToComments_table.php',

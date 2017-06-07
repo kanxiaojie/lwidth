@@ -147,3 +147,8 @@ $app->post('/api/read/notice','NoticeController@labelRead');
 
 //获取异性表白
 $app->get('/api/genderLoves','PostController@getGenderLoves');
+
+//查看我的黑名单中的用户
+$app->get('/api/blacklists','UserController@getBlackLists');
+//把某人加入黑名单或者从黑名单中移除
+$app->post('/api/blacklists','UserController@addOrRemoveBlackLists');

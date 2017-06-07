@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BlackList;
 use App\College;
 use App\Country;
 use App\Gender;
@@ -10,6 +11,7 @@ use App\PraiseUser;
 use App\Profile;
 use App\Repositories\BaseRepository;
 use App\Repositories\UserRepository;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Qiniu\Auth;
@@ -706,6 +708,100 @@ class UserController extends Controller
 
             }
 
+        }
+        else
+        {
+            return response()->json(['status' => 201,'message' => 'User does not exist']);
+        }
+    }
+
+    public function addOrRemoveBlackLists(Request $request)
+    {
+        $objectUser_id = $request->get('objectUser_id');
+        $inBlackLists = $request->get('inBlacklists');
+        $wesecret = $request->get('wesecret');
+        $openid = Crypt::decrypt($wesecret);
+
+        $user = $this->userRepository->getUserByOpenId($openid);
+        if ($user)
+        {
+            $blackUser = User::where('id',$objectUser_id)->first();
+            if($blackUser)
+            {
+                $blacklist = BlackList::where('own_user_id',$user->id)
+                ->where('black_user_id',$objectUser_id)->first();
+                if($inBlackLists == 1)
+                {
+                    if(!$blacklist)
+                    {
+                        $blacklist = new BlackList();
+                        $blacklist->own_user_id = $user->id;
+                        $blacklist->black_user_id = $objectUser_id;
+                        $blacklist->save();
+                    }
+                }elseif ($inBlackLists == 0)
+                {
+                    if($blacklist)
+                    {
+                        $blacklist->delete();
+                    }
+                }
+
+                return response()->json(['status'=>200,'message'=>'successful.']);
+            }
+            else
+            {
+                return response()->json(['status' => 201,'message' => 'Black user does not exist']);
+            }
+        }
+        else
+        {
+            return response()->json(['status' => 201,'message' => 'User does not exist']);
+        }
+    }
+
+    public function getBlackLists(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $openid = Crypt::decrypt($wesecret);
+        $data = [];
+        $datas = [];
+
+        $user = $this->userRepository->getUserByOpenId($openid);
+        if ($user)
+        {
+            $blackListUsers = BlackList::where('own_user_id',$user->id)->get();
+            if($blackListUsers)
+            {
+                foreach ($blackListUsers as $blackListUser)
+                {
+                    $blackUser = User::where('id',$blackListUser->black_user_id)->first();
+                    $data['id'] = $blackUser->id;
+                    $data['nickName'] = $blackUser->nickname;
+                    if (!$blackUser->gender)
+                    {
+                        $data['gender_name'] = "";
+                    }elseif($blackUser->gender == 1)
+                    {
+                        $data['gender_name'] = "男";
+                    }else
+                    {
+                        $data['gender_name'] = "女";
+                    }
+
+                    if(!$blackUser->college_id)
+                    {
+                        $data['college_name'] = '';
+                    }
+                    else
+                    {
+                        $data['college_name'] = College::where('id',(int)($blackUser->college_id))->first()->name;
+                    }
+                    $datas[] = $data;
+                }
+            }
+
+            return response()->json(['status'=>200,'message'=>'successful.','data'=>$datas]);
         }
         else
         {
