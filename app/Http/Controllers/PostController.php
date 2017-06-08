@@ -1896,7 +1896,8 @@ class PostController extends Controller
                     $data['created_at'] = $diff_time;
 
                     $data['reply_nums'] = $comment->r_commentnum;
-                    $replies = CommentToComment::where('comment_id',$comment->id)->limit(3)->get();
+                    $replies = CommentToComment::where('comment_id',$comment->id)
+                        ->orderBy('created_at','desc')->limit(3)->get();
                     if(count($replies))
                     {
                         foreach ($replies as $reply)
@@ -1962,7 +1963,8 @@ class PostController extends Controller
                     $data['created_at'] = $diff_time;
 
                     $data['reply_nums'] = $comment->r_commentnum;
-                    $replies = CommentToComment::where('comment_id',$comment->id)->limit(3)->get();
+                    $replies = CommentToComment::where('comment_id',$comment->id)
+                        ->orderBy('created_at','desc')->limit(3)->get();
                     if(count($replies))
                     {
                         foreach ($replies as $reply)
