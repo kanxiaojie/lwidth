@@ -664,7 +664,8 @@ class CommentController extends Controller
                 }
             }
 
-            $replies = CommentToComment::where('comment_id',$comment->id)->paginate(5);
+            $replies = CommentToComment::where('comment_id',$comment->id)
+                ->orderBy('created_at','desc')->limit(3)->get();
             if(count($replies))
             {
                 foreach ($replies as $reply)

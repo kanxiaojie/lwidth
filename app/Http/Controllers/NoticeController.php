@@ -101,6 +101,9 @@ class NoticeController extends Controller
                     $data['id'] = $notice->id;
                     $data['content'] = $notice->content;
 
+                    $diff_time = $this->postRepository->getTime($notice->created_at);
+                    $replys['created_at'] = $diff_time;
+
                     $user = User::where('id',$notice->user_id)->first();
                     $commentOrReplyUserInfo['id'] =$notice->user_id;
                     $commentOrReplyUserInfo['nickName'] = $user->nickname;
@@ -126,6 +129,7 @@ class NoticeController extends Controller
                         $objectUser = User::where('id',$reply->parent_id)->first();
                         $objectUserInfo['id'] = $objectUser->id;
                         $objectUserInfo['nickName'] = $objectUser->nickname;
+                        $objectUserInfo['nickName'] = $objectUser->avatarUrl;
                         $data['objectUserInfo'] = $objectUserInfo;
 
                         $source['comment_id'] = $reply->comment_id;
