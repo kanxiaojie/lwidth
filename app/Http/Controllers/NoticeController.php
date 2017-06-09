@@ -91,7 +91,7 @@ class NoticeController extends Controller
             $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
 
             $notices = Notice::where('source_type',1)->whereIn('source_id',$commentIds)
-                ->orWhere('source_type',2)->whereIn('source_id',$replyIds)->->orderBy('created_at', 'desc')->paginate(5);
+                ->orWhere('source_type',2)->whereIn('source_id',$replyIds)->orderBy('created_at', 'desc')->paginate(5);
 
             if($notices)
             {
