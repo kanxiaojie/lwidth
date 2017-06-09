@@ -102,12 +102,12 @@ class NoticeController extends Controller
                     $data['content'] = $notice->content;
 
                     $diff_time = $this->postRepository->getTime($notice->created_at);
-                    $replys['created_at'] = $diff_time;
+                    $data['created_at'] = $diff_time;
 
                     $user = User::where('id',$notice->user_id)->first();
                     $commentOrReplyUserInfo['id'] =$notice->user_id;
                     $commentOrReplyUserInfo['nickName'] = $user->nickname;
-                    $commentOrReplyUserInfo['avatar'] = $user->avatar;
+                    $commentOrReplyUserInfo['avatarUrl'] = $user->avatarUrl;
                     $data['userInfo'] = $commentOrReplyUserInfo;
 
                     if($notice->source_type == 1)
@@ -129,8 +129,14 @@ class NoticeController extends Controller
                         $objectUser = User::where('id',$reply->parent_id)->first();
                         $objectUserInfo['id'] = $objectUser->id;
                         $objectUserInfo['nickName'] = $objectUser->nickname;
-                        $objectUserInfo['nickName'] = $objectUser->avatarUrl;
+                        $objectUserInfo['avatarUrl'] = $objectUser->avatarUrl;
                         $data['objectUserInfo'] = $objectUserInfo;
+
+                        // $comment = Comment::where('id',$reply->comment_id)->first();
+                        // $post = Post::where('id',$comment->post_id)->first();
+                        // $source['love_id'] = $reply->comment_id;
+                        $source['love_id'] = $reply->comment->post->id;
+                        
 
                         $source['comment_id'] = $reply->comment_id;
                         $comment = Comment::where('id',$reply->comment_id)->first();

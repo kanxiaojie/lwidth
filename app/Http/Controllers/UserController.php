@@ -778,6 +778,7 @@ class UserController extends Controller
                     $blackUser = User::where('id',$blackListUser->black_user_id)->first();
                     $data['id'] = $blackUser->id;
                     $data['nickName'] = $blackUser->nickname;
+                    $data['avatarUrl'] = $blackUser->avatarUrl;
                     if (!$blackUser->gender)
                     {
                         $data['gender_name'] = "";
