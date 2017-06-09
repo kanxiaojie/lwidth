@@ -75,12 +75,12 @@ class NoticeController extends Controller
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
 
-        $datas = [];
-        $data = [];
-        $commentOrReplyUserInfo = [];
-        $objectUserInfo = [];
-        $postOrCommentUserInfo = [];
-        $source = [];
+        // $datas = [];
+        // $data = [];
+        // $commentOrReplyUserInfo = [];
+        // $objectUserInfo = [];
+        // $postOrCommentUserInfo = [];
+        // $source = [];
 
         if($user)
         {
@@ -95,8 +95,14 @@ class NoticeController extends Controller
 
             if($notices)
             {
+
+                $datas = [];
+
                 foreach ($notices as $notice)
                 {
+                    $data = [];
+                    $commentOrReplyUserInfo = [];
+                    
                     $data['if_read'] = $notice->if_read;
                     $data['id'] = $notice->id;
                     $data['content'] = $notice->content;
@@ -112,6 +118,9 @@ class NoticeController extends Controller
 
                     if($notice->source_type == 1)
                     {
+                        $source = [];
+                        $postOrCommentUserInfo = [];
+                        
                         $data['type'] = 'comment';
                         $comment = Comment::where('id',$notice->source_id)->first();
                         $post = Post::where('id',$comment->post_id)->first();
@@ -120,10 +129,15 @@ class NoticeController extends Controller
                         $postOrCommentUserInfo['id'] = $post->user_id;
                         $postOrCommentUserInfo['nickName'] = $post->user->nickname;
                         $postOrCommentUserInfo['avatarUrl'] = $post->user->avatar;
-
+                        $source['userInfo'] = $postOrCommentUserInfo;
+                        $data['source'] = $source;
                     }
                     elseif ($notice->source_type == 2)
                     {
+                        $source = [];
+                        $objectUserInfo = [];
+                        $postOrCommentUserInfo = [];
+                        
                         $data['type'] = 'reply';
                         $reply = CommentToComment::where('id',$notice->source_id)->first();
                         $objectUser = User::where('id',$reply->parent_id)->first();
