@@ -91,7 +91,7 @@ class NoticeController extends Controller
             $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
 
             $notices = Notice::where('source_type',1)->whereIn('source_id',$commentIds)
-                ->orWhere('source_type',2)->whereIn('source_id',$replyIds)->paginate(10);
+                ->orWhere('source_type',2)->whereIn('source_id',$replyIds)->->orderBy('created_at', 'desc')->paginate(5);
 
             if($notices)
             {
@@ -132,12 +132,7 @@ class NoticeController extends Controller
                         $objectUserInfo['avatarUrl'] = $objectUser->avatarUrl;
                         $data['objectUserInfo'] = $objectUserInfo;
 
-                        // $comment = Comment::where('id',$reply->comment_id)->first();
-                        // $post = Post::where('id',$comment->post_id)->first();
-                        // $source['love_id'] = $reply->comment_id;
-                        $source['love_id'] = $reply->comment->post->id;
-                        
-
+                        $source['love_id'] = $reply->post_id;
                         $source['comment_id'] = $reply->comment_id;
                         $comment = Comment::where('id',$reply->comment_id)->first();
                         $source['comment_id'] = $comment->id;
