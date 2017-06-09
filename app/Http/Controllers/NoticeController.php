@@ -84,11 +84,11 @@ class NoticeController extends Controller
 
         if($user)
         {
-            $postIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
-            $commentIds = Comment::whereIn('post_id',$postIds)->pluck('id')->toArray();
+            $myPostIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
+            $commentIds = Comment::whereIn('post_id',$myPostIds)->pluck('id')->toArray();
 
             $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
-            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
+            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->orWhere('parent_id', $user->id)->pluck('id')->toArray();
 
             $notices = Notice::where('source_type',1)->whereIn('source_id',$commentIds)
                 ->orWhere('source_type',2)->whereIn('source_id',$replyIds)->orderBy('created_at', 'desc')->paginate(5);
