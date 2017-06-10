@@ -328,10 +328,17 @@ class UserController extends Controller
                 {
                     $userInfo['if_my_praise'] = 0;
                 }
+                $inBlacklistUserIds = BlackList::where('own_user_id', $whoPraise->id)->pluck('black_user_id')->toArray();
+                if (in_array($id, $inBlacklistUserIds)) {
+                    $userInfo['inMyBlackList'] = 1;
+                } else {
+                    $userInfo['inMyBlackList'] = 0;
+                }
             }
             else
             {
                 $userInfo['if_my_praise'] = 0;
+                $userInfo['inMyBlackList'] = 0;
             }
 
 
