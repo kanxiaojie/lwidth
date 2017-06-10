@@ -53,7 +53,7 @@ class NoticeController extends Controller
                 ->where('if_read',0)->get());
 
             $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
-            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
+            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->orWhere('parent_id', $user->id)->pluck('id')->toArray();
             $num2 = count(Notice::where('source_type',2)->whereIn('source_id',$replyIds)
                 ->where('if_read',0)->get());
 

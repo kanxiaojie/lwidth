@@ -94,6 +94,9 @@ class CommentRepository
         $commentToComment->save();
 
         $this->saveNotice(2,$commentToComment->id,$inputs['user_id'],$inputs['content']);
+        if($inputs['objectUser_id'] != $comment->user_id) {
+            $this->saveNotice(3,$commentToComment->id,$inputs['user_id'],$inputs['content']);
+        }
 
         $comment = Comment::where('id',$comment->id)->first();
         $comment->r_commentnum += 1;
