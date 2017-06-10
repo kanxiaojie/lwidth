@@ -47,17 +47,22 @@ class NoticeController extends Controller
 
         if($user)
         {
-            $postIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
-            $commentIds = Comment::whereIn('post_id',$postIds)->pluck('id')->toArray();
+            $myPostIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
+            $commentIds = Comment::whereIn('post_id',$myPostIds)->pluck('id')->toArray();
             $num1 = count(Notice::where('source_type',1)->whereIn('source_id',$commentIds)
                 ->where('if_read',0)->get());
 
             $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
-            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->orWhere('parent_id', $user->id)->pluck('id')->toArray();
-            $num2 = count(Notice::whereIn('source_type',[2, 3])->whereIn('source_id',$replyIds)
+            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
+            $num2 = count(Notice::where('source_type', 2)->whereIn('source_id',$replyIds)
+                ->where('if_read',0)->get());
+            $replyIds1 = CommentToComment::where('parent_id', $user->id)->pluck('id')->toArray();
+            $num3 = count(Notice::where('source_type', 3)->whereIn('source_id',$replyIds1)
                 ->where('if_read',0)->get());
 
-            $notices = $num1+$num2;
+
+
+            $notices = $num1 + $num2 + $num3;
 
             return response()->json(['status'=>200,'message'=>'success','unreadNoticeNums'=>$notices]);
         }
@@ -88,10 +93,12 @@ class NoticeController extends Controller
             $commentIds = Comment::whereIn('post_id',$myPostIds)->pluck('id')->toArray();
 
             $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
-            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->orWhere('parent_id', $user->id)->pluck('id')->toArray();
-
+            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
+            $replyIds1 = CommentToComment::where('parent_id', $user->id)->pluck('id')->toArray();
+            
             $notices = Notice::where('source_type',1)->whereIn('source_id',$commentIds)
-                ->orWhere('source_type','<>',1)->whereIn('source_id',$replyIds)
+                ->orWhere('source_type',2)->whereIn('source_id',$replyIds)
+                ->orWhere('source_type',3)->whereIn('source_id',$replyIds1)
                 ->orderBy('created_at', 'desc')->paginate(5);
 
             if($notices)
