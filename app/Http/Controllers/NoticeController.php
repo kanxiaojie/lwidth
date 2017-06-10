@@ -124,6 +124,7 @@ class NoticeController extends Controller
                         $data['type'] = 'comment';
                         $comment = Comment::where('id',$notice->source_id)->first();
                         $post = Post::where('id',$comment->post_id)->first();
+                        $source['source_id'] = $notice->source_id;
                         $source['love_id'] = $post->id;
                         $source['content'] = $post->content;
                         $postOrCommentUserInfo['id'] = $post->user_id;
@@ -146,6 +147,7 @@ class NoticeController extends Controller
                         $objectUserInfo['avatarUrl'] = $objectUser->avatarUrl;
                         $data['objectUserInfo'] = $objectUserInfo;
 
+                        $source['source_id'] = $notice->source_id;
                         $source['love_id'] = $reply->post_id;
                         $source['comment_id'] = $reply->comment_id;
                         $comment = Comment::where('id',$reply->comment_id)->first();
