@@ -54,7 +54,7 @@ class NoticeController extends Controller
 
             $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
             $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->orWhere('parent_id', $user->id)->pluck('id')->toArray();
-            $num2 = count(Notice::where('source_type',2)->whereIn('source_id',$replyIds)
+            $num2 = count(Notice::whereIn('source_type',[2, 3])->whereIn('source_id',$replyIds)
                 ->where('if_read',0)->get());
 
             $notices = $num1+$num2;
@@ -91,7 +91,9 @@ class NoticeController extends Controller
             $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->orWhere('parent_id', $user->id)->pluck('id')->toArray();
 
             $notices = Notice::where('source_type',1)->whereIn('source_id',$commentIds)
-                ->orWhere('source_type',2)->whereIn('source_id',$replyIds)->orderBy('created_at', 'desc')->paginate(5);
+                ->orWhere('source_type',2)->whereIn('source_id',$replyIds)
+                >orWhere('source_type',3)->whereIn('source_id',$replyIds)
+                ->orderBy('created_at', 'desc')->paginate(5);
 
             if($notices)
             {
@@ -122,6 +124,7 @@ class NoticeController extends Controller
                         $postOrCommentUserInfo = [];
                         
                         $data['type'] = 'comment';
+                        $data['source_type'] = $notice->source_type;
                         $comment = Comment::where('id',$notice->source_id)->first();
                         $post = Post::where('id',$comment->post_id)->first();
                         $source['source_id'] = $notice->source_id;
@@ -133,13 +136,14 @@ class NoticeController extends Controller
                         $source['userInfo'] = $postOrCommentUserInfo;
                         $data['source'] = $source;
                     }
-                    elseif ($notice->source_type == 2)
+                    elseif ($notice->source_type != 1)
                     {
                         $source = [];
                         $objectUserInfo = [];
                         $postOrCommentUserInfo = [];
                         
                         $data['type'] = 'reply';
+                        $data['source_type'] = $notice->source_type;
                         $reply = CommentToComment::where('id',$notice->source_id)->first();
                         $objectUser = User::where('id',$reply->parent_id)->first();
                         $objectUserInfo['id'] = $objectUser->id;
