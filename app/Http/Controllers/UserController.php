@@ -685,6 +685,7 @@ class UserController extends Controller
     public function deletePicture(Request $request)
     {
         $inputs = $request->all();
+        $input = $inputs['userInfo'];
 
         $openid = Crypt::decrypt($inputs['wesecret']);
 
@@ -693,28 +694,33 @@ class UserController extends Controller
         {
             $user = $this->userRepository->getUserById($user->id);
 
-            if(!empty($user->pictures))
-            {
-                $pictures = explode(',',$user->pictures);
-                if(in_array($inputs['picture'],$pictures))
-                {
-                    $key = array_search($inputs['picture'],$pictures);
+            $user->pictures = implode(',',$input['remain_pictures']);
+            $user->save();
 
-                    array_splice($pictures,$key,1);
+            // 从七牛云上删除照片还没有写  $input['the_delete_picture']
 
-                    $user->pictures = implode(',',$pictures);
-                    $user->save();
+            // if(!empty($user->pictures))
+            // {
+            //     $pictures = explode(',',$user->pictures);
+            //     if(in_array($inputs['picture'],$pictures))
+            //     {
+            //         $key = array_search($inputs['picture'],$pictures);
 
-                    return response()->json(['status' => 200]);
-                }else
-                {
-                    return response()->json(['status' => 201,'message' => $inputs['picture'].' does not exist in user pictures']);
-                }
-            }else
-            {
-                return response()->json(['status' => 201,'message' => "User's pictures do not exist"]);
+            //         array_splice($pictures,$key,1);
 
-            }
+            //         $user->pictures = implode(',',$pictures);
+            //         $user->save();
+
+            //         return response()->json(['status' => 200]);
+            //     }else
+            //     {
+            //         return response()->json(['status' => 201,'message' => $inputs['picture'].' does not exist in user pictures']);
+            //     }
+            // }else
+            // {
+            //     return response()->json(['status' => 201,'message' => "User's pictures do not exist"]);
+
+            // }
 
         }
         else
