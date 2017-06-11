@@ -13,7 +13,7 @@ class AddObjectUserIdToNoticesTable extends Migration
     public function up()
     {
         Schema::table('notices', function (Blueprint $table) {
-            $table->integer('objectUser_id')->unique();
+            $table->integer('objectUser_id')->after('content');;
             //
         });
     }
