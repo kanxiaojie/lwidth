@@ -365,6 +365,7 @@ class UserController extends Controller
             $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
             $userInfo['nickName'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
+            $userInfo['pictureOnWall'] = $updateUser->pictureOnWall ;
             if (!$updateUser->gender)
             {
                 $userInfo['gender'] = "";
