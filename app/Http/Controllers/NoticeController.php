@@ -60,7 +60,7 @@ class NoticeController extends Controller
             // $num3 = count(Notice::where('source_type', 3)->whereIn('source_id',$replyIds1)
             //     ->where('if_read',0)->get());
 
-            $notices = Notice::where('objectUser_id', $user->id)->get()->count();
+            $notices = Notice::where('objectUser_id', $user->id)->where('if_read',0)->get()->count();
 
             // $notices = $num1 + $num2 + $num3;
 
