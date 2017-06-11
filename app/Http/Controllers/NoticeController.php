@@ -47,22 +47,22 @@ class NoticeController extends Controller
 
         if($user)
         {
-            $myPostIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
-            $commentIds = Comment::whereIn('post_id',$myPostIds)->pluck('id')->toArray();
-            $num1 = count(Notice::where('source_type',1)->whereIn('source_id',$commentIds)
-                ->where('if_read',0)->get());
+            // $myPostIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
+            // $commentIds = Comment::whereIn('post_id',$myPostIds)->pluck('id')->toArray();
+            // $num1 = count(Notice::where('source_type',1)->whereIn('source_id',$commentIds)
+            //     ->where('if_read',0)->get());
 
-            $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
-            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
-            $num2 = count(Notice::where('source_type', 2)->whereIn('source_id',$replyIds)
-                ->where('if_read',0)->get());
-            $replyIds1 = CommentToComment::where('parent_id', $user->id)->pluck('id')->toArray();
-            $num3 = count(Notice::where('source_type', 3)->whereIn('source_id',$replyIds1)
-                ->where('if_read',0)->get());
+            // $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
+            // $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
+            // $num2 = count(Notice::where('source_type', 2)->whereIn('source_id',$replyIds)
+            //     ->where('if_read',0)->get());
+            // $replyIds1 = CommentToComment::where('parent_id', $user->id)->pluck('id')->toArray();
+            // $num3 = count(Notice::where('source_type', 3)->whereIn('source_id',$replyIds1)
+            //     ->where('if_read',0)->get());
 
+            $notices = Notice::where('objectUser_id', $user->id)->get()->count();
 
-
-            $notices = $num1 + $num2 + $num3;
+            // $notices = $num1 + $num2 + $num3;
 
             return response()->json(['status'=>200,'message'=>'success','unreadNoticeNums'=>$notices]);
         }
