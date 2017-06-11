@@ -13,6 +13,7 @@ return array(
     'AddColumnsToUsersTable' => $baseDir . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
     'AddGradeToUsersTable' => $baseDir . '/database/migrations/2017_04_04_071309_add_grade_to_users_table.php',
     'AddNullToPostingsTable' => $baseDir . '/database/migrations/2017_04_14_032329_add_null_to_postings_table.php',
+    'AddObjectUserIdToNoticesTable' => $baseDir . '/database/migrations/2017_06_11_052232_add_objectUserId_to_notices_table.php',
     'AddPictureOnWallToUsersTable' => $baseDir . '/database/migrations/2017_06_01_063439_add_pictureOnWall_to_users_table.php',
     'AddPraiseNumsToCommentToCommentsTable' => $baseDir . '/database/migrations/2017_05_10_055239_add_praise_nums_to_commentToComments_table.php',
     'AddReadnumToPostingsTable' => $baseDir . '/database/migrations/2017_04_28_063050_add_readnum_to_postings_table.php',

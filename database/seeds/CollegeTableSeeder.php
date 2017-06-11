@@ -41,7 +41,7 @@ class CollegeTableSeeder extends Seeder
             'name'=>'江夏学院'
         ]);
         College::create([
-            'name'=>'州教育学院'
+            'name'=>'福州教育学院'
         ]);
         College::create([
             'name'=>'华南女子学院'

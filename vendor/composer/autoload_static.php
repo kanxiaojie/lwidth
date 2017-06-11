@@ -346,6 +346,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'AddColumnsToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_17_015511_add_columns_to_users_table.php',
         'AddGradeToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_04_071309_add_grade_to_users_table.php',
         'AddNullToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_14_032329_add_null_to_postings_table.php',
+        'AddObjectUserIdToNoticesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_11_052232_add_objectUserId_to_notices_table.php',
         'AddPictureOnWallToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_01_063439_add_pictureOnWall_to_users_table.php',
         'AddPraiseNumsToCommentToCommentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_10_055239_add_praise_nums_to_commentToComments_table.php',
         'AddReadnumToPostingsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_28_063050_add_readnum_to_postings_table.php',

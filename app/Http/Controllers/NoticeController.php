@@ -138,7 +138,7 @@ class NoticeController extends Controller
                         $source['content'] = $post->content;
                         $postOrCommentUserInfo['id'] = $post->user_id;
                         $postOrCommentUserInfo['nickName'] = $post->user->nickname;
-                        $postOrCommentUserInfo['avatarUrl'] = $post->user->avatar;
+                        $postOrCommentUserInfo['avatarUrl'] = $post->user->avatarUrl;
                         $source['userInfo'] = $postOrCommentUserInfo;
                         $data['source'] = $source;
                     }
