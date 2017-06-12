@@ -358,7 +358,7 @@ class UserRepository
     public function getPictures()
     {
         // $users = User::all();
-        $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->all();
+        $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
 
         return $users;
     }
@@ -384,12 +384,12 @@ class UserRepository
 
                 $users = array_merge($users1, $users2, $users3);
             } else {
-                $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->all();
+                $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
             }
         }
         else
         {
-            $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->all();
+            $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
         }
         return $users;
     }
