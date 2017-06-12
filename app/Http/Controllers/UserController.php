@@ -667,7 +667,7 @@ class UserController extends Controller
                         $data['avatarUrl'] = $user->avatarUrl;
                         // $data['college_name'] = College::find($user->college_id)->name;
                         // $data['college_name'] = College::find((int)$user->college_id)->name;
-                        dd($user->id);
+                        // dd($user->id);
                         $data['college_name'] = College::where('id',(int)($user->college_id))->first()->name;             
 
                         if(empty($user->pictures))
