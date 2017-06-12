@@ -376,13 +376,15 @@ class UserRepository
                 $users2 = User::where('gender',1)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
                 $users3 = User::whereNotIn('gender',[1,2])->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
                 
+                // $users = array_merge($users1, $users2, $users3);
                 $users = array_merge($users1, $users2, $users3);
+                $users = $users1->merge($users2)->merge($users3);
             } elseif ($user->gender == 2){
                 $users1 = User::where('gender',1)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
                 $users2 = User::where('gender',2)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
                 $users3 = User::whereNotIn('gender',[1,2])->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
 
-                $users = array_merge($users1, $users2, $users3);
+                $users = $users1->merge($users2)->merge($users3);
             } else {
                 $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
             }
