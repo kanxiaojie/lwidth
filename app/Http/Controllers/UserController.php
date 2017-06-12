@@ -668,7 +668,13 @@ class UserController extends Controller
                         // $data['college_name'] = College::find($user->college_id)->name;
                         // $data['college_name'] = College::find((int)$user->college_id)->name;
                         // dd($user->id);
-                        $data['college_name'] = College::where('id',(int)($user->college_id))->first()->name;             
+                        if(empty($user->college_id)) {
+                            $data['college_name'] = '';
+                        } else {
+                            $data['college_name'] = College::find($user->college_id)->name;
+                            
+                            // $data['college_name'] = College::where('id',(int)($user->college_id))->first()->name;             
+                        }
 
                         if(empty($user->pictures))
                         { 
