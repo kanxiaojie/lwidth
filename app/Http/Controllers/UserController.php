@@ -86,7 +86,8 @@ class UserController extends Controller
             $updateUser = $user;
 
             $userInfo['id'] = $updateUser->id ;
-            $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
+            // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
+            $userInfo['praise_nums'] = $updateUser->praiseNums;
             $userInfo['nickName'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
             if (!$updateUser->gender)
@@ -362,7 +363,8 @@ class UserController extends Controller
             $updateUser = $user;
 
             $userInfo['id'] = $updateUser->id ;
-            $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
+            // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
+            $userInfo['praise_nums'] = $updateUser->praiseNums;
             $userInfo['nickName'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
             $userInfo['pictureOnWall'] = $updateUser->pictureOnWall ;

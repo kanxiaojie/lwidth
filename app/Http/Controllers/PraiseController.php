@@ -143,18 +143,29 @@ class PraiseController extends Controller
                         $praiseToUser->praise_user_id = $user->id;
                         $praiseToUser->praised_user_id = $praisedUser->id;
                         $praiseToUser->save();
+
+                        $praisedUser->praiseNums = $praisedUser->praiseNums + 1;
+                        $praisedUser->save();
                     }
                 }else
                 {
-                    $praisedToUsers = PraiseUser::where('praise_user_id',$user->id)
-                        ->where('praised_user_id',$praisedUser->id)->get();
-                    if($praisedToUsers)
-                    {
-                        foreach ($praisedToUsers as $praisedToUser)
-                        {
-                            $praisedToUser->delete();
-                        }
+                    $praisedToUser = PraiseUser::where('praise_user_id',$user->id)
+                        ->where('praised_user_id',$praisedUser->id)->first();
+
+                    if ($praisedToUser) {
+                        $praisedToUser->delete();
+                        
+                        $praisedUser->praiseNums = $praisedUser->praiseNums - 1;
+                        $praisedUser->save();
                     }
+
+                    // if($praisedToUsers)
+                    // {
+                    //     foreach ($praisedToUsers as $praisedToUser)
+                    //     {
+                    //         $praisedToUser->delete();
+                    //     }
+                    // }
                 }
 
                 return response()->json(['status' =>200,'message' => 'success']);
