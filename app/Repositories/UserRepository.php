@@ -357,7 +357,8 @@ class UserRepository
 
     public function getPictures()
     {
-        $users = User::all();
+        // $users = User::all();
+        $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->all();
 
         return $users;
     }

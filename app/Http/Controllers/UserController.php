@@ -650,23 +650,28 @@ class UserController extends Controller
             $users = $this->userRepository->getPictures();
         }
 
-        $data = [];
+        // $data = [];
         $datas = [];
 
         if($users)
         {
             foreach ($users as $user)
             {
-                if($user->available)
+                if($user->available == 1 && $user->pictureOnWall == 1)
                 {
-                    if(!empty($user->pictures))
-                    {
+                    if (!empty($user->pictures) || !empty($user->avatarUrl)) {
+                        $data = [];       
+
                         $data['id'] = $user->id;
-                        if(substr(trim($user->pictures),-1) == ',')
-                        {
-                            $data['pictures'] = explode(',',$user->pictures);
-                        }else
-                        {
+                        $data['gender'] = $user->gender;
+                        $data['avatarUrl'] = $user->avatarUrl;
+                        $data['college_name'] = College::find($user->college_id)->name;
+                        // $data['college_name'] = College::where('id',(int)($user->college_id))->first()->name;             
+
+                        if(empty($user->pictures))
+                        { 
+                            $data['pictures'] = [$user->avatarUrl];                  
+                        } else {
                             $data['pictures'] = explode(',',$user->pictures);
                         }
 
