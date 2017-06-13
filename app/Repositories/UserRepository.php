@@ -362,7 +362,7 @@ class UserRepository
         } elseif($search == '女') {
             $search_gender = 2;
         } else {
-            $search_gender = 'nothing';
+            $search_gender = '哈哈哈';
         }
         $users = User::where(function ($query) use($search, $search_gender){
                             if(!empty($search))
@@ -372,7 +372,7 @@ class UserRepository
                                     })
                                     ->orWhere('nickname','LIKE','%'.$search.'%')
                                     ->orWhere('realname','LIKE','%'.$search.'%')
-                                    ->orWhere('gender','=',$search_gender);
+                                    ->orWhere('gender',$search_gender);
                             }
                         })
                         
