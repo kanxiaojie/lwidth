@@ -364,10 +364,10 @@ class UserRepository
         } else {
             $search_gender = 'nothing';
         }
-        $users = User::where(function ($query) use($search){
+        $users = User::where(function ($query) use($search, $search_gender){
                             if(!empty($search))
                             {
-                                $query->whereHas('college',function ($queryCollege) use ($search){
+                                $query->whereHas('college',function ($queryCollege) use ($search, $search_gender){
                                         $queryCollege->where('name','LIKE','%'.$search.'%');
                                     })
                                     ->orWhere('nickname','LIKE','%'.$search.'%')
