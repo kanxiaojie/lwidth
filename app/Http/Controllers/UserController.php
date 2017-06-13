@@ -642,13 +642,17 @@ class UserController extends Controller
     public function getPictures(Request $request)
     {
         $wesecret = $request->get('wesecret');
-        if($wesecret)
-        {
-            $users = $this->userRepository->getMaleOrFemalePictures($wesecret);
-        }else
-        {
-            $users = $this->userRepository->getPictures();
-        }
+        $search = $request->get('search');
+        // if($wesecret)
+        // {
+        //     $users = $this->userRepository->getMaleOrFemalePictures($wesecret, $search);
+        // }else
+        // {
+        //     $users = $this->userRepository->getPictures($search);
+        // }
+
+        $users = $this->userRepository->getPictures($search);
+        
 
         // $data = [];
         $datas = [];

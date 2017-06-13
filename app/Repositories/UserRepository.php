@@ -355,43 +355,81 @@ class UserRepository
 
     }
 
-    public function getPictures()
+    public function getPictures($search)
     {
-        // $users = User::all();
-        $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+        if($search == '男') {
+            $search_gender = 1;
+        } elseif($search == '女') {
+            $search_gender = 2;
+        }
+        $users = User::where(function ($query) use($search){
+                            if(!empty($search))
+                            {
+                                $query->whereHas('college',function ($queryCollege) use ($search){
+                                        $queryCollege->where('name','LIKE','%'.$search.'%');
+                                    })
+                                    ->orWhere('nickname','LIKE','%'.$search.'%')
+                                    ->orWhere('realname','LIKE','%'.$search.'%');
+                            }
+                        })
+                        ->orWhere('gender',$search_gender)
+                        ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(1);
 
         return $users;
     }
 
-    public function getMaleOrFemalePictures($wesecret)
-    {
-        $openid = Crypt::decrypt($wesecret);
-        $user = $this->getUserByOpenId($openid);
+    // public function getMaleOrFemalePictures($wesecret, $search)
+    // {
+    //     $openid = Crypt::decrypt($wesecret);
+    //     $user = $this->getUserByOpenId($openid);
 
-        if($user->gender)
-        {
-            if($user->gender == 1)
-            {
-                $users1 = User::where('gender',2)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
-                $users2 = User::where('gender',1)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
-                $users3 = User::whereNotIn('gender',[1,2])->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //     if($user->gender)
+    //     {
+    //         if($user->gender == 1)
+    //         {
+    //             $users1 = User::where('gender',2)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users2 = User::where('gender',1)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users3 = User::whereNotIn('gender',[1,2])->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
                 
-                // $users = array_merge($users1, $users2, $users3);
-                $users = $users1->merge($users2)->merge($users3);
-            } elseif ($user->gender == 2){
-                $users1 = User::where('gender',1)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
-                $users2 = User::where('gender',2)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
-                $users3 = User::whereNotIn('gender',[1,2])->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             // $users = array_merge($users1, $users2, $users3);
+    //             $users = $users1->merge($users2)->merge($users3);
+    //         } elseif ($user->gender == 2){
+    //             $users1 = User::where('gender',1)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users2 = User::where('gender',2)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users3 = User::whereNotIn('gender',[1,2])->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
 
-                $users = $users1->merge($users2)->merge($users3);
-            } else {
-                $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
-            }
-        }
-        else
-        {
-            $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
-        }
-        return $users;
-    }
+    //             $users = $users1->merge($users2)->merge($users3);
+    //         } else {
+    //             // $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users = User::where(function ($query) use($search){
+    //                             if(!empty($search))
+    //                             {
+    //                                 $query->whereHas('college',function ($queryCollege) use ($search){
+    //                                         $queryCollege->where('name','LIKE','%'.$search.'%');
+    //                                     })
+    //                                     ->orWhere('nickname','LIKE','%'.$search.'%')
+    //                                     ->orWhere('realname','LIKE','%'.$search.'%');
+    //                             }
+    //                         })
+    //                         ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(5);
+                
+    //         }
+    //     }
+    //     else
+    //     {
+    //         // $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //          $users = User::where(function ($query) use($search){
+    //                             if(!empty($search))
+    //                             {
+    //                                 $query->whereHas('college',function ($queryCollege) use ($search){
+    //                                         $queryCollege->where('name','LIKE','%'.$search.'%');
+    //                                     })
+    //                                     ->orWhere('nickname','LIKE','%'.$search.'%')
+    //                                     ->orWhere('realname','LIKE','%'.$search.'%');
+    //                             }
+    //                         })
+    //                         ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(5);
+    //     }
+    //     return $users;
+    // }
 }

@@ -270,7 +270,8 @@ class PostController extends Controller
                         }
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
                             $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
@@ -415,7 +416,8 @@ class PostController extends Controller
                         $user =User::where('id',$post->user_id)->first();
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
                             $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
@@ -551,7 +553,8 @@ class PostController extends Controller
 
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
                             $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
@@ -1045,7 +1048,8 @@ class PostController extends Controller
 
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
                             $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
@@ -1178,7 +1182,8 @@ class PostController extends Controller
 
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
                             $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
