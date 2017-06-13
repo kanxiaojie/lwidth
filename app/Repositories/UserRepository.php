@@ -361,6 +361,8 @@ class UserRepository
             $search_gender = 1;
         } elseif($search == '女') {
             $search_gender = 2;
+        } else {
+            $search_gender = 'nothing';
         }
         $users = User::where(function ($query) use($search){
                             if(!empty($search))
