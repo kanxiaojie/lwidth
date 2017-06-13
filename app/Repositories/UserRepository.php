@@ -372,7 +372,7 @@ class UserRepository
                                     })
                                     ->orWhere('nickname','LIKE','%'.$search.'%')
                                     ->orWhere('realname','LIKE','%'.$search.'%')
-                                    ->orWhere('gender',$search_gender);
+                                    ->orWhere('gender','=',$search_gender);
                             }
                         })
                         
