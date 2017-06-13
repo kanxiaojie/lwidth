@@ -375,7 +375,7 @@ class UserRepository
                             }
                         })
                         ->orWhere('gender',$search_gender)
-                        ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(1);
+                        ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(5);
 
         return $users;
     }
