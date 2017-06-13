@@ -374,7 +374,7 @@ class UserRepository
                                     ->orWhere('realname','LIKE','%'.$search.'%');
                             }
                         })
-                        ->orWhere('gender',$search_gender)
+                        // ->orWhere('gender',$search_gender)
                         ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(5);
 
         return $users;
