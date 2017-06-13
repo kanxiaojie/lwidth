@@ -126,13 +126,13 @@ class PostController extends Controller
                     {
                         $anonymousUser = User::where('college_id',$user->college_id)->first();
                         $userInfo['id'] = $anonymousUser->id;
-                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['nickname'] = $anonymousUser->nickname;
                         $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                     }else
                     {
                         $userInfo['id'] = $user->id;
-                        $userInfo['nickName'] = $user->nickname;
+                        $userInfo['nickname'] = $user->nickname;
                         $userInfo['avatarUrl'] = $user->avatarUrl;
                     }
 
@@ -272,13 +272,13 @@ class PostController extends Controller
                         {
                             $anonymousUser = User::where('college_id',$post->user->college_id)->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['nickname'] = $post->user->nickname;
                             $userInfo['avatarUrl'] = $post->user->avatarUrl;
                         }
 
@@ -417,13 +417,13 @@ class PostController extends Controller
                         {
                             $anonymousUser = User::where('college_id',$post->user->college_id)->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['nickname'] = $user->nickname;
                             $userInfo['avatarUrl'] =  $user->avatarUrl;
                         }
 
@@ -553,13 +553,13 @@ class PostController extends Controller
                         {
                             $anonymousUser = User::where('college_id',$post->user->college_id)->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['nickname'] = $post->user->nickname;
                             $userInfo['avatarUrl'] = $post->user->avatarUrl;
                         }
 
@@ -699,7 +699,7 @@ class PostController extends Controller
                 }
 
                 $userInfo['id'] = $post->user_id;
-                $userInfo['nickName'] = $post->user->nickname;
+                $userInfo['nickname'] = $post->user->nickname;
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 if(!empty($post->user->college_id))
                 {
@@ -757,7 +757,7 @@ class PostController extends Controller
 
                             $userOfComment = User::where('id',$postComment->user_id)->first();
                             $commentOfUserInfo['id'] = $userOfComment->id;
-                            $commentOfUserInfo['nickName'] = $userOfComment->nickname;
+                            $commentOfUserInfo['nickname'] = $userOfComment->nickname;
                             $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
                             $postComments['userInfo'] = $commentOfUserInfo;
 
@@ -855,7 +855,7 @@ class PostController extends Controller
                 }
 
                 $userInfo['id'] = $post->user_id;
-                $userInfo['nickName'] = $post->user->nickname;
+                $userInfo['nickname'] = $post->user->nickname;
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 if(!empty($post->user->college_id))
                 {
@@ -929,7 +929,7 @@ class PostController extends Controller
 
                             $userOfComment = User::where('id',$postComment->user_id)->first();
                             $commentOfUserInfo['id'] = $userOfComment->id;
-                            $commentOfUserInfo['nickName'] = $userOfComment->nickname;
+                            $commentOfUserInfo['nickname'] = $userOfComment->nickname;
                             $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
                             $postComments['userInfo'] = $commentOfUserInfo;
 
@@ -1047,12 +1047,12 @@ class PostController extends Controller
                         {
                             $anonymousUser = User::where('college_id',$post->user->college_id)->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['nickname'] = $user->nickname;
                             $userInfo['avatarUrl'] =  $user->avatarUrl;
                         }
 
@@ -1180,12 +1180,12 @@ class PostController extends Controller
                         {
                             $anonymousUser = User::where('college_id',$post->user->college_id)->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['nickname'] = $post->user->nickname;
                             $userInfo['avatarUrl'] = $post->user->avatarUrl;
                         }
 
@@ -1651,7 +1651,7 @@ class PostController extends Controller
                         $postuser =User::where('id',$post->user_id)->first();
                         $anonymousUser = User::where('college_id',$postuser->college_id)->first();
                         $userInfo['id'] = $anonymousUser->id;
-                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['nickname'] = $anonymousUser->nickname;
                         $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
 
                         if(!empty($anonymousUser->college_id))
@@ -1667,7 +1667,7 @@ class PostController extends Controller
                     {
                         $postuser =User::where('id',$post->user_id)->first();
                         $userInfo['id'] = $postuser->id;
-                        $userInfo['nickName'] = $postuser->nickname;
+                        $userInfo['nickname'] = $postuser->nickname;
                         $userInfo['avatarUrl'] =  $postuser->avatarUrl;
 
                         if(!empty($postuser->college_id))
@@ -1773,7 +1773,7 @@ class PostController extends Controller
                         $postuser =User::where('id',$post->user_id)->first();
                         $anonymousUser = User::where('college_id',$postuser->college_id)->first();
                         $userInfo['id'] = $anonymousUser->id;
-                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['nickname'] = $anonymousUser->nickname;
                         $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
                         if(!empty($anonymousUser->college_id))
                         {
@@ -1787,7 +1787,7 @@ class PostController extends Controller
                     {
                         $postuser =User::where('id',$post->user_id)->first();
                         $userInfo['id'] = $postuser->id;
-                        $userInfo['nickName'] = $postuser->nickname;
+                        $userInfo['nickname'] = $postuser->nickname;
                         $userInfo['avatarUrl'] =  $postuser->avatarUrl;
 
                         if(!empty($postuser->college_id))
@@ -1888,7 +1888,7 @@ class PostController extends Controller
                     $commentuser =User::where('id',$comment->user_id)->first();
 
                     $commentUserInfo['id'] = $commentuser->id;
-                    $commentUserInfo['nickName'] = $commentuser->nickname;
+                    $commentUserInfo['nickname'] = $commentuser->nickname;
                     $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
                     $data['userInfo'] = $commentUserInfo;
 
@@ -1907,13 +1907,13 @@ class PostController extends Controller
 
                             $user1 = $this->userRepository->getUserById($reply->user_id);
                             $replyUserInfo['id'] = $user1->id;
-                            $replyUserInfo['nickName'] = $user1->nickname;
+                            $replyUserInfo['nickname'] = $user1->nickname;
                             $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
                             $replys['userInfo'] = $replyUserInfo;
 
                             $objectUserInfo['id'] = $reply->parent_id;
                             $objectUser = $this->userRepository->getUserById($reply->parent_id);
-                            $objectUserInfo['nickName'] = $objectUser->nickname;
+                            $objectUserInfo['nickname'] = $objectUser->nickname;
                             $replys['objectUserInfo'] = $objectUserInfo;
                             $replys['praise_nums'] = $reply->praise_nums;
                             $replys['if_my_praise'] = 0;
@@ -1955,7 +1955,7 @@ class PostController extends Controller
                     $commentuser =User::where('id',$comment->user_id)->first();
 
                     $commentUserInfo['id'] = $commentuser->id;
-                    $commentUserInfo['nickName'] = $commentuser->nickname;
+                    $commentUserInfo['nickname'] = $commentuser->nickname;
                     $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
                     $data['userInfo'] = $commentUserInfo;
 
@@ -1974,13 +1974,13 @@ class PostController extends Controller
 
                             $user1 = $this->userRepository->getUserById($reply->user_id);
                             $replyUserInfo['id'] = $user1->id;
-                            $replyUserInfo['nickName'] = $user1->nickname;
+                            $replyUserInfo['nickname'] = $user1->nickname;
                             $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
                             $replys['userInfo'] = $replyUserInfo;
 
                             $objectUserInfo['id'] = $reply->parent_id;
                             $objectUser = $this->userRepository->getUserById($reply->parent_id);
-                            $objectUserInfo['nickName'] = $objectUser->nickname;
+                            $objectUserInfo['nickname'] = $objectUser->nickname;
                             $replys['objectUserInfo'] = $objectUserInfo;
                             $replys['praise_nums'] = $reply->praise_nums;
 
@@ -2084,13 +2084,13 @@ class PostController extends Controller
                        {
                            $anonymousUser = User::where('college_id',$user->college_id)->first();
                            $userInfo['id'] = $anonymousUser->id;
-                           $userInfo['nickName'] = $anonymousUser->nickname;
+                           $userInfo['nickname'] = $anonymousUser->nickname;
                            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                        }else
                        {
                            $userInfo['id'] = $user->id;
-                           $userInfo['nickName'] = $user->nickname;
+                           $userInfo['nickname'] = $user->nickname;
                            $userInfo['avatarUrl'] = $user->avatarUrl;
                        }
 

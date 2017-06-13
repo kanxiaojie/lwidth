@@ -197,7 +197,7 @@ class PraiseController extends Controller
                 {
                     $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
                     $data['id']=$praise_user->id;
-                    $data['nickName']=$praise_user->nickname;
+                    $data['nickname']=$praise_user->nickname;
                     $data['avatarUrl']=$praise_user->avatarUrl;
 
                     if (!$praise_user->gender)

@@ -88,7 +88,7 @@ class UserController extends Controller
             $userInfo['id'] = $updateUser->id ;
             // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
             $userInfo['praise_nums'] = $updateUser->praiseNums;
-            $userInfo['nickName'] = $updateUser->nickname ;
+            $userInfo['nickname'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
             if (!$updateUser->gender)
             {
@@ -365,7 +365,7 @@ class UserController extends Controller
             $userInfo['id'] = $updateUser->id ;
             // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
             $userInfo['praise_nums'] = $updateUser->praiseNums;
-            $userInfo['nickName'] = $updateUser->nickname ;
+            $userInfo['nickname'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
             $userInfo['pictureOnWall'] = $updateUser->pictureOnWall ;
             if (!$updateUser->gender)
@@ -663,6 +663,7 @@ class UserController extends Controller
                         $data = [];       
 
                         $data['id'] = $user->id;
+                        $data['nickname'] = $user->nickname;
                         $data['gender'] = $user->gender;
                         $data['avatarUrl'] = $user->avatarUrl;
 
@@ -803,7 +804,7 @@ class UserController extends Controller
                 {
                     $blackUser = User::where('id',$blackListUser->black_user_id)->first();
                     $data['id'] = $blackUser->id;
-                    $data['nickName'] = $blackUser->nickname;
+                    $data['nickname'] = $blackUser->nickname;
                     $data['avatarUrl'] = $blackUser->avatarUrl;
                     if (!$blackUser->gender)
                     {

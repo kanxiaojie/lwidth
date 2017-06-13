@@ -122,7 +122,7 @@ class NoticeController extends Controller
 
                     $user = User::where('id',$notice->user_id)->first();
                     $commentOrReplyUserInfo['id'] =$notice->user_id;
-                    $commentOrReplyUserInfo['nickName'] = $user->nickname;
+                    $commentOrReplyUserInfo['nickname'] = $user->nickname;
                     $commentOrReplyUserInfo['avatarUrl'] = $user->avatarUrl;
                     $data['userInfo'] = $commentOrReplyUserInfo;
 
@@ -139,7 +139,7 @@ class NoticeController extends Controller
                         $source['love_id'] = $post->id;
                         $source['content'] = $post->content;
                         $postOrCommentUserInfo['id'] = $post->user_id;
-                        $postOrCommentUserInfo['nickName'] = $post->user->nickname;
+                        $postOrCommentUserInfo['nickname'] = $post->user->nickname;
                         $postOrCommentUserInfo['avatarUrl'] = $post->user->avatarUrl;
                         $source['userInfo'] = $postOrCommentUserInfo;
                         $data['source'] = $source;
@@ -155,7 +155,7 @@ class NoticeController extends Controller
                         $reply = CommentToComment::where('id',$notice->source_id)->first();
                         $objectUser = User::where('id',$reply->parent_id)->first();
                         $objectUserInfo['id'] = $objectUser->id;
-                        $objectUserInfo['nickName'] = $objectUser->nickname;
+                        $objectUserInfo['nickname'] = $objectUser->nickname;
                         $objectUserInfo['avatarUrl'] = $objectUser->avatarUrl;
                         $data['objectUserInfo'] = $objectUserInfo;
 
@@ -167,7 +167,7 @@ class NoticeController extends Controller
                         $source['content'] = $comment->content;
                         $postOrCommentUser = User::where('id',$comment->user_id)->first();
                         $postOrCommentUserInfo['id'] = $postOrCommentUser->id;
-                        $postOrCommentUserInfo['nickName'] = $postOrCommentUser->nickname;
+                        $postOrCommentUserInfo['nickname'] = $postOrCommentUser->nickname;
                         $postOrCommentUserInfo['avatarUrl'] = $postOrCommentUser->avatarUrl;
                         $source['userInfo'] = $postOrCommentUserInfo;
                         $data['source'] = $source;

@@ -65,9 +65,9 @@ class UserRepository
             $user->openid = $inputs['openId'];
         }
 
-        if(isset($inputs['nickName']))
+        if(isset($inputs['nickname']))
         {
-            $user->nickname = $inputs['nickName'];
+            $user->nickname = $inputs['nickname'];
         }
 
         if(isset($inputs['gender']) && (!empty($inputs['gender'])))
@@ -152,9 +152,9 @@ class UserRepository
             $user->realname = $inputs['realname'];
         }
 
-        if(isset($inputs['nickName']) && (!empty($inputs['nickName'])))
+        if(isset($inputs['nickname']) && (!empty($inputs['nickname'])))
         {
-            $user->nickname = $inputs['nickName'];
+            $user->nickname = $inputs['nickname'];
         }
 
         if(isset($inputs['college']) && (!empty($inputs['college'])))

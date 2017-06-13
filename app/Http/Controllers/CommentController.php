@@ -113,7 +113,7 @@ class CommentController extends Controller
             $data['id'] = $comment->id;
 
             $userInfo1['id'] = $comment->user_id;
-            $userInfo1['nickName'] = $commentUser->nickname;
+            $userInfo1['nickname'] = $commentUser->nickname;
             $userInfo1['avatarUrl'] = $commentUser->avatarUrl;
             $data['userInfo'] = $userInfo1;
 
@@ -165,13 +165,13 @@ class CommentController extends Controller
 
                         $user1 = $this->userRepository->getUserById($commentToComment->user_id);
                         $userInfo2['id'] = $user1->id;
-                        $userInfo2['nickName'] = $user1->nickname;
+                        $userInfo2['nickname'] = $user1->nickname;
                         $userInfo2['avatarUrl'] = $user1->avatarUrl;
                         $data2['userInfo'] = $userInfo2;
 
                         $objectUserInfo['id'] = $commentToComment->parent_id;
                         $objectUser = $this->userRepository->getUserById($commentToComment->parent_id);
-                        $objectUserInfo['nickName'] = $objectUser->nickname;
+                        $objectUserInfo['nickname'] = $objectUser->nickname;
                         $data2['objectUserInfo'] = $objectUserInfo;
                         $data2['praise_nums'] = $commentToComment->praise_nums;
 
@@ -352,13 +352,13 @@ class CommentController extends Controller
                         {
                             $anonymousUser = User::where('college_id',$post->user->college_id)->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['nickname'] = $user->nickname;
                             $userInfo['avatarUrl'] =  $user->avatarUrl;
                         }
 
@@ -507,13 +507,13 @@ class CommentController extends Controller
                         {
                             $anonymousUser = User::where('college_id',$post->user->college_id)->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $User->nickname;
+                            $userInfo['nickname'] = $User->nickname;
                             $userInfo['avatarUrl'] =  $User->avatarUrl;
                         }
 
@@ -615,7 +615,7 @@ class CommentController extends Controller
 
             $user = User::where('id',$comment->user_id)->first();
             $userInfo['id'] = $user->id;
-            $userInfo['nickName'] = $user->nickname;
+            $userInfo['nickname'] = $user->nickname;
             $userInfo['avatarUrl'] =  $user->avatarUrl;
             $data['userInfo'] = $userInfo;
 
@@ -675,13 +675,13 @@ class CommentController extends Controller
 
                     $user1 = $this->userRepository->getUserById($reply->user_id);
                     $replyUserInfo['id'] = $user1->id;
-                    $replyUserInfo['nickName'] = $user1->nickname;
+                    $replyUserInfo['nickname'] = $user1->nickname;
                     $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
                     $replys['userInfo'] = $replyUserInfo;
 
                     $objectUserInfo['id'] = $reply->parent_id;
                     $objectUser = $this->userRepository->getUserById($reply->parent_id);
-                    $objectUserInfo['nickName'] = $objectUser->nickname;
+                    $objectUserInfo['nickname'] = $objectUser->nickname;
                     $replys['objectUserInfo'] = $objectUserInfo;
                     $replys['praise_nums'] = $reply->praise_nums;
                     $replys['if_my_praise'] = 0;
@@ -723,13 +723,13 @@ class CommentController extends Controller
 
                 $replyUser = User::where('id',$reply->user_id)->first();
                 $userInfo['id'] = $replyUser->id;
-                $userInfo['nickName'] = $replyUser->nickname;
+                $userInfo['nickname'] = $replyUser->nickname;
                 $userInfo['avatarUrl'] = $replyUser->avatarUrl;
                 $data['userInfo'] = $userInfo;
 
                 $objectUser = User::where('id',$reply->parent_id)->first();
                 $objectUserInfo['id'] = $objectUser->id;
-                $objectUserInfo['nickName'] = $objectUser->nickname;
+                $objectUserInfo['nickname'] = $objectUser->nickname;
                 $data['objectUserInfo'] = $objectUserInfo;
 
                 $data['praise_nums'] = $reply->praise_nums;
