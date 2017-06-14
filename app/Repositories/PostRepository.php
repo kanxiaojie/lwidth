@@ -81,12 +81,21 @@ class PostRepository
 
     public function getAllPosts($search = null,$orderby = 'created_at', $direction = 'desc')
     {
-        $posts = Post::where(function ($query) use($search){
+        if($search == '男') {
+            $search_gender = 1;
+        } elseif($search == '女') {
+            $search_gender = 2;
+        } else {
+            $search_gender = '哈哈哈';
+        }
+
+        $posts = Post::where(function ($query) use($search, $search_gender){
             if(!empty($search))
             {
-                $query->whereHas('user',function ($queryUser) use ($search){
+                $query->whereHas('user',function ($queryUser) use ($search, $search_gender){
                         $queryUser->where('realname','LIKE','%'.$search.'%')
-                        ->orWhere('nickname','LIKE','%'.$search.'%');
+                        ->orWhere('nickname','LIKE','%'.$search.'%')
+                        ->orWhere('gender','LIKE','%'.$search_gender.'%');
                     })
                     ->orWhereHas('user.college',function ($queryCollege) use ($search){
                         $queryCollege->where('name','LIKE','%'.$search.'%');
