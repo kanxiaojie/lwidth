@@ -2345,7 +2345,7 @@ class PostController extends Controller
                     }
                     else
                     {
-                        $data['location'] = {};
+                        $data['location'] = '';
                     }
 
                     $datas[] = $data;
