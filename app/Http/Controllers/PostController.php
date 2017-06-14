@@ -2215,10 +2215,12 @@ class PostController extends Controller
 
 
 
+getImageLoves
+getVideoLoves
 
 
     public function getLoves(Request $request)
-    {
+    {   
         $wesecret = $request->get('wesecret');
         $search = $request->get('search');
         if (!empty($wesecret))
@@ -2227,8 +2229,45 @@ class PostController extends Controller
             $user = $this->userRepository->getUserByOpenId($openid);
         }
 
+        $type = $request->get('type')
+        switch ($type) 
+        {
+            case 'hotLoves': 
+                $posts = $this->postRepository->getHotLoves($search);
+                break;
+            case 'imageLoves': 
+                $posts = $this->postRepository->getImageLoves($search);
+                break;
+            case 'videoLoves': 
+                $posts = $this->postRepository->getVideoLoves($search);
+                break;
+            case 'commentLoves': 
+                $posts = $this->postRepository->getCommentLoves($search, $user);
+                break;
+            case 'praiseLoves': 
+                $posts = $this->postRepository->getPraiseLoves($search, $user);
+                break;
+            case 'myLoves': 
+                $posts = $this->postRepository->getMyLoves($search, $user);
+                break;
+            default:
+                $posts = $this->postRepository->getNewLoves($search);
+        }
+        // if (type == 'newestLoves') {
+
+        // } elseif (type == 'hottestLoves') {
+
+        // } elseif (type == 'imageLoves') {
+
+        // } 
+
+
+
+        // $posts = $this->postRepository->getAllPosts($search);
+        
+        
+
         $datas = [];
-        $posts = $this->postRepository->getAllPosts($search);
 
         if(empty($posts))
         {
