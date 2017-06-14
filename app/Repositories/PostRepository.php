@@ -40,12 +40,12 @@ class PostRepository
         return $posts;
     }
 
-    public function getMyLoves($user, $orderby = 'created_at', $direction = 'desc')
-    {
-        $posts = $this->post->where('user_id',$user->id)->orderBy($orderby,$direction)->get();
+    // public function getMyLoves($user, $orderby = 'created_at', $direction = 'desc')
+    // {
+    //     $posts = $this->post->where('user_id',$user->id)->orderBy($orderby,$direction)->get();
 
-        return $posts;
-    }
+    //     return $posts;
+    // }
 
     public function getGenderPosts($gender,$search = null, $orderby = 'created_at', $direction = 'desc')
     {
@@ -140,8 +140,7 @@ class PostRepository
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
-                            ->orWhere('content','LIKE','%'.$search.'%')
-                        ;
+                            ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })->orderBy($orderby,$direction)->paginate(5);
 
@@ -168,8 +167,7 @@ class PostRepository
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
-                            ->orWhere('content','LIKE','%'.$search.'%')
-                        ;
+                            ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })->orderBy($orderby,$direction)->paginate(5);
 
@@ -196,8 +194,7 @@ class PostRepository
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
-                            ->orWhere('content','LIKE','%'.$search.'%')
-                        ;
+                            ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })
                 ->where('pictures', '<>', null)
@@ -226,8 +223,7 @@ class PostRepository
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
-                            ->orWhere('content','LIKE','%'.$search.'%')
-                        ;
+                            ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })
                 ->where('video_url', '<>', null)
@@ -258,8 +254,7 @@ class PostRepository
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
-                            ->orWhere('content','LIKE','%'.$search.'%')
-                        ;
+                            ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })
                 ->whereIn('id',$postIds)
@@ -290,8 +285,7 @@ class PostRepository
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
-                            ->orWhere('content','LIKE','%'.$search.'%')
-                        ;
+                            ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })
                 ->whereIn('id',$postIds)
@@ -320,11 +314,10 @@ class PostRepository
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
-                            ->orWhere('content','LIKE','%'.$search.'%')
-                        ;
+                            ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })
-                ->where('user_id', '=', $user->id)
+                ->where('user_id', $user->id)
                 ->orderBy($orderby,$direction)->paginate(5);
 
         return $posts;
