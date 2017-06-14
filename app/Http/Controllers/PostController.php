@@ -2215,10 +2215,6 @@ class PostController extends Controller
 
 
 
-getImageLoves
-getVideoLoves
-
-
     public function getLoves(Request $request)
     {   
         $wesecret = $request->get('wesecret');
@@ -2235,19 +2231,19 @@ getVideoLoves
             case 'hotLoves': 
                 $posts = $this->postRepository->getHotLoves($search);
                 break;
-            case 'imageLoves': 
+            case 'imageLoves':
                 $posts = $this->postRepository->getImageLoves($search);
                 break;
-            case 'videoLoves': 
+            case 'videoLoves':
                 $posts = $this->postRepository->getVideoLoves($search);
                 break;
-            case 'commentLoves': 
+            case 'commentLoves':
                 $posts = $this->postRepository->getCommentLoves($search, $user);
                 break;
-            case 'praiseLoves': 
+            case 'praiseLoves':
                 $posts = $this->postRepository->getPraiseLoves($search, $user);
                 break;
-            case 'myLoves': 
+            case 'myLoves':
                 $posts = $this->postRepository->getMyLoves($search, $user);
                 break;
             default:
