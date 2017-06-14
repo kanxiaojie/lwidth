@@ -2225,7 +2225,7 @@ class PostController extends Controller
             $user = $this->userRepository->getUserByOpenId($openid);
         }
 
-        $type = $request->get('type')
+        $type = $request->get('type');
         switch ($type) 
         {
             case 'hotLoves': 
