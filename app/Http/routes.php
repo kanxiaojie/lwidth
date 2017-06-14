@@ -40,7 +40,12 @@ $app->post('/api/virtual/loves/images','PostController@virtualUploadPostImages')
 $app->get('/api/posts','PostController@index');
 
 //所有帖子
-$app->get('/api/loves','PostController@lists');
+// $app->get('/api/loves','PostController@lists');
+$app->get('/api/loves','PostController@getLoves');
+
+//新增加发现里面的三个获取帖子方式
+$app->get('/api/imageLoves','PostController@getImageLoves');
+$app->get('/api/videoLoves','PostController@getVideoLoves');
 
 //获取本校表白  (本校的表白 时间倒序)
 $app->get('/api/collegeLoves','PostController@getCollegeLoves');

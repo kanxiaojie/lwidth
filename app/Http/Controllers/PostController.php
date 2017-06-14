@@ -2183,4 +2183,181 @@ class PostController extends Controller
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function getLoves(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $search = $request->get('search');
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        }
+
+        $datas = [];
+        $posts = $this->postRepository->getAllPosts($search);
+
+        if(empty($posts))
+        {
+            $datas = [];
+        }
+        else
+        {
+            foreach ($posts as $post)
+            {
+                
+                if($post->user->available)
+                {
+                    $data = [];
+
+                    $data['id'] = $post->id;
+                    $data['content'] = $post->content;
+                    if($user && $post->user_id == $user->id)
+                    {
+                        $data['belongsToMe'] = 1;
+                    }else
+                    {
+                        $data['belongsToMe'] = 0;
+                    }
+                    $data['video_url'] = $post->video_url;
+                    if(!empty($post->pictures))
+                    {
+                        $data['images'] = explode(',',$post->pictures);
+                    }
+                    else
+                    {
+                        $data['images'] = [];
+                    }
+
+                    $userInfo = [];
+                    if($post->anonymous == 1)
+                    {
+                        // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                        $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
+                        $userInfo['id'] = $anonymousUser->id;
+                        $userInfo['nickname'] = $anonymousUser->nickname;
+                        $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+
+                    }else
+                    {
+                        $userInfo['id'] = $post->user_id;
+                        $userInfo['nickname'] = $post->user->nickname;
+                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                    }
+                    if(!empty($post->user->college_id))
+                    {
+                        $userInfo['college'] = College::where('id',(int)($post->user->college_id))->first()->name;
+                    }
+                    else
+                    {
+                        $userInfo['college'] = '';
+                    }
+                    $data['userInfo'] = $userInfo;
+
+                    $diff_time = $this->postRepository->getTime($post->created_at);
+                    $data['created_at'] = $diff_time;
+
+                    if($post->likenum)
+                    {
+                        $data['praise_nums'] = $post->likenum;
+                    }
+                    else
+                    {
+                        $data['praise_nums'] = 0;
+                    }
+                    if($post->commentnum)
+                    {
+                        $data['comment_nums'] = $post->commentnum;
+                    }
+                    else
+                    {
+                        $data['comment_nums'] = 0;
+                    }
+
+                    if ($user) {
+                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_comment)
+                        {
+                            $data['if_my_comment'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_comment'] = 0;
+                        }
+                    } else {
+                        $data['if_my_comment'] = 0;
+                    }               
+                    if ($user) {
+                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_praise)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_praise'] = 0;
+                        }
+                    } else {
+                        $data['if_my_praise'] = 0;
+                    }
+
+                    if($post->location)
+                    {
+                        $location = explode(',',$post->location);
+
+                        $data['location']['name'] = $location[2];
+                        $data['location']['address'] = $location[3];
+                        $data['location']['longitude'] = $location[1];
+                        $data['location']['latitude'] = $location[0];
+                    }
+                    else
+                    {
+                        $data['location'] = {};
+                    }
+
+                    $datas[] = $data;
+                }
+
+            }
+
+        }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
+
 }
