@@ -2344,7 +2344,7 @@ class PostController extends Controller
                         $data['comment_nums'] = 0;
                     }
 
-                    if (!empty($user) {
+                    if (!empty($user)) {
                         $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
                         if($if_my_comment)
                         {
@@ -2357,7 +2357,7 @@ class PostController extends Controller
                     } else {
                         $data['if_my_comment'] = 0;
                     }               
-                    if (!empty($user) {
+                    if (!empty($user)) {
                         $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
                         if($if_my_praise)
                         {
