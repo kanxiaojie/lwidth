@@ -2223,6 +2223,8 @@ class PostController extends Controller
         {
             $openid = $this->baseRepository->decryptCode($wesecret);
             $user = $this->userRepository->getUserByOpenId($openid);
+        } else {
+            $user = null;
         }
 
         $type = $request->get('type');
@@ -2280,7 +2282,7 @@ class PostController extends Controller
 
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
-                    if($user && $post->user_id == $user->id)
+                    if(!empty($user) && $post->user_id == $user->id)
                     {
                         $data['belongsToMe'] = 1;
                     }else
@@ -2342,7 +2344,7 @@ class PostController extends Controller
                         $data['comment_nums'] = 0;
                     }
 
-                    if ($user) {
+                    if (!empty($user) {
                         $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
                         if($if_my_comment)
                         {
@@ -2355,7 +2357,7 @@ class PostController extends Controller
                     } else {
                         $data['if_my_comment'] = 0;
                     }               
-                    if ($user) {
+                    if (!empty($user) {
                         $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
                         if($if_my_praise)
                         {
