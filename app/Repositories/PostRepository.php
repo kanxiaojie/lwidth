@@ -11,6 +11,8 @@ namespace App\Repositories;
 
 use App\Post;
 use App\User;
+use App\Comment;
+use App\Praise;
 
 class PostRepository
 {
