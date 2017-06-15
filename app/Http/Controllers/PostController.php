@@ -1488,7 +1488,7 @@ class PostController extends Controller
                                 $pictureArray = explode('/', $needDelete_picture); 
                                 $key = $pictureArray[3];
                                 $err = $bucketMgr->delete($bucket, $key);
-                                echo "\n====> delete $needDelete_picture : \n";
+                                echo "\n====> delete $key : \n";
                                 if ($err !== null) {
                                     var_dump($err);
                                 } else {
