@@ -17,6 +17,9 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
+use Qiniu\Auth;
+use Qiniu\Storage\BucketManager;
+
 class PostController extends Controller
 {
     protected $postRepository;
@@ -1453,6 +1456,14 @@ class PostController extends Controller
             {
                if($post->user_id == $user->id)
                {
+                   $comments = Comment::where('post_id',$post->id)->get();
+                   if(count($comments))
+                   {
+                       foreach ($comments as $comment)
+                       {
+                           $comment->delete();
+                       }
+                   }
                    $replies = CommentToComment::where('post_id',$post->id)->get();
                    if(count($replies))
                    {
@@ -1462,6 +1473,29 @@ class PostController extends Controller
                        }
                    }
 
+                   if(!empty($post->pictures)){
+                        $needDelete_pictures = explode(',',$post->pictures);
+                        if(count($needDelete_pictures))
+                        {
+                            $accessKey= "WR4zSNb376JZyEq6TQx9pJ9DSherW9xFKO9Ls2zB";
+                            $secretKey= "z7_Jx8-sCMGUFmrP5bPqM_GOT2FiIq3AEeEoQKZE";
+                            $auth=new Auth($accessKey, $secretKey);
+                            $bucketMgr = new BucketManager($auth);
+                            $bucket= "lovewall";//上传空间名称
+                            
+                            foreach ($needDelete_pictures as $needDelete_picture)
+                            {
+                                $err = $bucketMgr->delete($bucket, $needDelete_picture);
+                                echo "\n====> delete $needDelete_picture : \n";
+                                if ($err !== null) {
+                                    var_dump($err);
+                                } else {
+                                    echo "Success!";
+                                }
+                            }
+                        }
+                   }
+                    
                    $post->delete();
                    return response()->json(['status' => 200]);
 
