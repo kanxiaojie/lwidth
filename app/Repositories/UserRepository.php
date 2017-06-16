@@ -152,7 +152,7 @@ class UserRepository
             $user->avatarUrl = $inputs['avatarUrl'];
 
             // 如果头像是放在七牛云上，那么从七牛上删除
-            $pictureArray = explode('/', $input['avatarUrl']); 
+            $pictureArray = explode('/', $inputs['avatarUrl']); 
             $key = $pictureArray[3];
             $start_key = substr($key, 0, 3);
             if ($start_key == 'tmp') {
