@@ -14,6 +14,7 @@ use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
 use App\User;
+use App\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -1456,7 +1457,9 @@ class PostController extends Controller
             {
                if($post->user_id == $user->id)
                {
-                   $comments = Comment::where('post_id',$post->id)->get();
+                   $comments = Comment::where('post_id',$post_id)->get();
+                   $commentIds = Comment::where('post_id', $post_id)->pluck('id')->toArray();
+                   $comment_notices = Notice::where('source_type', 1)->whereIn('source_id', $commentIds)->get();
                    if(count($comments))
                    {
                        foreach ($comments as $comment)
@@ -1464,12 +1467,24 @@ class PostController extends Controller
                            $comment->delete();
                        }
                    }
-                   $replies = CommentToComment::where('post_id',$post->id)->get();
+                   if(count($comment_notices)) {
+                       foreach ($comment_notices as $comment_notice) {
+                           $comment_notice->delete();
+                       }
+                   }
+                   $replies = CommentToComment::where('post_id',$post_id)->get();
+                   $replyIds = CommentToComment::where('post_id',$post_id)->pluck('id')->toArray();
+                   $reply_notices = Notice::whereIn('source_type', [2, 3])->whereIn('source_id', $replyIds)->get();
                    if(count($replies))
                    {
                        foreach ($replies as $reply)
                        {
                            $reply->delete();
+                       }
+                   }
+                   if(count($reply_notices)) {
+                       foreach ($reply_notices as $reply_notice) {
+                           $reply_notice->delete();
                        }
                    }
 

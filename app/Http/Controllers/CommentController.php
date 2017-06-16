@@ -221,9 +221,17 @@ class CommentController extends Controller
                         $comment->post->commentnum -= 1;
                         $comment->post->save();
                     }
-                    $comment->delete();
+
+                    $comment_notices = Notice::where(['source_type' => 1, 'source_id' => $comment_id)->get();
+                    if(count($comment_notices)) {
+                       foreach ($comment_notices as $comment_notice) {
+                           $comment_notice->delete();
+                       }
+                   }
 
                     $replies = CommentToComment::where('comment_id',$comment_id)->get();
+                    $replyIds = CommentToComment::where('comment_id',$comment_id)->pluck('id')->toArray();
+                    $reply_notices = Notice::whereIn('source_type', [2, 3])->whereIn('source_id', $replyIds)->get();
                     if(count($replies))
                     {
                         foreach ($replies as $reply)
@@ -231,7 +239,13 @@ class CommentController extends Controller
                             $reply->delete();
                         }
                     }
+                    if(count($reply_notices)) {
+                       foreach ($reply_notices as $reply_notice) {
+                           $reply_notice->delete();
+                       }
+                   }
 
+                    $comment->delete();
                     return response()->json(['status' => 200]);
                 }else
                 {
@@ -266,11 +280,19 @@ class CommentController extends Controller
                 if($reply->user_id == $user->id)
                 {
                     $comment = Comment::where('id',$reply->comment_id)->first();
-                    if($comment->r_commentnum)
+                    if($comment->r_commentnum > 0)
                     {
                         $comment->r_commentnum -= 1;
                         $comment->save();
                     }
+
+                    $reply_notices = Notice::where('source_id', $reply_id)->whereIn('source_type', [2, 3])->get();
+                    if(count($reply_notices)) {
+                        foreach ($reply_notices as $reply_notice) {
+                            $reply_notice->delete();
+                        }
+                    }
+
                     $reply->delete();
 
                     return response()->json(['status' => 200]);
