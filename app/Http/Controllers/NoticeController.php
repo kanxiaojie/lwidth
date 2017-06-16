@@ -128,49 +128,53 @@ class NoticeController extends Controller
 
                     if($notice->source_type == 1)
                     {
-                        $source = [];
-                        $postOrCommentUserInfo = [];
-                        
-                        $data['type'] = 'comment';
-                        $data['source_type'] = $notice->source_type;
                         $comment = Comment::where('id',$notice->source_id)->first();
-                        $post = Post::where('id',$comment->post_id)->first();
-                        $source['source_id'] = $notice->source_id;
-                        $source['love_id'] = $post->id;
-                        $source['content'] = $post->content;
-                        $postOrCommentUserInfo['id'] = $post->user_id;
-                        $postOrCommentUserInfo['nickname'] = $post->user->nickname;
-                        $postOrCommentUserInfo['avatarUrl'] = $post->user->avatarUrl;
-                        $source['userInfo'] = $postOrCommentUserInfo;
-                        $data['source'] = $source;
+                        if (!empty($comment)) {
+                            $source = [];
+                            $postOrCommentUserInfo = [];
+                            
+                            $data['type'] = 'comment';
+                            $data['source_type'] = $notice->source_type;
+                            $post = Post::where('id',$comment->post_id)->first();
+                            $source['source_id'] = $notice->source_id;
+                            $source['love_id'] = $post->id;
+                            $source['content'] = $post->content;
+                            $postOrCommentUserInfo['id'] = $post->user_id;
+                            $postOrCommentUserInfo['nickname'] = $post->user->nickname;
+                            $postOrCommentUserInfo['avatarUrl'] = $post->user->avatarUrl;
+                            $source['userInfo'] = $postOrCommentUserInfo;
+                            $data['source'] = $source;
+                        }
                     }
                     elseif ($notice->source_type != 1)
                     {
-                        $source = [];
-                        $objectUserInfo = [];
-                        $postOrCommentUserInfo = [];
-                        
-                        $data['type'] = 'reply';
-                        $data['source_type'] = $notice->source_type;
                         $reply = CommentToComment::where('id',$notice->source_id)->first();
-                        $objectUser = User::where('id',$reply->parent_id)->first();
-                        $objectUserInfo['id'] = $objectUser->id;
-                        $objectUserInfo['nickname'] = $objectUser->nickname;
-                        $objectUserInfo['avatarUrl'] = $objectUser->avatarUrl;
-                        $data['objectUserInfo'] = $objectUserInfo;
+                        if(!empty($reply)) {
+                            $source = [];
+                            $objectUserInfo = [];
+                            $postOrCommentUserInfo = [];
+                            
+                            $data['type'] = 'reply';
+                            $data['source_type'] = $notice->source_type;
+                            $objectUser = User::where('id',$reply->parent_id)->first();
+                            $objectUserInfo['id'] = $objectUser->id;
+                            $objectUserInfo['nickname'] = $objectUser->nickname;
+                            $objectUserInfo['avatarUrl'] = $objectUser->avatarUrl;
+                            $data['objectUserInfo'] = $objectUserInfo;
 
-                        $source['source_id'] = $notice->source_id;
-                        $source['love_id'] = $reply->post_id;
-                        $source['comment_id'] = $reply->comment_id;
-                        $comment = Comment::where('id',$reply->comment_id)->first();
-                        $source['comment_id'] = $comment->id;
-                        $source['content'] = $comment->content;
-                        $postOrCommentUser = User::where('id',$comment->user_id)->first();
-                        $postOrCommentUserInfo['id'] = $postOrCommentUser->id;
-                        $postOrCommentUserInfo['nickname'] = $postOrCommentUser->nickname;
-                        $postOrCommentUserInfo['avatarUrl'] = $postOrCommentUser->avatarUrl;
-                        $source['userInfo'] = $postOrCommentUserInfo;
-                        $data['source'] = $source;
+                            $source['source_id'] = $notice->source_id;
+                            $source['love_id'] = $reply->post_id;
+                            $source['comment_id'] = $reply->comment_id;
+                            $comment = Comment::where('id',$reply->comment_id)->first();
+                            $source['comment_id'] = $comment->id;
+                            $source['content'] = $comment->content;
+                            $postOrCommentUser = User::where('id',$comment->user_id)->first();
+                            $postOrCommentUserInfo['id'] = $postOrCommentUser->id;
+                            $postOrCommentUserInfo['nickname'] = $postOrCommentUser->nickname;
+                            $postOrCommentUserInfo['avatarUrl'] = $postOrCommentUser->avatarUrl;
+                            $source['userInfo'] = $postOrCommentUserInfo;
+                            $data['source'] = $source;
+                        }
                     }
 
                     $datas[] = $data;
