@@ -11,6 +11,7 @@ use App\PraiseUser;
 use App\Profile;
 use App\Repositories\BaseRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\QiniuRepository;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -21,6 +22,7 @@ class UserController extends Controller
 {
     protected $userRepository;
     protected $baseRepository;
+    protected $qiniuRepository;
     /**
      * Create a new controller instance.
      *
@@ -28,11 +30,13 @@ class UserController extends Controller
      */
     public function __construct(
         UserRepository $userRepository,
-        BaseRepository $baseRepository
+        BaseRepository $baseRepository,
+        QiniuRepository $qiniuRepository
     )
     {
         $this->userRepository = $userRepository;
         $this->baseRepository = $baseRepository;
+        $this->qiniuRepository = $qiniuRepository;
     }
 
     public function encryptCode(Request $request)
@@ -711,10 +715,19 @@ class UserController extends Controller
         {
             $user = $this->userRepository->getUserById($user->id);
 
-            $user->pictures = implode(',',$input['remain_pictures']);
+            $user->pictures = implode(',', $input['remain_pictures']);
             $user->save();
 
-            // 从七牛云上删除照片还没有写  $input['the_delete_picture']
+            // 从七牛云上删除照片  $input['the_delete_picture']
+            if(!empty($input['the_delete_picture'])){
+                $pictureArray = explode('/', $input['the_delete_picture']); 
+                $key = $pictureArray[3];
+                $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
+            }
+
+
+
+
 
             // if(!empty($user->pictures))
             // {

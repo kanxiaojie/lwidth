@@ -4,11 +4,14 @@
 use App\Profile;
 use App\User;
 use Illuminate\Support\Facades\Crypt;
+use App\Repositories\QiniuRepository;
+
 
 class UserRepository
 {
     protected $user;
     protected $baseRepository;
+    protected $qiniuRepository;
     /**
      * Create a new UserRepository instance.
      *
@@ -18,11 +21,13 @@ class UserRepository
      */
     public function __construct(
         User $user,
-        BaseRepository $baseRepository
+        BaseRepository $baseRepository,
+        QiniuRepository $qiniuRepository
     )
     {
         $this->user = $user;
         $this->baseRepository = $baseRepository;
+        $this->qiniuRepository = $qiniuRepository;
     }
 
     public function getUserByOpenId($openId)
@@ -145,6 +150,14 @@ class UserRepository
         if(isset($inputs['avatarUrl']) && (!empty($inputs['avatarUrl'])))
         {
             $user->avatarUrl = $inputs['avatarUrl'];
+
+            // 如果头像是放在七牛云上，那么从七牛上删除
+            $pictureArray = explode('/', $input['avatarUrl']); 
+            $key = $pictureArray[3];
+            $start_key = substr($key, 0, 3);
+            if ($start_key == 'tmp') {
+                $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
+            }
         }
 
         if(isset($inputs['realname']) && (!empty($inputs['realname'])))
