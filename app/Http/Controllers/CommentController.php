@@ -14,6 +14,7 @@ use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
 use App\User;
+use App\Notice;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
