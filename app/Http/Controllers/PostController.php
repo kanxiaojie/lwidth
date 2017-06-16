@@ -35,8 +35,8 @@ class PostController extends Controller
         PostRepository $postRepository,
         BaseRepository $baseRepository,
         UserRepository $userRepository,
-        CommentRepository $commentRepository
-        QiniuRepository $qiniuRepository
+        CommentRepository $commentRepository,
+        QiniuRepository $qiniuRepository,
     )
     {
         $this->postRepository = $postRepository;
