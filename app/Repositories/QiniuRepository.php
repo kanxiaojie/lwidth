@@ -17,7 +17,7 @@ class QiniuRepository
         if ($err !== null) {
             $result = $err;
         } else {
-            $result = "Success!"
+            $result = "Success!";
         }
 
         return $result;
