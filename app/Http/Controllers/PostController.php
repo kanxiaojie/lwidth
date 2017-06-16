@@ -13,13 +13,11 @@ use App\Repositories\BaseRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\QiniuRepository;
 use App\User;
 use App\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-
-use Qiniu\Auth;
-use Qiniu\Storage\BucketManager;
 
 class PostController extends Controller
 {
@@ -27,6 +25,7 @@ class PostController extends Controller
     protected $baseRepository;
     protected $userRepository;
     protected $commentRepository;
+    protected $qiniuRepository;
     /**
      * Create a new controller instance.
      *
@@ -37,12 +36,14 @@ class PostController extends Controller
         BaseRepository $baseRepository,
         UserRepository $userRepository,
         CommentRepository $commentRepository
+        QiniuRepository $qiniuRepository
     )
     {
         $this->postRepository = $postRepository;
         $this->baseRepository = $baseRepository;
         $this->userRepository = $userRepository;
         $this->commentRepository = $commentRepository;
+        $this->qiniuRepository = $qiniuRepository;
     }
 
     public function index(Request $request)
@@ -1492,23 +1493,11 @@ class PostController extends Controller
                         $needDelete_pictures = explode(',',$post->pictures);
                         if(count($needDelete_pictures))
                         {
-                            $accessKey= "WR4zSNb376JZyEq6TQx9pJ9DSherW9xFKO9Ls2zB";
-                            $secretKey= "z7_Jx8-sCMGUFmrP5bPqM_GOT2FiIq3AEeEoQKZE";
-                            $auth=new Auth($accessKey, $secretKey);
-                            $bucketMgr = new BucketManager($auth);
-                            $bucket= "lovewall";//上传空间名称
-                            
                             foreach ($needDelete_pictures as $needDelete_picture)
                             {
                                 $pictureArray = explode('/', $needDelete_picture); 
                                 $key = $pictureArray[3];
-                                $err = $bucketMgr->delete($bucket, $key);
-                                echo "\n====> delete $key : \n";
-                                if ($err !== null) {
-                                    var_dump($err);
-                                } else {
-                                    echo "Success!";
-                                }
+                                $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
                             }
                         }
                    }

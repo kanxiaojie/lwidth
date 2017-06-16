@@ -106,10 +106,10 @@ class WeixinController extends Controller
             {
                 $res = $this->userRepository->create($datas);
             }
-            else
-            {
-                $res = $this->userRepository->update($datas,$user);
-            }
+            // else
+            // {
+            //     $res = $this->userRepository->update($datas,$user);
+            // }
 
             $token = Crypt::encrypt($datas['openId']);
 
