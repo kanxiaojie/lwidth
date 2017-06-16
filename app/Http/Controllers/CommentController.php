@@ -222,7 +222,7 @@ class CommentController extends Controller
                         $comment->post->save();
                     }
 
-                    $comment_notices = Notice::where(['source_type' => 1, 'source_id' => $comment_id)->get();
+                    $comment_notices = Notice::where(['source_type' => 1, 'source_id' => $comment_id])->get();
                     if(count($comment_notices)) {
                        foreach ($comment_notices as $comment_notice) {
                            $comment_notice->delete();
