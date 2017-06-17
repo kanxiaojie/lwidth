@@ -199,9 +199,15 @@ class PraiseController extends Controller
             $data = array();
             $datas = array();
 
-            // $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
+            $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
 
-            $praiseToUsers = PraiseUser::where(function ($query) use($search, $search_gender){
+            if(count($praiseToUsers))
+            {
+                foreach ($praiseToUsers as $praiseToUser)
+                {
+                    // $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
+
+                    $praise_user = User::where(function ($query) use($search, $search_gender){
                                 if(!empty($search))
                                 {
                                     $query->whereHas('college',function ($queryCollege) use ($search){
@@ -212,15 +218,10 @@ class PraiseController extends Controller
                                         ->orWhere('gender','LIKE','%'.$search_gender.'%');
                                 }
                             })
-                            ->where('praised_user_id',$user->id)
+                            ->where('id',$praiseToUser->praise_user_id)
                             ->orderBy('created_at', 'desc')->paginate(5);
 
 
-            if(count($praiseToUsers))
-            {
-                foreach ($praiseToUsers as $praiseToUser)
-                {
-                    $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
                     $data['id']=$praise_user->id;
                     $data['nickname']=$praise_user->nickname;
                     $data['avatarUrl']=$praise_user->avatarUrl;
