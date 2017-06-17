@@ -201,7 +201,7 @@ class PraiseController extends Controller
             // $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
             $praiseUserIds = PraiseUser::where('praised_user_id',$user->id)->pluck('praise_user_id')->toArray();
 
-            $praiseToUsers = User::where(function ($query) use($search, $search_gender){
+            $praiseUsers = User::where(function ($query) use($search, $search_gender){
                                 if(!empty($search))
                                 {
                                     $query->whereHas('college',function ($queryCollege) use ($search){
@@ -215,22 +215,22 @@ class PraiseController extends Controller
                             ->whereIn('id',$praiseUserIds)
                             ->orderBy('created_at', 'desc')->paginate(5);
 
-            if(count($praiseToUsers))
+            if(count($praiseUsers))
             {
-                foreach ($praiseToUsers as $praiseToUser)
+                foreach ($praiseUsers as $praiseUser)
                 {
                     // $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
                     $data = array();
 
-                    $data['id']=$praise_user->id;
-                    $data['nickname']=$praise_user->nickname;
-                    $data['avatarUrl']=$praise_user->avatarUrl;
-                    $data['college_name']=$praise_user->college->name;
+                    $data['id']=$praiseUser->id;
+                    $data['nickname']=$praiseUser->nickname;
+                    $data['avatarUrl']=$praiseUser->avatarUrl;
+                    $data['college_name']=$praiseUser->college->name;
 
-                    if (!$praise_user->gender)
+                    if (!$praiseUser->gender)
                     {
                         $data['gender_name'] = "";
-                    }elseif($praise_user->gender == 1)
+                    }elseif($praiseUser->gender == 1)
                     {
                         $data['gender_name'] = "男";
                     }else
