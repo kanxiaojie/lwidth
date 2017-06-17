@@ -181,16 +181,41 @@ class PraiseController extends Controller
     public function getPraiseMeUsers(Request $request)
     {
         $wesecret = $request->get('wesecret');
+        $search = $request->get('search');
 
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
+
+        if($search == '男') {
+            $search_gender = 1;
+        } elseif($search == '女') {
+            $search_gender = 2;
+        } else {
+            $search_gender = '哈哈哈';
+        }
 
         if($user)
         {
             $data = array();
             $datas = array();
 
-            $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
+            // $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
+
+            $praiseToUsers = PraiseUser::where(function ($query) use($search, $search_gender){
+                                if(!empty($search))
+                                {
+                                    $query->whereHas('college',function ($queryCollege) use ($search){
+                                            $queryCollege->where('name','LIKE','%'.$search.'%');
+                                        })
+                                        ->orWhere('nickname','LIKE','%'.$search.'%')
+                                        ->orWhere('realname','LIKE','%'.$search.'%')
+                                        ->orWhere('gender','LIKE','%'.$search_gender.'%');
+                                }
+                            })
+                            ->where('praised_user_id',$user->id)
+                            ->orderBy($orderby,$direction)->paginate(5);
+
+
             if(count($praiseToUsers))
             {
                 foreach ($praiseToUsers as $praiseToUser)
