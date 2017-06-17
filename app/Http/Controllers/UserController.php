@@ -496,6 +496,7 @@ class UserController extends Controller
             $userInfo['role'] = $user->role;
             $userInfo['trust'] = $user->trust;
             $userInfo['available'] = $user->available;
+            $userInfo['disabled_reason'] = $user->disabled_reason;
 
             if($updateUser->phone)
             {
