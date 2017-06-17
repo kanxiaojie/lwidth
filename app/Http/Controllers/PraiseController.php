@@ -213,7 +213,7 @@ class PraiseController extends Controller
                                 }
                             })
                             ->where('praised_user_id',$user->id)
-                            ->orderBy($orderby,$direction)->paginate(5);
+                            ->orderBy('created_at', 'desc')->paginate(5);
 
 
             if(count($praiseToUsers))
