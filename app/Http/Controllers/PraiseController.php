@@ -196,18 +196,12 @@ class PraiseController extends Controller
 
         if($user)
         {
-            $data = array();
             $datas = array();
 
-            $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
+            // $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
+            $praiseUserIds = PraiseUser::where('praised_user_id',$user->id)->pluck('praise_user_id')->toArray();
 
-            if(count($praiseToUsers))
-            {
-                foreach ($praiseToUsers as $praiseToUser)
-                {
-                    // $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
-
-                    $praise_user = User::where(function ($query) use($search, $search_gender){
+            $praiseToUsers = User::where(function ($query) use($search, $search_gender){
                                 if(!empty($search))
                                 {
                                     $query->whereHas('college',function ($queryCollege) use ($search){
@@ -218,13 +212,20 @@ class PraiseController extends Controller
                                         ->orWhere('gender','LIKE','%'.$search_gender.'%');
                                 }
                             })
-                            ->where('id',$praiseToUser->praise_user_id)
+                            ->whereIn('id',$praiseUserIds)
                             ->orderBy('created_at', 'desc')->paginate(5);
 
+            if(count($praiseToUsers))
+            {
+                foreach ($praiseToUsers as $praiseToUser)
+                {
+                    // $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
+                    $data = array();
 
                     $data['id']=$praise_user->id;
                     $data['nickname']=$praise_user->nickname;
                     $data['avatarUrl']=$praise_user->avatarUrl;
+                    $data['college_name']=$praise_user->college->name;
 
                     if (!$praise_user->gender)
                     {
