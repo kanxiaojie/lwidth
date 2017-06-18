@@ -152,6 +152,9 @@ $app->get('/api/systemNotices','SystemNoticeController@getSystemNotices');
 //标注评论/回复已读
 $app->post('/api/read/notice','NoticeController@labelRead');
 
+//标注系统通知已读
+$app->post('/api/read/sytemNotice','SystemNoticeController@labelRead');
+
 //获取异性表白
 $app->get('/api/genderLoves','PostController@getGenderLoves');
 

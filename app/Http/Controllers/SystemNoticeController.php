@@ -98,4 +98,27 @@ class SystemNoticeController extends Controller
         return response()->json(['status' => 200,'data' => $datas]);
 
     }
+
+    public function labelRead(Request $request) {
+        $wesecret = $request->get('wesecret');
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        $systemNotice_id = $request->get('systemNotice_id');
+        $the_systemNotice = SystemNotice::find($systemNotice_id);
+
+        if($user)
+        {
+            $systemNotices = SystemNotice::where('user_id', $user->id)->get();  
+            foreach ($systemNotices as $systemNotice) {
+                if ($systemNotice->created_at < $the_systemNotice->created_at) {
+                    $systemNotice->if_read = 1;
+                    $systemNotice->save();
+                }
+            }          
+            
+        }
+
+        return response()->json(['status' => 200,'data' => '标注已读成功']);
+    }
 }
