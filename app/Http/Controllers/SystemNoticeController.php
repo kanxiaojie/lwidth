@@ -38,7 +38,7 @@ class SystemNoticeController extends Controller
         $data = [];
         if($user)
         {
-            $unreadSystemNoticeNums = SystemNotice::where(function ($query) {
+            $unreadSystemNoticeNums = SystemNotice::where(function ($query) use($user) {
                 $query->where('type', 0)->orWhere('user_id', $user->id);
             })->where('if_read', 0)->get()->count();
 
