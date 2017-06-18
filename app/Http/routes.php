@@ -153,7 +153,7 @@ $app->get('/api/systemNotices','SystemNoticeController@getSystemNotices');
 $app->post('/api/read/notice','NoticeController@labelRead');
 
 //标注系统通知已读
-$app->post('/api/read/sytemNotice','SystemNoticeController@labelRead');
+$app->post('/api/read/systemNotice','SystemNoticeController@labelRead');
 
 //获取异性表白
 $app->get('/api/genderLoves','PostController@getGenderLoves');
