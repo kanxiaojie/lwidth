@@ -6,6 +6,7 @@ use App\SystemNotice;
 use App\User;
 use App\Repositories\BaseRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\PostRepository;
 
 use Illuminate\Http\Request;
 
@@ -14,14 +15,18 @@ class SystemNoticeController extends Controller
 
     protected $baseRepository;
     protected $userRepository;
+    protected $postRepository;
+
 
     public function __construct(
         BaseRepository $baseRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        PostRepository $postRepository
     )
     {
         $this->baseRepository = $baseRepository;
         $this->userRepository = $userRepository;
+        $this->postRepository = $postRepository;
     }
 
     public function getSystemNotices(Request $request)
@@ -38,6 +43,10 @@ class SystemNoticeController extends Controller
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
                 $data['type'] = $systemNotice->type;
+
+                $diff_time = $this->postRepository->getTime($systemNotice->created_at);
+                $data['created_at'] = $diff_time;
+
                 if (!empty($systemNotice->title)) {
                     $data['title'] = $systemNotice->title;
                 } else {
@@ -58,6 +67,7 @@ class SystemNoticeController extends Controller
                 } else {
                     $data['content'] = '';
                 }
+                
                 $datas[] = $data;
             }
         }
