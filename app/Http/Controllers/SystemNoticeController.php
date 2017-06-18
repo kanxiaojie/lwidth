@@ -29,6 +29,27 @@ class SystemNoticeController extends Controller
         $this->postRepository = $postRepository;
     }
 
+    public function getUnreadSystemNoticeNums(Request $request) {
+        $wesecret = $request->get('wesecret');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        $data = [];
+        if($user)
+        {
+            $unreadSystemNoticeNums = SystemNotice::where(function ($query) {
+                $query->where('type', 0)->orWhere('user_id', $user->id);
+            })->where('if_read', 0)->get()->count();
+
+            $data['unreadSystemNoticeNums'] = $unreadSystemNoticeNums;
+        } else {
+            $data['unreadSystemNoticeNums'] = 0;
+        }
+
+        return response()->json(['status' => 200,'data' => $data]);
+    }
+
     public function getSystemNotices(Request $request)
     {
         $wesecret = $request->get('wesecret');
@@ -43,6 +64,7 @@ class SystemNoticeController extends Controller
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
                 $data['type'] = $systemNotice->type;
+                $data['if_read'] = $systemNotice->if_read;
 
                 $diff_time = $this->postRepository->getTime($systemNotice->created_at);
                 $data['created_at'] = $diff_time;

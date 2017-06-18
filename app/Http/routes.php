@@ -140,6 +140,9 @@ $app->get('/api/comments/{id}/replies','CommentController@getCommentReplyInfos')
 //19  获取我未读的提醒数
 $app->get('/api/unreadNoticeNums','NoticeController@getUnreadNoticeNums');
 
+//获取我未读的系统通知数
+$app->get('/api/unreadSystemNoticeNums','SystemNoticeController@getUnreadSystemNoticeNums');
+
 //获取所有的提醒
 $app->get('/api/notices','NoticeController@getNotices');
 

@@ -15,8 +15,9 @@ class CreateSystemNoticesTable extends Migration
         Schema::create('systemNotices', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('user_id')->nullable();
             $table->integer('type')->default(0);
+            $table->integer('if_read')->default(0);
+            $table->integer('user_id')->nullable();
             $table->string('title')->nullable();
             $table->string('image')->nullable();
             $table->string('video_url')->nullable();
