@@ -53,6 +53,11 @@ class User extends Model implements
         return $this->hasMany('App\Post');
     }
 
+    public function systemNotices()
+    {
+        return $this->hasMany('App\SystemNotice');
+    }
+
     public function comments()
     {
         return $this->hasMany('App\Comment');

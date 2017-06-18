@@ -143,6 +143,9 @@ $app->get('/api/unreadNoticeNums','NoticeController@getUnreadNoticeNums');
 //获取所有的提醒
 $app->get('/api/notices','NoticeController@getNotices');
 
+//获取所有的系统通知
+$app->get('/api/systemNotices','SystemNoticeController@getSystemNotices');
+
 //标注评论/回复已读
 $app->post('/api/read/notice','NoticeController@labelRead');
 
