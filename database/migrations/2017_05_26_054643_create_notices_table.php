@@ -14,9 +14,9 @@ class CreateNoticesTable extends Migration
     {
         Schema::create('notices', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('source_type')->unique();
-            $table->integer('source_id')->unique();
-            $table->integer('user_id')->unique();
+            $table->integer('source_type');
+            $table->integer('source_id');
+            $table->integer('user_id');
             $table->string('content')->nullable();
             $table->integer('if_read')->default(0);
             $table->timestamps();
