@@ -30,10 +30,10 @@ class CreateUsersTable extends Migration
             $table->integer('pictureOnWall')->default(1); 
             $table->bigInteger('praiseNums')->default(0);
 
-            $table->string('wechat')
-            $table->string('QQ')
-            $table->string('phone')
-            $table->string('weibo')
+            $table->string('wechat');
+            $table->string('QQ');
+            $table->string('phone');
+            $table->string('weibo');
 
             $table->string('college_id');
             $table->string('major');
