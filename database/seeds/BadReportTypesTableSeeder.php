@@ -41,8 +41,8 @@ class BadReportTypesTableSeeder extends Seeder
             'name' => '抄袭我的内容'
         ]);
 
-        BadReportType::create([
-            'name' => '骚扰我'
-        ]);
+        // BadReportType::create([
+        //     'name' => '骚扰我'
+        // ]);
     }
 }

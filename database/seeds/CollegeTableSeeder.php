@@ -50,9 +50,6 @@ class CollegeTableSeeder extends Seeder
             'name'=>'福州职业技术学院'
         ]);
         College::create([
-            'name'=>'平潭海洋大学'
-        ]);
-        College::create([
             'name'=>'福州大学至诚学院'
         ]);
         College::create([
@@ -69,6 +66,9 @@ class CollegeTableSeeder extends Seeder
         ]);
         College::create([
             'name'=>'福州外语外贸学院'
+        ]);
+        College::create([
+            'name'=>'平潭海洋大学'
         ]);
     }
 }
