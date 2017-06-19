@@ -20,14 +20,14 @@ class CreatePraiseToCommentsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('praiseToComments', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('comment_id')->references('id')->on('comments')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+        // Schema::table('praiseToComments', function (Blueprint $table) {
+        //     $table->foreign('user_id')->references('id')->on('users')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        //     $table->foreign('comment_id')->references('id')->on('comments')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        // });
     }
 
     /**
@@ -37,10 +37,10 @@ class CreatePraiseToCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('praiseToComments', function(Blueprint $table) {
-            $table->dropForeign('praiseToComments_user_id_foreign');
-            $table->dropForeign('praiseToComments_comment_id_foreign');
-        });
+        // Schema::table('praiseToComments', function(Blueprint $table) {
+        //     $table->dropForeign('praiseToComments_user_id_foreign');
+        //     $table->dropForeign('praiseToComments_comment_id_foreign');
+        // });
 
         Schema::drop('praiseToComments');
     }

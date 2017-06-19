@@ -19,11 +19,11 @@ class CreateCityTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('city', function (Blueprint $table) {
-            $table->foreign('province_id')->references('id')->on('provinces')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+        // Schema::table('city', function (Blueprint $table) {
+        //     $table->foreign('province_id')->references('id')->on('provinces')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        // });
     }
 
     /**
@@ -33,9 +33,9 @@ class CreateCityTable extends Migration
      */
     public function down()
     {
-        Schema::table('city', function(Blueprint $table) {
-            $table->dropForeign('city_province_id_foreign');
-        });
+        // Schema::table('city', function(Blueprint $table) {
+        //     $table->dropForeign('city_province_id_foreign');
+        // });
         Schema::drop('city');
     }
 }

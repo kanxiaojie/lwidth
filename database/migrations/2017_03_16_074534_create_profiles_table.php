@@ -15,7 +15,7 @@ class CreateProfilesTable extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->date('birthday');
+            $table->string('birthday');
             $table->integer('age');
             $table->string('constellation');
             $table->integer('height');
@@ -30,11 +30,11 @@ class CreateProfilesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('profiles', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+        // Schema::table('profiles', function (Blueprint $table) {
+        //     $table->foreign('user_id')->references('id')->on('users')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        // });
     }
 
     /**
@@ -44,9 +44,9 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::table('profiles', function(Blueprint $table) {
-            $table->dropForeign('profiles_user_id_foreign');
-        });
+        // Schema::table('profiles', function(Blueprint $table) {
+        //     $table->dropForeign('profiles_user_id_foreign');
+        // });
 
         Schema::drop('profiles');
     }
