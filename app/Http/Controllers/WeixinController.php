@@ -88,8 +88,8 @@ class WeixinController extends Controller
         $encryptedData = $request->get('encryptedData');
         $iv = $request->get('iv');
 
-        $appid = env('WEIXIN_APP_ID','wxc6a4b7df7048b22f');
-        $secretid = env('WEIXIN_SECRET_ID','d0f3098b7085f5a7d82ba531c70198ed');
+        $appid = env('WEIXIN_APP_ID','wxbb114cd646cc6117');
+        $secretid = env('WEIXIN_SECRET_ID','5e016657d9d688e17010dfc3dffc0469');
 
         $sessionKey = $this->getOpenId($code,$appid,$secretid);
 
