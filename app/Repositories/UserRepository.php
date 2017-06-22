@@ -71,9 +71,9 @@ class UserRepository
         }
 
         if ($type == 1) {
-            if(isset($inputs['nickname']))
+            if(isset($inputs['nickName']) && (!empty($inputs['nickName'])))
             {
-                $user->nickname = $inputs['nickname'];
+                $user->nickname = $inputs['nickName'];
             }
 
             if(isset($inputs['gender']) && (!empty($inputs['gender'])))
