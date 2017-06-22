@@ -14,61 +14,64 @@ class CollegeTableSeeder extends Seeder
     public function run()
     {
         College::create([
-            'name'=>'福州大学'
+            'name'=>'北京大学'
         ]);
         College::create([
-            'name'=>'福建师范大学'
+            'name'=>'清华大学'
         ]);
         College::create([
-            'name'=>'福建师大协和学院'
+            'name'=>'中国人民大学'
         ]);
         College::create([
-            'name'=>'福建医科大学'
+            'name'=>'北京师范大学'
         ]);
         College::create([
-            'name'=>'福建中医药大学'
+            'name'=>'北京航空航天大学'
         ]);
         College::create([
-            'name'=>'福建农林大学'
+            'name'=>'中国农业大学'
         ]);
         College::create([
-            'name'=>'福建工程学院'
+            'name'=>'北京理工大学'
         ]);
         College::create([
-            'name'=>'闽江学院'
+            'name'=>'北京交通大学'
         ]);
         College::create([
-            'name'=>'江夏学院'
+            'name'=>'北京科技大学'
         ]);
         College::create([
-            'name'=>'福州教育学院'
+            'name'=>'北京协和医学院'
         ]);
         College::create([
-            'name'=>'华南女子学院'
+            'name'=>'中国政法大学'
         ]);
         College::create([
-            'name'=>'福州职业技术学院'
+            'name'=>'北京邮电大学'
         ]);
         College::create([
-            'name'=>'福州大学至诚学院'
+            'name'=>'北京化工大学'
         ]);
         College::create([
-            'name'=>'福州大学阳光学院'
+            'name'=>'首都师范大学'
         ]);
         College::create([
-            'name'=>'福建农林大学金山学院'
+            'name'=>'北京工业大学'
         ]);
         College::create([
-            'name'=>'福建农林大学东方学院'
+            'name'=>'北京林业大学'
         ]);
         College::create([
-            'name'=>'福建警察学院'
+            'name'=>'中央民族大学'
         ]);
         College::create([
-            'name'=>'福州外语外贸学院'
+            'name'=>'对外经济贸易大学'
         ]);
         College::create([
-            'name'=>'平潭海洋大学'
+            'name'=>'首都医科大学'
+        ]);
+        College::create([
+            'name'=>'中央财经大学'
         ]);
     }
 }
