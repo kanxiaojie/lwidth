@@ -14,9 +14,9 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         $user1 = User::create([
-            'realname'=>'福大君',
+            'realname'=>'复旦君',
             'openid' => '1',
-            'nickname' => '福大君',
+            'nickname' => '复旦君',
             'college_id'=>1,
             'role'=>0,
         ]);
@@ -26,9 +26,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user2 = User::create([
-            'realname'=>'师大君',
+            'realname'=>'交大君',
             'openid' => '2',
-            'nickname' => '师大君',
+            'nickname' => '交大君',
             'college_id'=>2,
             'role'=>0,
         ]);
@@ -38,9 +38,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user3 = User::create([
-            'realname'=>'协和君',
+            'realname'=>'同济君',
             'openid' => '3',
-            'nickname' => '协和君',
+            'nickname' => '同济君',
             'college_id'=>3,
             'role'=>0,
         ]);
@@ -50,9 +50,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user4 = User::create([
-            'realname'=>'医大君',
+            'realname'=>'华师君',
             'openid' => '4',
-            'nickname' => '医大君',
+            'nickname' => '华师君',
             'college_id'=>4,
             'role'=>0,
         ]);
@@ -62,9 +62,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user5 = User::create([
-            'realname'=>'中医君',
+            'realname'=>'华理君',
             'openid' => '5',
-            'nickname' => '中医君',
+            'nickname' => '华理君',
             'college_id'=>5,
             'role'=>0,
         ]);
@@ -74,9 +74,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user6 = User::create([
-            'realname'=>'农大君',
+            'realname'=>'上大君',
             'openid' => '6',
-            'nickname' => '农大君',
+            'nickname' => '上大君',
             'college_id'=>6,
             'role'=>0,
         ]);
@@ -86,9 +86,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user7 = User::create([
-            'realname'=>'工程君',
+            'realname'=>'东华君',
             'openid' => '7',
-            'nickname' => '工程君',
+            'nickname' => '东华君',
             'college_id'=>7,
             'role'=>0,
         ]);
@@ -98,9 +98,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user8 = User::create([
-            'realname'=>'闽江君',
+            'realname'=>'上财君',
             'openid' => '8',
-            'nickname' => '闽江君',
+            'nickname' => '上财君',
             'college_id'=>8,
             'role'=>0,
         ]);
@@ -110,9 +110,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user9 = User::create([
-            'realname'=>'江夏君',
+            'realname'=>'二军大君',
             'openid' => '9',
-            'nickname' => '江夏君',
+            'nickname' => '二军大君',
             'college_id'=>9,
             'role'=>0,
         ]);
@@ -122,9 +122,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user10 = User::create([
-            'realname'=>'教育君',
+            'realname'=>'上理君',
             'openid' => '10',
-            'nickname' => '教育君',
+            'nickname' => '上理君',
             'college_id'=>10,
             'role'=>0,
         ]);
@@ -134,9 +134,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user11 = User::create([
-            'realname'=>'女子君',
+            'realname'=>'上师君',
             'openid' => '11',
-            'nickname' => '女子君',
+            'nickname' => '上师君',
             'college_id'=>11,
             'role'=>0,
         ]);
@@ -146,9 +146,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user12 = User::create([
-            'realname'=>'福职君',
+            'realname'=>'中医君',
             'openid' => '12',
-            'nickname' => '福职君',
+            'nickname' => '中医君',
             'college_id'=>12,
             'role'=>0,
         ]);
@@ -160,9 +160,9 @@ class UserTableSeeder extends Seeder
         
 
         $user13 = User::create([
-            'realname'=>'至诚君',
+            'realname'=>'华政君',
             'openid' => '13',
-            'nickname' => '至诚君',
+            'nickname' => '华政君',
             'college_id'=>13,
             'role'=>0,
         ]);
@@ -172,9 +172,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user14 = User::create([
-            'realname'=>'阳光君',
+            'realname'=>'海事君',
             'openid' => '14',
-            'nickname' => '阳光君',
+            'nickname' => '海事君',
             'college_id'=>14,
             'role'=>0,
         ]);
@@ -184,9 +184,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user15 = User::create([
-            'realname'=>'金山君',
+            'realname'=>'海洋君',
             'openid' => '15',
-            'nickname' => '金山君',
+            'nickname' => '海洋君',
             'college_id'=>15,
             'role'=>0,
         ]);
@@ -196,9 +196,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user16 = User::create([
-            'realname'=>'东方君',
+            'realname'=>'外经贸君',
             'openid' => '16',
-            'nickname' => '东方君',
+            'nickname' => '外经贸君',
             'college_id'=>16,
             'role'=>0,
         ]);
@@ -208,9 +208,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user17 = User::create([
-            'realname'=>'警察君',
+            'realname'=>'工程技术君',
             'openid' => '17',
-            'nickname' => '警察君',
+            'nickname' => '工程技术君',
             'college_id'=>17,
             'role'=>0,
         ]);
@@ -220,9 +220,9 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user18 = User::create([
-            'realname'=>'外语外贸君',
+            'realname'=>'电力君',
             'openid' => '18',
-            'nickname' => '外语外贸君',
+            'nickname' => '电力君',
             'college_id'=>18,
             'role'=>0,
         ]);
@@ -232,15 +232,27 @@ class UserTableSeeder extends Seeder
         ] );
 
         $user19 = User::create([
-            'realname'=>'海洋君',
+            'realname'=>'应用技术君',
             'openid' => '19',
-            'nickname' => '海洋君',
+            'nickname' => '应用技术君',
             'college_id'=>19,
             'role'=>0,
         ]);
 
         Profile::create( [
             'user_id' => intval( $user19->id ),
+        ] );
+
+        $user20 = User::create([
+            'realname'=>'立信君',
+            'openid' => '20',
+            'nickname' => '立信君',
+            'college_id'=>20,
+            'role'=>0,
+        ]);
+
+        Profile::create( [
+            'user_id' => intval( $user20->id ),
         ] );
 
     }

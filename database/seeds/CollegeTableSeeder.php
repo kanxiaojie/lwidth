@@ -14,61 +14,64 @@ class CollegeTableSeeder extends Seeder
     public function run()
     {
         College::create([
-            'name'=>'福州大学'
+            'name'=>'复旦大学'
         ]);
         College::create([
-            'name'=>'福建师范大学'
+            'name'=>'上海交通大学'
         ]);
         College::create([
-            'name'=>'福建师大协和学院'
+            'name'=>'同济大学'
         ]);
         College::create([
-            'name'=>'福建医科大学'
+            'name'=>'华东师范大学'
         ]);
         College::create([
-            'name'=>'福建中医药大学'
+            'name'=>'华东理工大学'
         ]);
         College::create([
-            'name'=>'福建农林大学'
+            'name'=>'上海大学'
         ]);
         College::create([
-            'name'=>'福建工程学院'
+            'name'=>'东华大学'
         ]);
         College::create([
-            'name'=>'闽江学院'
+            'name'=>'上海财经大学'
         ]);
         College::create([
-            'name'=>'江夏学院'
+            'name'=>'解放军第二军医大学'
         ]);
         College::create([
-            'name'=>'福州教育学院'
+            'name'=>'上海理工大学'
         ]);
         College::create([
-            'name'=>'华南女子学院'
+            'name'=>'上海师范大学'
         ]);
         College::create([
-            'name'=>'福州职业技术学院'
+            'name'=>'上海中医药大学'
         ]);
         College::create([
-            'name'=>'福州大学至诚学院'
+            'name'=>'华东政法大学'
         ]);
         College::create([
-            'name'=>'福州大学阳光学院'
+            'name'=>'上海海事大学'
         ]);
         College::create([
-            'name'=>'福建农林大学金山学院'
+            'name'=>'上海海洋大学'
         ]);
         College::create([
-            'name'=>'福建农林大学东方学院'
+            'name'=>'上海对外经贸大学'
         ]);
         College::create([
-            'name'=>'福建警察学院'
+            'name'=>'上海工程技术大学'
         ]);
         College::create([
-            'name'=>'福州外语外贸学院'
+            'name'=>'上海电力学院'
         ]);
         College::create([
-            'name'=>'平潭海洋大学'
+            'name'=>'上海应用技术学院'
+        ]);
+        College::create([
+            'name'=>'上海立信会计金融学院'
         ]);
     }
 }
