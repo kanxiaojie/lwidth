@@ -48,7 +48,7 @@ class UserRepository
     {
         $user = new User();
 
-       $res = $this->saveUser($inputs,$user);
+       $res = $this->saveUser($inputs,$user,1);
 
         return $res;
     }
@@ -56,29 +56,32 @@ class UserRepository
     public function update($inputs, $user)
     {
         // $inputs['updateOpenId'] = 1;
-       $res = $this->saveUser($inputs,$user);
+       $res = $this->saveUser($inputs,$user,2);
 
         return $res;
     }
 
-    public function saveUser($inputs,$user,$user_id = null)
+    public function saveUser($inputs,$user,$type)
     {
 //        $res = array('status'=>1,'error'=>'');
 
-        // if(isset($inputs['openId']) && (!isset($inputs['updateOpenId'])))
-        // {
-        //     $user->openid = $inputs['openId'];
-        // }
+        if(isset($inputs['openId']) && (!isset($inputs['updateOpenId'])))
+        {
+            $user->openid = $inputs['openId'];
+        }
 
-        // if(isset($inputs['nickname']))
-        // {
-        //     $user->nickname = $inputs['nickname'];
-        // }
+        if ($type == 1) {
+            if(isset($inputs['nickname']))
+            {
+                $user->nickname = $inputs['nickname'];
+            }
 
-        // if(isset($inputs['gender']) && (!empty($inputs['gender'])))
-        // {
-        //     $user->gender = $inputs['gender'];
-        // }
+            if(isset($inputs['gender']) && (!empty($inputs['gender'])))
+            {
+                $user->gender = $inputs['gender'];
+            }
+        }
+        
 
         if(isset($inputs['language']))
         {
@@ -107,17 +110,17 @@ class UserRepository
 
         $user->save();
 
-        // if($user->profile)
-        // {
-        //     $profile = $user->profile;
-        // }
-        // else
-        // {
-        //     $profile = new Profile;
-        //     $profile->user_id=intval($user->id);
-        // }
+        if($user->profile)
+        {
+            $profile = $user->profile;
+        }
+        else
+        {
+            $profile = new Profile;
+            $profile->user_id=intval($user->id);
+        }
 
-        // $profile->save();
+        $profile->save();
 
         return $user;
     }
