@@ -64,7 +64,7 @@ class NoticeController extends Controller
 
             // $notices = $num1 + $num2 + $num3;
 
-            return response()->json(['status'=>200,'message'=>'success','unreadNoticeNums'=>$notices, 'availablePostLove'=>0]);
+            return response()->json(['status'=>200,'message'=>'success','unreadNoticeNums'=>$notices]);
         }
         else
         {
