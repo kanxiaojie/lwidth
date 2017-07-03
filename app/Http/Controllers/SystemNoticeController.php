@@ -122,4 +122,12 @@ class SystemNoticeController extends Controller
 
         return response()->json(['status' => 200,'data' => '标注已读成功']);
     }
+
+
+
+
+
+    public function get_available(Request $request) {
+        return response()->json(['status' => 200,'data' => 0]);
+    }
 }
