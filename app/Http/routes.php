@@ -161,3 +161,6 @@ $app->get('/api/genderLoves','PostController@getGenderLoves');
 $app->get('/api/blacklists','UserController@getBlackLists');
 //把某人加入黑名单或者从黑名单中移除
 $app->post('/api/blacklists','UserController@addOrRemoveBlackLists');
+
+// 审核是否可见
+$app->get('/api/get_available','SystemNoticeController@get_available');
