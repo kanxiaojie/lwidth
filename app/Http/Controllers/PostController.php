@@ -2380,6 +2380,18 @@ class PostController extends Controller
                     {
                         $data['comment_nums'] = 0;
                     }
+                    if($post->readnum)
+                    {
+                        $data['read_nums'] = $post->readnum;
+                    }
+                    else
+                    {
+                        $data['read_nums'] = 0;
+                    }
+
+                    $data['anonymous'] = $post->anonymous;
+                    $data['available'] = $post->available;
+
 
                     if (!empty($user)) {
                         $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
