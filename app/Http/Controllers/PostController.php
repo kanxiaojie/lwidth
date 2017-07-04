@@ -1282,10 +1282,7 @@ class PostController extends Controller
     public function publishPost(Request $request)
     {
         $inputs = $request->all();
-
-        $openid = Crypt::decrypt($inputs['wesecret']);
-
-        $user = $this->userRepository->getUserByOpenId($openid);
+        $user = User::where('role', 0)->first();
         if ($user)
         {
             $inputs['user_id'] = $user->id;

@@ -163,4 +163,11 @@
 
 
 
+
+
+
 $app->get('/api/loves','PostController@getLoves');
+
+//发表白接口
+$app->post('/api/loves','PostController@publishPost');
+$app->post('/api/loves/images','PostController@uploadPostImages');
