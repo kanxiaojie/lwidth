@@ -406,7 +406,11 @@ class PostRepository
 
     public function savePost($inputs,$picturePath = null)
     {
-        $post = new Post();
+        if (isset($inputs['id']) && !empty($inputs['id'])) {
+            $post = Post::find($inputs['id']);
+        } else {
+            $post = new Post();
+        }
 
         $post = $this->save($post,$inputs,$picturePath);
 
@@ -453,6 +457,21 @@ class PostRepository
         if(isset($inputs['content']) && !empty($inputs['content']))
         {
             $post->content = $inputs['content'];
+        }
+
+        if(isset($inputs['video_url']) && !empty($inputs['video_url']))
+        {
+            $post->video_url = $inputs['video_url'];
+        }
+
+        if(isset($inputs['anonymous']) && !empty($inputs['anonymous']))
+        {
+            $post->anonymous = $inputs['anonymous'];
+        }
+
+        if(isset($inputs['available']) && !empty($inputs['available']))
+        {
+            $post->available = $inputs['available'];
         }
 
         if ($picturePath)
