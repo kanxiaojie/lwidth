@@ -126,6 +126,61 @@ class SystemNoticeController extends Controller
 
 
 
+    public function get_applets(Request $request)
+    {
+
+        //  $posts = Post::where(function ($query) use($gender,$search)
+        //     {
+        //         if(!empty($search))
+        //         {
+        //             $query->whereHas('user',function ($queryUser) use ($search){
+        //                 $queryUser->where('realname','LIKE','%'.$search.'%')
+        //                     ->orWhere('nickname','LIKE','%'.$search.'%');
+        //             })
+        //                 ->orWhereHas('user.college',function ($queryCollege) use ($search){
+        //                     $queryCollege->where('name','LIKE','%'.$search.'%');
+        //                 })
+        //                 ->orWhere('content','LIKE','%'.$search.'%')
+        //             ;
+        //         }
+        //     })
+        //     ->whereIn('user_id',$userIds)
+        //     ->orderBy($orderby,$direction)->paginate(5);
+
+        $search = $request->get('search');
+        
+        $datas = [];
+        $systemNotices = SystemNotice::where('type', 10)->where('title','LIKE','%'.$search.'%')->orderBy('created_at','desc')->get();
+
+        foreach ($systemNotices as $systemNotice) {
+            $data = [];
+            $data['id'] = $systemNotice->id;
+            $data['appId'] = $systemNotice->video_url;
+            
+
+            if (!empty($systemNotice->title)) {
+                $data['name'] = $systemNotice->title;
+            } else {
+                $data['name'] = '';
+            }
+            if (!empty($systemNotice->image)) {
+                $data['avatarUrl'] = $systemNotice->image;
+            } else {
+                $data['avatarUrl'] = '';
+            }
+            if (!empty($systemNotice->content)) {
+                $data['summary'] = $systemNotice->content;
+            } else {
+                $data['summary'] = '';
+            }
+            
+            $datas[] = $data;
+        }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
 
     public function get_available(Request $request) {
         return response()->json(['status' => 200,'data' => 0]);
