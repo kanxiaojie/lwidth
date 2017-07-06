@@ -165,9 +165,16 @@
 
 
 
-
+//获取表白
 $app->get('/api/loves','PostController@getLoves');
 
-//发表白接口
+//发表表白
 $app->post('/api/loves','PostController@publishPost');
 // $app->post('/api/loves/images','PostController@uploadPostImages');
+
+//删除表白
+$app->post('/api/delete/love','PostController@deletePost');
+//删除某条评论
+$app->post('/api/delete/comment','CommentController@deleteComment');
+//删除某条回复
+$app->post('/api/delete/reply','CommentController@deleteReply');

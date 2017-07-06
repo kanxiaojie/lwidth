@@ -1439,22 +1439,25 @@ class PostController extends Controller
 
     public function deletePost(Request $request)
     {
-        $wesecret = $request->get('wesecret');
-        $post_id = $request->get('love_id');
+        // $wesecret = $request->get('wesecret');
+        // $post_id = $request->get('love_id');
 
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
+        // $openid = $this->baseRepository->decryptCode($wesecret);
+        // $user = $this->userRepository->getUserByOpenId($openid);
 
-        if(!$user)
-        {
-            return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
-        }else{
+        $post_id = $request->get('id');
+        
+
+        // if(!$user)
+        // {
+        //     return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
+        // }else{
             $post = $this->postRepository->getPost($post_id);
 
             if($post)
             {
-               if($post->user_id == $user->id)
-               {
+            //    if($post->user_id == $user->id)
+            //    {
                    $comments = Comment::where('post_id',$post_id)->get();
                    $commentIds = Comment::where('post_id', $post_id)->pluck('id')->toArray();
                    $comment_notices = Notice::where('source_type', 1)->whereIn('source_id', $commentIds)->get();
@@ -1502,18 +1505,18 @@ class PostController extends Controller
                    $post->delete();
                    return response()->json(['status' => 200]);
 
-               }else
-               {
-                   return response()->json(['status' => 200,'message' => 'You have no authorize to delete this love!']);
+            //    }else
+            //    {
+            //        return response()->json(['status' => 200,'message' => 'You have no authorize to delete this love!']);
 
-               }
+            //    }
             }
             else
             {
                 return response()->json(['status' => 200,'message' => 'Love Does Not Exist!']);
 
             }
-        }
+        // }
 
     }
 
@@ -2441,7 +2444,9 @@ class PostController extends Controller
 
         }
 
-        return response()->json(['status' => 200,'data' => $datas]);
+        $datasLength = count($datas);
+
+        return response()->json(['status' => 200,'data' => $datas, 'dataLength' => $datasLength ]);
 
     }
 
