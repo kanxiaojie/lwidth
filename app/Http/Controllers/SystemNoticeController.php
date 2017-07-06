@@ -128,27 +128,8 @@ class SystemNoticeController extends Controller
 
     public function get_applets(Request $request)
     {
-
-        //  $posts = Post::where(function ($query) use($gender,$search)
-        //     {
-        //         if(!empty($search))
-        //         {
-        //             $query->whereHas('user',function ($queryUser) use ($search){
-        //                 $queryUser->where('realname','LIKE','%'.$search.'%')
-        //                     ->orWhere('nickname','LIKE','%'.$search.'%');
-        //             })
-        //                 ->orWhereHas('user.college',function ($queryCollege) use ($search){
-        //                     $queryCollege->where('name','LIKE','%'.$search.'%');
-        //                 })
-        //                 ->orWhere('content','LIKE','%'.$search.'%')
-        //             ;
-        //         }
-        //     })
-        //     ->whereIn('user_id',$userIds)
-        //     ->orderBy($orderby,$direction)->paginate(5);
-
         $search = $request->get('search');
-        
+
         $datas = [];
         $systemNotices = SystemNotice::where('type', 10)->where('title','LIKE','%'.$search.'%')->orderBy('created_at','desc')->get();
 
@@ -172,6 +153,49 @@ class SystemNoticeController extends Controller
                 $data['summary'] = $systemNotice->content;
             } else {
                 $data['summary'] = '';
+            }
+            
+            $datas[] = $data;
+        }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
+
+    
+    public function get_aboutLoveWalls(Request $request)
+    {
+        $datas = [];
+        
+        $systemNotices = SystemNotice::where('type', 11)->orderBy('created_at','desc')->get();
+        foreach ($systemNotices as $systemNotice) {
+            $data = [];
+
+            $data['id'] = $systemNotice->id;
+
+            $diff_time = $this->postRepository->getTime($systemNotice->created_at);
+            $data['created_at'] = $diff_time;
+
+            if (!empty($systemNotice->title)) {
+                $data['title'] = $systemNotice->title;
+            } else {
+                $data['title'] = '';
+            }
+            if (!empty($systemNotice->image)) {
+                $data['image'] = $systemNotice->image;
+            } else {
+                $data['image'] = '';
+            }
+            if (!empty($systemNotice->video_url)) {
+                $data['video_url'] = $systemNotice->video_url;
+            } else {
+                $data['video_url'] = '';
+            }
+            if (!empty($systemNotice->content)) {
+                $data['content'] = $systemNotice->content;
+            } else {
+                $data['content'] = '';
             }
             
             $datas[] = $data;

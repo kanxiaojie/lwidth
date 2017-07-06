@@ -165,5 +165,8 @@ $app->post('/api/blacklists','UserController@addOrRemoveBlackLists');
 //获取相关小程序
 $app->get('/api/applets','SystemNoticeController@get_applets');
 
+//获取关于表白墙
+$app->get('/api/aboutLoveWalls','SystemNoticeController@get_aboutLoveWalls');
+
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');
