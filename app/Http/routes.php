@@ -174,7 +174,17 @@ $app->post('/api/loves','PostController@publishPost');
 
 //删除表白
 $app->post('/api/delete/love','PostController@deletePost');
+//批量删除表白
+$app->post('/api/delete/loves','PostController@deletePosts');
+
+//获取某个表白的所有评论
+$app->get('/api/loves/{id}/comments','PostController@getPostAllComments');
+
 //删除某条评论
 $app->post('/api/delete/comment','CommentController@deleteComment');
+
+
+//获取某条评论的所有再评论 改为回复
+$app->get('/api/comments/{id}/replies','CommentController@getCommentToComments');
 //删除某条回复
 $app->post('/api/delete/reply','CommentController@deleteReply');

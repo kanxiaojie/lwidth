@@ -1519,6 +1519,67 @@ class PostController extends Controller
         // }
 
     }
+    
+    public function deletePosts(Request $request)
+    {
+        $post_ids = $request->get('ids');
+        
+        foreach ($post_ids as $post_id) {
+
+            $post = $this->postRepository->getPost($post_id);
+
+            if($post)
+            {
+            
+                $comments = Comment::where('post_id',$post_id)->get();
+                $commentIds = Comment::where('post_id', $post_id)->pluck('id')->toArray();
+                $comment_notices = Notice::where('source_type', 1)->whereIn('source_id', $commentIds)->get();
+                if(count($comments))
+                {
+                    foreach ($comments as $comment)
+                    {
+                        $comment->delete();
+                    }
+                }
+                if(count($comment_notices)) {
+                    foreach ($comment_notices as $comment_notice) {
+                        $comment_notice->delete();
+                    }
+                }
+                $replies = CommentToComment::where('post_id',$post_id)->get();
+                $replyIds = CommentToComment::where('post_id',$post_id)->pluck('id')->toArray();
+                $reply_notices = Notice::whereIn('source_type', [2, 3])->whereIn('source_id', $replyIds)->get();
+                if(count($replies))
+                {
+                    foreach ($replies as $reply)
+                    {
+                        $reply->delete();
+                    }
+                }
+                if(count($reply_notices)) {
+                    foreach ($reply_notices as $reply_notice) {
+                        $reply_notice->delete();
+                    }
+                }
+
+                if(!empty($post->pictures)){
+                    $needDelete_pictures = explode(',',$post->pictures);
+                    if(count($needDelete_pictures))
+                    {
+                        foreach ($needDelete_pictures as $needDelete_picture)
+                        {
+                            $pictureArray = explode('/', $needDelete_picture); 
+                            $key = $pictureArray[3];
+                            $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
+                        }
+                    }
+                }
+                
+                $post->delete();
+            }
+        }
+        
+    }
 
     public function virtualPublishPost(Request $request)
     {
