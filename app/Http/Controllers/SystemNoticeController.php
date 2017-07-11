@@ -53,20 +53,20 @@ class SystemNoticeController extends Controller
 
     public function getSystemNotices(Request $request)
     {
-        $wesecret = $request->get('wesecret');
+        // $wesecret = $request->get('wesecret');
 
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
+        // $openid = $this->baseRepository->decryptCode($wesecret);
+        // $user = $this->userRepository->getUserByOpenId($openid);
 
-        $datas = [];
-        if($user)
-        {
-            $systemNotices = SystemNotice::where('type', 0)->orWhere('user_id', $user->id)->orderBy('created_at','desc')->paginate(5);
+        // $datas = [];
+        // if($user)
+        // {
+            $systemNotices = SystemNotice::whereIn('type', [0, 1])->orderBy('created_at','desc')->paginate(5);
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
                 $data['id'] = $systemNotice->id;
                 $data['type'] = $systemNotice->type;
-                $data['if_read'] = $systemNotice->if_read;
+                // $data['if_read'] = $systemNotice->if_read;
 
                 $diff_time = $this->postRepository->getTime($systemNotice->created_at);
                 $data['created_at'] = $diff_time;
@@ -94,7 +94,7 @@ class SystemNoticeController extends Controller
                 
                 $datas[] = $data;
             }
-        }
+        // }
 
         return response()->json(['status' => 200,'data' => $datas]);
 
