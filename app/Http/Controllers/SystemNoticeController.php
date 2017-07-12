@@ -61,7 +61,7 @@ class SystemNoticeController extends Controller
         $datas = [];
         if($user)
         {
-            $systemNotices = SystemNotice::where('type', 0)->orWhere('user_id', $user->id)->orderBy('created_at','desc')->paginate(5);
+            $systemNotices = SystemNotice::where('type', 0)->orWhere('user_id', $user->id)->orderBy('created_at','desc')->paginate(15);
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
                 $data['id'] = $systemNotice->id;

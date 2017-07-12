@@ -30,7 +30,7 @@ class PostRepository
         $userIds = User::where('college_id',$user->college_id)->pluck('id')->toArray();
 
         $posts = $this->post->whereIn('user_id',$userIds)->whereIn('visiable',[0,1,2,3])
-            ->orWhere('user_id',$user->id)->where('visiable',4)->orderBy($orderby,$direction)->paginate(10);
+            ->orWhere('user_id',$user->id)->where('visiable',4)->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -76,7 +76,7 @@ class PostRepository
                 }
             })
             ->whereIn('user_id',$userIds)
-            ->orderBy($orderby,$direction)->paginate(5);
+            ->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -105,7 +105,7 @@ class PostRepository
                             ->orWhere('content','LIKE','%'.$search.'%')
                         ;
                     }
-                })->orderBy($orderby,$direction)->paginate(5);
+                })->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -144,7 +144,7 @@ class PostRepository
                             })
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
-                })->orderBy($orderby,$direction)->paginate(5);
+                })->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -171,7 +171,7 @@ class PostRepository
                             })
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
-                })->orderBy($orderby,$direction)->paginate(5);
+                })->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -200,7 +200,7 @@ class PostRepository
                     }
                 })
                 ->where('pictures', '<>', null)
-                ->orderBy($orderby,$direction)->paginate(5);
+                ->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -229,7 +229,7 @@ class PostRepository
                     }
                 })
                 ->where('video_url', '<>', null)
-                ->orderBy($orderby,$direction)->paginate(5);
+                ->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -260,7 +260,7 @@ class PostRepository
                     }
                 })
                 ->whereIn('id',$postIds)
-                ->orderBy($orderby,$direction)->paginate(5);
+                ->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -291,7 +291,7 @@ class PostRepository
                     }
                 })
                 ->whereIn('id',$postIds)
-                ->orderBy($orderby,$direction)->paginate(5);
+                ->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -320,7 +320,7 @@ class PostRepository
                     }
                 })
                 ->where('user_id', $user->id)
-                ->orderBy($orderby,$direction)->paginate(5);
+                ->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -386,7 +386,7 @@ class PostRepository
                         ->orWhere('content','LIKE','%'.$search.'%');
                 }
             })
-            ->where('visiable',0)->orderBy($orderby,$direction)->paginate(5);
+            ->where('visiable',0)->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
     }
@@ -564,7 +564,7 @@ class PostRepository
     {
         $res = [];
 //        $posts = Post::all();
-        $posts = Post::paginate(10);
+        $posts = Post::paginate(15);
 
         $hotPost = [];
 

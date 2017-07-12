@@ -341,7 +341,7 @@ class CommentController extends Controller
             })
             ->where('visiable',0)
             ->whereIn('id',$postIds)
-            ->orderBy('created_at','desc')->paginate(5);
+            ->orderBy('created_at','desc')->paginate(15);
 
             $data = array();
             $datas = array();
@@ -497,7 +497,7 @@ class CommentController extends Controller
             })
                 ->where('visiable',0)
                 ->whereIn('id',$postIds)
-                ->orderBy('created_at','desc')->paginate(5);
+                ->orderBy('created_at','desc')->paginate(15);
 
             $data = array();
             $datas = array();
@@ -738,7 +738,7 @@ class CommentController extends Controller
         $userInfo = array();
         $objectUserInfo = array();
 
-        $replies = CommentToComment::where('comment_id',$id)->orderBy('created_at','desc')->paginate(5);
+        $replies = CommentToComment::where('comment_id',$id)->orderBy('created_at','desc')->paginate(15);
         if($replies)
         {
             foreach ($replies as $reply)
