@@ -37,6 +37,31 @@ class CommentController extends Controller
         $this->postRepository = $postRepository;
     }
 
+    
+    public function editComment(Request $request)
+    {
+        $params = $request->get('params');
+        $comment_id = $params['id'];
+        $comment = Comment::find($comment_id);
+        $comment->content =  $params['content'];
+        $comment->available = $params['available'];
+        $comment->save();
+
+        return response()->json(['status' => 200, 'comment_id' => $comment_id]);
+    }
+
+    public function editReply(Request $request)
+    {
+        $params = $request->get('params');
+        $reply_id = $params['id'];
+        $reply = CommentToComment::find($reply_id);
+        $reply->content =  $params['content'];
+        $reply->available = $params['available'];
+        $reply->save();
+
+        return response()->json(['status' => 200, 'reply_id' => $reply_id]);
+    }
+
     public function publishComments(Request $request,$id)
     {
         $wesecret = $request->get('wesecret');
@@ -201,22 +226,24 @@ class CommentController extends Controller
 
     public function deleteComment(Request $request)
     {
-        $wesecret = $request->get('wesecret');
-        $comment_id = $request->get('comment_id');
+        // $wesecret = $request->get('wesecret');
+        $params = $request->get('params');
+        $comment_id = $params['id'];
+        // $comment_id = $request->get('comment_id');
 
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
+        // $openid = $this->baseRepository->decryptCode($wesecret);
+        // $user = $this->userRepository->getUserByOpenId($openid);
 
-        if(!$user)
-        {
-            return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
-        }else{
+        // if(!$user)
+        // {
+        //     return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
+        // }else{
             $comment = $this->commentRepository->getCommentById($comment_id);
 
             if(count($comment))
             {
-                if($comment->user_id == $user->id)
-                {
+                // if($comment->user_id == $user->id)
+                // {
                     if($comment->post->commentnum >= 1)
                     {
                         $comment->post->commentnum -= 1;
@@ -248,38 +275,40 @@ class CommentController extends Controller
 
                     $comment->delete();
                     return response()->json(['status' => 200]);
-                }else
-                {
-                    return response()->json(['status' => 201,'message' => 'You have no authorize to delete this love!']);
+                // }else
+                // {
+                //     return response()->json(['status' => 201,'message' => 'You have no authorize to delete this love!']);
 
-                }
+                // }
             }
             else
             {
                 return response()->json(['status' => 201,'message' => 'Comment Does Not Exist!']);
 
             }
-        }
+        // }
     }
 
     public function deleteReply(Request $request)
     {
-        $wesecret = $request->get('wesecret');
-        $reply_id = $request->get('reply_id');
+        // $wesecret = $request->get('wesecret');
+        $params = $request->get('params');
+        $reply_id = $params['id'];
+        // $reply_id = $request->get('reply_id');
 
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
+        // $openid = $this->baseRepository->decryptCode($wesecret);
+        // $user = $this->userRepository->getUserByOpenId($openid);
 
-        if(!$user)
-        {
-            return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
-        }else{
+        // if(!$user)
+        // {
+        //     return response()->json(['status' => 200,'message' => 'User Does Not Exist!']);
+        // }else{
             $reply = $this->commentRepository->getCommentToCommentById($reply_id);
 
             if(count($reply))
             {
-                if($reply->user_id == $user->id)
-                {
+                // if($reply->user_id == $user->id)
+                // {
                     $comment = Comment::where('id',$reply->comment_id)->first();
                     if($comment->r_commentnum > 0)
                     {
@@ -297,17 +326,17 @@ class CommentController extends Controller
                     $reply->delete();
 
                     return response()->json(['status' => 200]);
-                }else
-                {
-                    return response()->json(['status' => 201,'message' => 'You have no authorize to delete this love!']);
-                }
+                // }else
+                // {
+                //     return response()->json(['status' => 201,'message' => 'You have no authorize to delete this love!']);
+                // }
             }
             else
             {
                 return response()->json(['status' => 201,'message' => 'Reply Does Not Exist!']);
 
             }
-        }
+        // }
     }
 
 

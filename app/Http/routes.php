@@ -179,12 +179,16 @@ $app->post('/api/delete/love','PostController@deletePost');
 $app->get('/api/loves/{id}/comments','PostController@getPostAllComments');
 //获取单条评论
 $app->get('/api/comments/{id}','CommentController@getCommentInfo');
+//编辑某条评论
+$app->post('/api/comments','CommentController@editComment');
 //删除某条评论
 $app->post('/api/delete/comment','CommentController@deleteComment');
 
 
 //获取某条评论的所有再评论 改为回复
 $app->get('/api/comments/{id}/replies','CommentController@getCommentReplyInfos');
+//编辑某条评论
+$app->post('/api/replies','CommentController@editReply');
 //删除某条回复
 $app->post('/api/delete/reply','CommentController@deleteReply');
 
