@@ -2379,8 +2379,8 @@ class PostController extends Controller
             foreach ($posts as $post)
             {
                 
-                if($post->user->available)
-                {
+                // if($post->user->available)
+                // {
                     $data = [];
 
                     $data['id'] = $post->id;
@@ -2501,7 +2501,7 @@ class PostController extends Controller
                     }
 
                     $datas[] = $data;
-                }
+                // }
 
             }
 
