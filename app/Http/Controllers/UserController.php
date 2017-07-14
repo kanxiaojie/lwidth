@@ -355,7 +355,7 @@ class UserController extends Controller
         }
     }
 
-    public function getUsers(Request $request, $id)
+    public function getUsers(Request $request)
     {
         // $user = $this->userRepository->getUserById($id);
         $wesecret = $request->get('wesecret');
