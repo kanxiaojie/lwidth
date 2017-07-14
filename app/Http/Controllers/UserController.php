@@ -669,7 +669,7 @@ class UserController extends Controller
 
             $profile = new Profile();
             $profile->user_id = $user->id;
-            $profile-save();
+            $profile->save();
         } else {
             $user = User::find($params['id']);
             $user->nickname = $params['nickname'];
