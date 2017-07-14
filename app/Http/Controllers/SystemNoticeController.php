@@ -104,7 +104,7 @@ class SystemNoticeController extends Controller
     {
         $params = $request->get('params');
 
-        if (empty($params['id']) {
+        if (empty($params['id'])) {
             $systemNotice = new SystemNotice();
         } else {
             $systemNotice = SystemNotice::find($params['id']);
