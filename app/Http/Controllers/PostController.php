@@ -1281,10 +1281,9 @@ class PostController extends Controller
 
     public function publishPost(Request $request)
     {
-        $params = $request->all();
-        $inputs = $params['params'];
+        $inputs = $request->get('params');
         
-        $user = User::where('role', 0)->first();
+        $user = User::where('id', $inputs['user_id'])->first();
         if ($user)
         {
             $inputs['user_id'] = $user->id;
