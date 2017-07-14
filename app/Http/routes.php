@@ -195,3 +195,7 @@ $app->post('/api/delete/reply','CommentController@deleteReply');
 
 //获取所有的系统通知
 $app->get('/api/systemNotices','SystemNoticeController@getSystemNotices');
+//发布系统通知
+$app->post('/api/systemNotices','SystemNoticeController@postSystemNotices');
+//删除系统通知
+$app->post('/api/delete/systemNotice','SystemNoticeController@deleteSystemNotice');

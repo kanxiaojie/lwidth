@@ -100,6 +100,45 @@ class SystemNoticeController extends Controller
 
     }
 
+    public function postSystemNotices(Request $request)
+    {
+        $params = $request->get('params');
+
+        if (empty($params['id']) {
+            $systemNotice = new SystemNotice();
+        } else {
+            $systemNotice = SystemNotice::find($params['id']);
+        }
+
+        $systemNotice->type = $params['type'];
+        $systemNotice->user_id = $params['user_id'];
+        $systemNotice->image = $params['image'];
+        $systemNotice->video_url = $params['video_url'];
+        $systemNotice->content = $params['content'];
+
+        $systemNotice->save();
+        
+        $systemNotice_id = $systemNotice->id;
+
+        return response()->json(['status' => 200,'systemNotice_id' => $systemNotice_id]);
+
+    }
+
+    public function deleteSystemNotice(Request $request)
+    {
+        $params = $request->get('params');
+
+        $systemNotice = SystemNotice::find($params['id']);
+        if ($systemNotice) {
+            $systemNotice_id = $systemNotice->id;
+            
+            $systemNotice->delete();
+        }
+
+        return response()->json(['status' => 200,'systemNotice_id' => $systemNotice_id]);
+
+    }
+
     public function labelRead(Request $request) {
         $wesecret = $request->get('wesecret');
         $openid = $this->baseRepository->decryptCode($wesecret);
