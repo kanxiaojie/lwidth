@@ -465,15 +465,15 @@ class PostRepository
             $post->video_url = $inputs['video_url'];
         }
 
-        if(isset($inputs['anonymous']))
-        {
+        // if(isset($inputs['anonymous']))
+        // {
             $post->anonymous = $inputs['anonymous'];
-        }
+        // }
 
-        if(isset($inputs['available']))
-        {
+        // if(isset($inputs['available']))
+        // {
             $post->available = $inputs['available'];
-        }
+        // }
 
         if ($picturePath)
         {
