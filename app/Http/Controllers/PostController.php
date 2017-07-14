@@ -2316,7 +2316,7 @@ class PostController extends Controller
             foreach ($posts as $post)
             {
                 
-                if($post->user->available)
+                if($post->user->available == 1 && $post->available == 1)
                 {
                     $data = [];
 
