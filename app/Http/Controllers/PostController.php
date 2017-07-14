@@ -2398,17 +2398,17 @@ class PostController extends Controller
                     {
                         $data['belongsToMe'] = 0;
                     }
-                    if(!empty($post->video_url){
+                    if(!empty($post->video_url)){
                         $data['video_url'] = $post->video_url;
                     } else {
                         $data['video_url'] = '';
                     }
-                    if(!empty($post->pictures){
+                    if(!empty($post->pictures)){
                         $data['images'] = $post->pictures;
                     } else {
                         $data['images'] = '';
                     }
-                    if(!empty($post->location){
+                    if(!empty($post->location)){
                         $data['location'] = $post->location;
                     } else {
                         $data['location'] = '';
