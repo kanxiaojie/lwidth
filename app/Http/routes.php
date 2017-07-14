@@ -167,6 +167,9 @@
 
 //获取表白
 $app->get('/api/loves','PostController@getLoves');
+//获取单个表白
+$app->get('/api/loves/{id}','PostController@getLonePost');
+
 //发表表白
 $app->post('/api/loves','PostController@publishPost');
 // $app->post('/api/loves/images','PostController@uploadPostImages');
