@@ -739,6 +739,7 @@ class CommentController extends Controller
         $objectUserInfo = array();
 
         $replies = CommentToComment::where('comment_id',$id)->orderBy('created_at','desc')->paginate(5);
+        $dataLength = CommentToComment::where('comment_id',$id)->get()->count();
         if($replies)
         {
             foreach ($replies as $reply)
@@ -758,6 +759,9 @@ class CommentController extends Controller
                 $data['objectUserInfo'] = $objectUserInfo;
 
                 $data['praise_nums'] = $reply->praise_nums;
+
+                $data['available'] = $reply->available;
+
                 if(empty($wesecret))
                 {
                     $data['if_my_praise'] = 0;
@@ -789,6 +793,6 @@ class CommentController extends Controller
             }
         }
 
-        return response()->json(['status' => 200,'message' => 'success','data' =>$datas]);
+        return response()->json(['status' => 200,'message' => 'success','data' =>$datas, 'dataLength' => $dataLength]);
     }
 }

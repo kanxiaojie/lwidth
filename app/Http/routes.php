@@ -169,18 +169,16 @@
 $app->get('/api/loves','PostController@getLoves');
 //获取单个表白
 $app->get('/api/loves/{id}','PostController@getLonePost');
-
 //发表表白
 $app->post('/api/loves','PostController@publishPost');
-// $app->post('/api/loves/images','PostController@uploadPostImages');
-
 //删除表白
 $app->post('/api/delete/love','PostController@deletePost');
-//批量删除表白
-// $app->post('/api/delete/loves','PostController@deletePosts');
+
 
 //获取某个表白的所有评论
 $app->get('/api/loves/{id}/comments','PostController@getPostAllComments');
+//获取单条评论
+$app->get('/api/comments/{id}','CommentController@getCommentInfo');
 //删除某条评论
 $app->post('/api/delete/comment','CommentController@deleteComment');
 
