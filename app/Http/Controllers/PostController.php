@@ -2055,7 +2055,7 @@ class PostController extends Controller
             }
             else
             {
-                return response()->json(['status' => 200,'data' => $datas 'dataLength' => $dataLength]);
+                return response()->json(['status' => 200,'data' => $datas ,'dataLength' => $dataLength]);
             }
         // }
         // elseif ((!empty($wesecret)) && ($user))
