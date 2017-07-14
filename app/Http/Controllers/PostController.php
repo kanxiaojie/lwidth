@@ -1921,9 +1921,10 @@ class PostController extends Controller
         $replys = [];
         $objectUserInfo = [];
 
+        $comments = Comment::where(['post_id' => $id, 'available' => 1])->orderBy('created_at','desc')->paginate(15);
+        
         if(empty($wesecret))
         {
-            $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(15);
             if(count($comments))
             {
                 foreach ($comments as $comment)
@@ -1990,7 +1991,6 @@ class PostController extends Controller
         }
         elseif ((!empty($wesecret)) && ($user))
         {
-            $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(15);
             if(count($comments))
             {
                 foreach ($comments as $comment)
