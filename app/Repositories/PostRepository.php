@@ -449,6 +449,7 @@ class PostRepository
 
     public function save($post,$inputs,$picturePath = null)
     {
+        var_dump('$inputs', $inputs);
         if (isset($inputs['user_id']) && !empty($inputs['user_id']))
         {
             $post->user_id = $inputs['user_id'];
