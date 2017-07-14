@@ -199,3 +199,7 @@ $app->get('/api/systemNotices','SystemNoticeController@getSystemNotices');
 $app->post('/api/systemNotices','SystemNoticeController@postSystemNotices');
 //删除系统通知
 $app->post('/api/delete/systemNotice','SystemNoticeController@deleteSystemNotice');
+
+
+//获取用户的详细信息
+$app->get('/api/users','UserController@getUsers');
