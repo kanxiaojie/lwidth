@@ -66,6 +66,14 @@ class SystemNoticeController extends Controller
                 $data = [];
                 $data['id'] = $systemNotice->id;
                 $data['type'] = $systemNotice->type;
+                $data['user_id'] = $systemNotice->user_id;
+                $user = User::find($systemNotice->user_id);
+                $userInfo = array();
+                if ($user) {
+                    $userInfo['id'] = $user->id;
+                    $userInfo['nickname'] = $user->nickname;
+                }
+                $data['userInfo'] = $userInfo;
                 // $data['if_read'] = $systemNotice->if_read;
 
                 $diff_time = $this->postRepository->getTime($systemNotice->created_at);
