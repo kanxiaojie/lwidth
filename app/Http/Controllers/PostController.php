@@ -1971,13 +1971,13 @@ class PostController extends Controller
 
     public function getPostAllComments(Request $request, $id)
     {
-        $wesecret = $request->get('wesecret');
+        // $wesecret = $request->get('wesecret');
 
-        if (!empty($wesecret))
-        {
-            $openid = $this->baseRepository->decryptCode($wesecret);
-            $user = $this->userRepository->getUserByOpenId($openid);
-        }
+        // if (!empty($wesecret))
+        // {
+        //     $openid = $this->baseRepository->decryptCode($wesecret);
+        //     $user = $this->userRepository->getUserByOpenId($openid);
+        // }
 
         $data = array();
         $datas = array();
@@ -1987,9 +1987,11 @@ class PostController extends Controller
         $replys = [];
         $objectUserInfo = [];
 
-        if(empty($wesecret))
-        {
+        // if(empty($wesecret))
+        // {
+            
             $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(5);
+            $dataLength = Comment::where('post_id',$id)->get()->count();
             if(count($comments))
             {
                 foreach ($comments as $comment)
@@ -2040,6 +2042,8 @@ class PostController extends Controller
 
                     $data['praise_nums'] = $comment->r_likenum;
 
+                    $data['available'] = $comment->available;
+
                     $data['if_my_comment'] = 0;
 
                     $data['if_my_praise'] = 0;
@@ -2047,104 +2051,104 @@ class PostController extends Controller
                     $datas[] = $data;
                 }
 
-                return response()->json(['status' => 200,'data' => $datas]);
+                return response()->json(['status' => 200,'data' => $datas, 'dataLength' => $dataLength]);
             }
             else
             {
-                return response()->json(['status' => 200,'data' => $datas]);
+                return response()->json(['status' => 200,'data' => $datas 'dataLength' => $dataLength]);
             }
-        }
-        elseif ((!empty($wesecret)) && ($user))
-        {
-            $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(5);
-            if(count($comments))
-            {
-                foreach ($comments as $comment)
-                {
-                    $data['id'] =  $comment->id;
-                    $data['content'] = $comment->content;
-                    $commentuser =User::where('id',$comment->user_id)->first();
+        // }
+        // elseif ((!empty($wesecret)) && ($user))
+        // {
+        //     $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(5);
+        //     if(count($comments))
+        //     {
+        //         foreach ($comments as $comment)
+        //         {
+        //             $data['id'] =  $comment->id;
+        //             $data['content'] = $comment->content;
+        //             $commentuser =User::where('id',$comment->user_id)->first();
 
-                    $commentUserInfo['id'] = $commentuser->id;
-                    $commentUserInfo['nickname'] = $commentuser->nickname;
-                    $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
-                    $data['userInfo'] = $commentUserInfo;
+        //             $commentUserInfo['id'] = $commentuser->id;
+        //             $commentUserInfo['nickname'] = $commentuser->nickname;
+        //             $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
+        //             $data['userInfo'] = $commentUserInfo;
 
-                    $diff_time = $this->postRepository->getTime($comment->created_at);
-                    $data['created_at'] = $diff_time;
+        //             $diff_time = $this->postRepository->getTime($comment->created_at);
+        //             $data['created_at'] = $diff_time;
 
-                    $data['reply_nums'] = $comment->r_commentnum;
-                    $replies = CommentToComment::where('comment_id',$comment->id)
-                        ->orderBy('created_at','desc')->limit(3)->get();
-                    if(count($replies))
-                    {
-                        foreach ($replies as $reply)
-                        {
-                            $replys['id'] = $reply->id;
-                            $replys['content'] = $reply->content;
+        //             $data['reply_nums'] = $comment->r_commentnum;
+        //             $replies = CommentToComment::where('comment_id',$comment->id)
+        //                 ->orderBy('created_at','desc')->limit(3)->get();
+        //             if(count($replies))
+        //             {
+        //                 foreach ($replies as $reply)
+        //                 {
+        //                     $replys['id'] = $reply->id;
+        //                     $replys['content'] = $reply->content;
 
-                            $user1 = $this->userRepository->getUserById($reply->user_id);
-                            $replyUserInfo['id'] = $user1->id;
-                            $replyUserInfo['nickname'] = $user1->nickname;
-                            $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
-                            $replys['userInfo'] = $replyUserInfo;
+        //                     $user1 = $this->userRepository->getUserById($reply->user_id);
+        //                     $replyUserInfo['id'] = $user1->id;
+        //                     $replyUserInfo['nickname'] = $user1->nickname;
+        //                     $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
+        //                     $replys['userInfo'] = $replyUserInfo;
 
-                            $objectUserInfo['id'] = $reply->parent_id;
-                            $objectUser = $this->userRepository->getUserById($reply->parent_id);
-                            $objectUserInfo['nickname'] = $objectUser->nickname;
-                            $replys['objectUserInfo'] = $objectUserInfo;
-                            $replys['praise_nums'] = $reply->praise_nums;
+        //                     $objectUserInfo['id'] = $reply->parent_id;
+        //                     $objectUser = $this->userRepository->getUserById($reply->parent_id);
+        //                     $objectUserInfo['nickname'] = $objectUser->nickname;
+        //                     $replys['objectUserInfo'] = $objectUserInfo;
+        //                     $replys['praise_nums'] = $reply->praise_nums;
 
-                            $praiseToReply = PraiseToReply::where('reply_id',$reply->id)
-                                ->where('user_id',$user->id)->first();
-                            if(count($praiseToReply))
-                            {
-                                $replys['if_my_praise'] = 1;
-                            }else
-                            {
-                                $replys['if_my_praise'] = 0;
-                            }
+        //                     $praiseToReply = PraiseToReply::where('reply_id',$reply->id)
+        //                         ->where('user_id',$user->id)->first();
+        //                     if(count($praiseToReply))
+        //                     {
+        //                         $replys['if_my_praise'] = 1;
+        //                     }else
+        //                     {
+        //                         $replys['if_my_praise'] = 0;
+        //                     }
 
-                            $diff_time = $this->postRepository->getTime($reply->created_at);
-                            $replys['created_at'] = $diff_time;
-                            $data['replies'][] = $replys;
-                        }
-                    }else
-                    {
-                        $data['replies'] = [];
-                    }
+        //                     $diff_time = $this->postRepository->getTime($reply->created_at);
+        //                     $replys['created_at'] = $diff_time;
+        //                     $data['replies'][] = $replys;
+        //                 }
+        //             }else
+        //             {
+        //                 $data['replies'] = [];
+        //             }
 
-                    $data['praise_nums'] = $comment->r_likenum;
+        //             $data['praise_nums'] = $comment->r_likenum;
 
-                    $if_my_comment = Comment::where('post_id',$id)->where('user_id',$user->id)->first();
-                    if($if_my_comment)
-                    {
-                        $data['if_my_comment'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_comment'] = 0;
-                    }
+        //             $if_my_comment = Comment::where('post_id',$id)->where('user_id',$user->id)->first();
+        //             if($if_my_comment)
+        //             {
+        //                 $data['if_my_comment'] = 1;
+        //             }
+        //             else
+        //             {
+        //                 $data['if_my_comment'] = 0;
+        //             }
 
-                    $if_my_praise = PraiseToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
-                    if($if_my_praise)
-                    {
-                        $data['if_my_praise'] = 1;
-                    }
-                    else
-                    {
-                        $data['if_my_praise'] = 0;
-                    }
+        //             $if_my_praise = PraiseToComment::where('comment_id',$comment->id)->where('user_id',$user->id)->first();
+        //             if($if_my_praise)
+        //             {
+        //                 $data['if_my_praise'] = 1;
+        //             }
+        //             else
+        //             {
+        //                 $data['if_my_praise'] = 0;
+        //             }
 
-                    $datas[] = $data;
-                }
-                return response()->json(['status' => 200,'data' => $datas]);
-            }
-            else
-            {
-                return response()->json(['status' => 200,'data' => $datas]);
-            }
-        }
+        //             $datas[] = $data;
+        //         }
+        //         return response()->json(['status' => 200,'data' => $datas]);
+        //     }
+        //     else
+        //     {
+        //         return response()->json(['status' => 200,'data' => $datas]);
+        //     }
+        // }
     }
 
     public function getGenderLoves(Request $request)
