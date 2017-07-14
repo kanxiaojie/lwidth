@@ -2008,7 +2008,7 @@ class PostController extends Controller
                     $data['created_at'] = $diff_time;
 
                     $data['reply_nums'] = $comment->r_commentnum;
-                    $replies = CommentToComment::where('comment_id',$comment->id)
+                    $replies = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])
                         ->orderBy('created_at','desc')->limit(3)->get();
                     if(count($replies))
                     {
