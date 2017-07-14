@@ -643,6 +643,7 @@ class UserController extends Controller
         $datas  = [];
         foreach ($users as $user) {
             $data = [];
+            $data['id'] = $user->id;
             $data['nickname'] = $user->nickname;
             $data['avatarUrl'] = $user->avatarUrl;
             $data['college_name'] = $user->college->name;
@@ -669,6 +670,7 @@ class UserController extends Controller
 
             $profile = new Profile();
             $profile->user_id = $user->id;
+            $profile->signature = $params['signature'];
             $profile->save();
         } else {
             $user = User::find($params['id']);
