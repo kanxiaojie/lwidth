@@ -205,3 +205,11 @@ $app->post('/api/delete/systemNotice','SystemNoticeController@deleteSystemNotice
 $app->get('/api/users','UserController@getUsers');
 //编辑用户的详细信息
 $app->post('/api/users','UserController@editUser');
+
+//获取学校用户
+$app->get('/api/collegeUsers','UserController@getCollegeUsers');
+//编辑学校用户
+$app->post('/api/collegeUsers','UserController@editCollegesUser');
+//删除学校用户
+$app->post('/api/delete/collegeUser','UserController@deleteCollegesUser');
+

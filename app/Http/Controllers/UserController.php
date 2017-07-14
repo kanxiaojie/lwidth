@@ -638,6 +638,71 @@ class UserController extends Controller
         
     }
 
+    public function getCollegeUsers(Request $request) {
+        $users = User::where('role', 0)->get();
+        $datas  = [];
+        foreach ($users as $user) {
+            $data = [];
+            $data['nickname'] = $user->nickname;
+            $data['avatarUrl'] = $user->avatarUrl;
+            $data['college_name'] = $user->college->name;
+            $data['signature'] = $user->profile->signature;
+            $datas[] = $data;
+        }
+
+        return response()->json(['status'=>200,'data'=>$datas]);
+    }
+
+    public function editCollegesUser(Request $request) {
+        $params = $request->get('params');
+        if (empty($params['id'])) {
+            $college = new College();
+            $college->name = $params['college_name'];
+            $college->save();
+
+            $user = new User();
+            $user->nickname = $params['nickname'];
+            $user->avatarUrl = $params['avatarUrl'];
+            $user->college_id = $college->id;
+            $user->role = 0;
+            $user->save();
+
+            $profile = new Profile();
+            $profile->user_id = $user->id;
+            $profile-save();
+        } else {
+            $user = User::find($params['id']);
+            $user->nickname = $params['nickname'];
+            $user->avatarUrl = $params['avatarUrl'];
+            $user->save();
+
+            $profile = Profile::where('user_id',$user->id)->first();
+            $profile->signature = $params['signature'];
+            $profile->save();
+
+            $college = College::find($user->college_id);
+            $college->name = $params['college_name'];
+            $college->save();
+        }
+
+        return response()->json(['status'=>200,'user_id'=>$user->id]);
+    }
+
+    public function deleteCollegesUser(Request $request) {
+        $params = $request->get('params');
+
+        $user = User::find($params['id']);
+        $user_id = $user->id;
+        $profile = Profile::where('user_id',$user->id)->first();
+        $college = College::find($user->college_id);
+
+        $college->delete();
+        $profile->delete();
+        $user->delete();
+
+        return response()->json(['status'=>200,'user_id'=>$user_id]);
+    }
+
     public function editUser(Request $request) {
         $params = $request->get('params');
         $user = User::find($params['id']);
