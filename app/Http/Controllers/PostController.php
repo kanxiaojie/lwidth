@@ -2398,9 +2398,21 @@ class PostController extends Controller
                     {
                         $data['belongsToMe'] = 0;
                     }
-                    $data['video_url'] = $post->video_url;
-                    $data['images'] = $post->pictures;
-                    $data['location'] = $post->location;
+                    if(!empty($post->video_url){
+                        $data['video_url'] = $post->video_url;
+                    } else {
+                        $data['video_url'] = '';
+                    }
+                    if(!empty($post->pictures){
+                        $data['images'] = $post->pictures;
+                    } else {
+                        $data['images'] = '';
+                    }
+                    if(!empty($post->location){
+                        $data['location'] = $post->location;
+                    } else {
+                        $data['location'] = '';
+                    }
                     // if(!empty($post->pictures))
                     // {
                     //     $data['images'] = explode(',',$post->pictures);
