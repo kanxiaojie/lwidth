@@ -638,6 +638,16 @@ class UserController extends Controller
         
     }
 
+    public function editUser(Request $request) {
+        $params = $request->get('params');
+        $user = User::find($params['id']);
+        $user->trust = $params['trust'];
+        $user->available = $params['available'];
+        $user->save();
+        
+        return response()->json(['status'=>200,'user_id'=>$user->id]);
+    }
+
     public function getUserInfoByOpenId(Request $request)
     {
         $inputs = $request->all();

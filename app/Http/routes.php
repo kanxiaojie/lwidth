@@ -203,3 +203,5 @@ $app->post('/api/delete/systemNotice','SystemNoticeController@deleteSystemNotice
 
 //获取用户的详细信息
 $app->get('/api/users','UserController@getUsers');
+//编辑用户的详细信息
+$app->post('/api/users','UserController@editUser');
