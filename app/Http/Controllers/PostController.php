@@ -2399,14 +2399,16 @@ class PostController extends Controller
                         $data['belongsToMe'] = 0;
                     }
                     $data['video_url'] = $post->video_url;
-                    if(!empty($post->pictures))
-                    {
-                        $data['images'] = explode(',',$post->pictures);
-                    }
-                    else
-                    {
-                        $data['images'] = [];
-                    }
+                    $data['images'] = $post->pictures;
+                    $data['location'] = $post->location;
+                    // if(!empty($post->pictures))
+                    // {
+                    //     $data['images'] = explode(',',$post->pictures);
+                    // }
+                    // else
+                    // {
+                    //     $data['images'] = [];
+                    // }
 
                     $userInfo = [];
                     if($post->anonymous == 1)
@@ -2493,19 +2495,19 @@ class PostController extends Controller
                         $data['if_my_praise'] = 0;
                     }
 
-                    if($post->location)
-                    {
-                        $location = explode(',',$post->location);
+                    // if($post->location)
+                    // {
+                    //     $location = explode(',',$post->location);
 
-                        $data['location']['name'] = $location[2];
-                        $data['location']['address'] = $location[3];
-                        $data['location']['longitude'] = $location[1];
-                        $data['location']['latitude'] = $location[0];
-                    }
-                    else
-                    {
-                        $data['location'] = '';
-                    }
+                    //     $data['location']['name'] = $location[2];
+                    //     $data['location']['address'] = $location[3];
+                    //     $data['location']['longitude'] = $location[1];
+                    //     $data['location']['latitude'] = $location[0];
+                    // }
+                    // else
+                    // {
+                    //     $data['location'] = '';
+                    // }
 
                     $datas[] = $data;
                 // }
