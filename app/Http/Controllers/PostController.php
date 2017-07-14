@@ -1447,7 +1447,10 @@ class PostController extends Controller
         // $openid = $this->baseRepository->decryptCode($wesecret);
         // $user = $this->userRepository->getUserByOpenId($openid);
 
-        $post_id = $request->get('id');
+        $params = $request->get('params');
+
+        // $post_id = $request->get('id');
+        $post_id = $params['id'];
         
 
         // if(!$user)
