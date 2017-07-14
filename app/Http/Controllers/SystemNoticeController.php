@@ -58,7 +58,7 @@ class SystemNoticeController extends Controller
         // $openid = $this->baseRepository->decryptCode($wesecret);
         // $user = $this->userRepository->getUserByOpenId($openid);
 
-        // $datas = [];
+        $datas = [];
         // if($user)
         // {
             $systemNotices = SystemNotice::whereIn('type', [0, 1])->orderBy('created_at','desc')->paginate(5);
