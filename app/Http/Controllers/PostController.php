@@ -2432,6 +2432,7 @@ class PostController extends Controller
                         $userInfo['college'] = '';
                     }
                     $data['userInfo'] = $userInfo;
+                    $data['user_id'] = $userInfo['id'];
 
                     $diff_time = $this->postRepository->getTime($post->created_at);
                     $data['created_at'] = $diff_time;
