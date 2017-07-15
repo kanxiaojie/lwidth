@@ -3,6 +3,7 @@
 
 use App\Profile;
 use App\User;
+use App\College;
 use Illuminate\Support\Facades\Crypt;
 use App\Repositories\QiniuRepository;
 
@@ -175,7 +176,9 @@ class UserRepository
 
         if(isset($inputs['college']) && (!empty($inputs['college'])))
         {
-            $user->college_id = $inputs['college'];
+            $collegeIds = College::pluck('id')->toArray();
+            $theCollegeIndex = intval($inputs['college']) - 1;
+            $user->college_id = $collegeIds[$theCollegeIndex];
         }
 
 

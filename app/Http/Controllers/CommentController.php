@@ -738,7 +738,7 @@ class CommentController extends Controller
         $userInfo = array();
         $objectUserInfo = array();
 
-        $replies = CommentToComment::where('comment_id',$id)->orderBy('created_at','desc')->paginate(15);
+        $replies = CommentToComment::where(['comment_id' => $id, 'available' => 1])->orderBy('created_at','desc')->paginate(15);
         if($replies)
         {
             foreach ($replies as $reply)
