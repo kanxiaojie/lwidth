@@ -108,6 +108,63 @@ class SystemNoticeController extends Controller
 
     }
 
+    public function getRelatedApplets(Request $request)
+    {
+        // $wesecret = $request->get('wesecret');
+
+        // $openid = $this->baseRepository->decryptCode($wesecret);
+        // $user = $this->userRepository->getUserByOpenId($openid);
+
+        $datas = [];
+        // if($user)
+        // {
+            $systemNotices = SystemNotice::where('type', 10)->get();
+            foreach ($systemNotices as $systemNotice) {
+                $data = [];
+                $data['id'] = $systemNotice->id;
+                $data['type'] = $systemNotice->type;
+                $data['user_id'] = $systemNotice->user_id;
+                $user = User::find($systemNotice->user_id);
+                $userInfo = array();
+                if ($user) {
+                    $userInfo['id'] = $user->id;
+                    $userInfo['nickname'] = $user->nickname;
+                }
+                $data['userInfo'] = $userInfo;
+                // $data['if_read'] = $systemNotice->if_read;
+
+                $diff_time = $this->postRepository->getTime($systemNotice->created_at);
+                $data['created_at'] = $diff_time;
+
+                if (!empty($systemNotice->title)) {
+                    $data['title'] = $systemNotice->title;
+                } else {
+                    $data['title'] = '';
+                }
+                if (!empty($systemNotice->image)) {
+                    $data['image'] = $systemNotice->image;
+                } else {
+                    $data['image'] = '';
+                }
+                if (!empty($systemNotice->video_url)) {
+                    $data['video_url'] = $systemNotice->video_url;
+                } else {
+                    $data['video_url'] = '';
+                }
+                if (!empty($systemNotice->content)) {
+                    $data['content'] = $systemNotice->content;
+                } else {
+                    $data['content'] = '';
+                }
+                
+                $datas[] = $data;
+            }
+        // }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
     public function postSystemNotices(Request $request)
     {
         $params = $request->get('params');

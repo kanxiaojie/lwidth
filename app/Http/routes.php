@@ -200,6 +200,13 @@ $app->post('/api/systemNotices','SystemNoticeController@postSystemNotices');
 //删除系统通知
 $app->post('/api/delete/systemNotice','SystemNoticeController@deleteSystemNotice');
 
+//获取所有的相关小程序
+$app->get('/api/relatedApplets','SystemNoticeController@getRelatedApplets');
+//发布相关小程序
+$app->post('/api/relatedApplets','SystemNoticeController@postRelatedApplets');
+//删除相关小程序
+$app->post('/api/delete/relatedApplet','SystemNoticeController@deleteRelatedApplet');
+
 
 //获取用户的详细信息
 $app->get('/api/users','UserController@getUsers');
