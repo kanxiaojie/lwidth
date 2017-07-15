@@ -207,6 +207,13 @@ $app->post('/api/relatedApplets','SystemNoticeController@postRelatedApplets');
 //删除相关小程序
 $app->post('/api/delete/relatedApplet','SystemNoticeController@deleteRelatedApplet');
 
+//获取所有的关于表白墙
+$app->get('/api/aboutLoveWalls','SystemNoticeController@getAboutLoveWalls');
+//发布关于表白墙
+$app->post('/api/aboutLoveWalls','SystemNoticeController@postAboutLoveWalls');
+//删除关于表白墙
+$app->post('/api/delete/aboutLoveWall','SystemNoticeController@deleteAboutLoveWall');
+
 
 //获取用户的详细信息
 $app->get('/api/users','UserController@getUsers');

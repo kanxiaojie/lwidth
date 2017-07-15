@@ -122,25 +122,54 @@ class SystemNoticeController extends Controller
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
                 $data['id'] = $systemNotice->id;
-                $data['type'] = $systemNotice->type;
-                $data['user_id'] = $systemNotice->user_id;
-                $user = User::find($systemNotice->user_id);
-                $userInfo = array();
-                if ($user) {
-                    $userInfo['id'] = $user->id;
-                    $userInfo['nickname'] = $user->nickname;
-                }
-                $data['userInfo'] = $userInfo;
-                // $data['if_read'] = $systemNotice->if_read;
-
-                $diff_time = $this->postRepository->getTime($systemNotice->created_at);
-                $data['created_at'] = $diff_time;
-
+                $data['appId'] = $systemNotice->video_url;
+                
                 if (!empty($systemNotice->title)) {
-                    $data['title'] = $systemNotice->title;
+                    $data['name'] = $systemNotice->title;
                 } else {
-                    $data['title'] = '';
+                    $data['name'] = '';
                 }
+                if (!empty($systemNotice->image)) {
+                    $data['avatarUrl'] = $systemNotice->image;
+                } else {
+                    $data['avatarUrl'] = '';
+                }
+                if (!empty($systemNotice->content)) {
+                    $data['summary'] = $systemNotice->content;
+                } else {
+                    $data['summary'] = '';
+                }
+                
+                $datas[] = $data;
+            }
+        // }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
+    public function getAboutLoveWalls(Request $request)
+    {
+        // $wesecret = $request->get('wesecret');
+
+        // $openid = $this->baseRepository->decryptCode($wesecret);
+        // $user = $this->userRepository->getUserByOpenId($openid);
+
+        $datas = [];
+        // if($user)
+        // {
+            $systemNotices = SystemNotice::where('type', 11)->get();
+            foreach ($systemNotices as $systemNotice) {
+                $data = [];
+
+                $data['id'] = $systemNotice->id;
+                // $diff_time = $this->postRepository->getTime($systemNotice->created_at);
+                // $data['created_at'] = $diff_time;
+                // if (!empty($systemNotice->title)) {
+                //     $data['title'] = $systemNotice->title;
+                // } else {
+                //     $data['title'] = '';
+                // }
                 if (!empty($systemNotice->image)) {
                     $data['image'] = $systemNotice->image;
                 } else {
@@ -189,6 +218,53 @@ class SystemNoticeController extends Controller
 
     }
 
+    public function postRelatedApplets(Request $request)
+    {
+        $params = $request->get('params');
+
+        if (empty($params['id'])) {
+            $systemNotice = new SystemNotice();
+        } else {
+            $systemNotice = SystemNotice::find($params['id']);
+        }
+
+        $systemNotice->type = 10;
+        $systemNotice->video_url = $params['appId'];
+        $systemNotice->title = $params['name'];
+        $systemNotice->image = $params['avatarUrl'];
+        $systemNotice->content = $params['summary'];
+
+        $systemNotice->save();
+        
+        $systemNotice_id = $systemNotice->id;
+
+        return response()->json(['status' => 200,'relatedApplet_id' => $systemNotice_id]);
+
+    }
+
+    public function postAboutLoveWalls(Request $request)
+    {
+        $params = $request->get('params');
+
+        if (empty($params['id'])) {
+            $systemNotice = new SystemNotice();
+        } else {
+            $systemNotice = SystemNotice::find($params['id']);
+        }
+
+        $systemNotice->type = 11;
+        $systemNotice->image = $params['image'];
+        $systemNotice->video_url = $params['video_url'];
+        $systemNotice->content = $params['content'];
+
+        $systemNotice->save();
+        
+        $systemNotice_id = $systemNotice->id;
+
+        return response()->json(['status' => 200,'aboutLoveWall_id' => $systemNotice_id]);
+
+    }
+
     public function deleteSystemNotice(Request $request)
     {
         $params = $request->get('params');
@@ -201,6 +277,36 @@ class SystemNoticeController extends Controller
         }
 
         return response()->json(['status' => 200,'systemNotice_id' => $systemNotice_id]);
+
+    }
+
+    public function deleteRelatedApplet(Request $request)
+    {
+        $params = $request->get('params');
+
+        $systemNotice = SystemNotice::find($params['id']);
+        if ($systemNotice) {
+            $systemNotice_id = $systemNotice->id;
+            
+            $systemNotice->delete();
+        }
+
+        return response()->json(['status' => 200,'relatedApplet_id' => $systemNotice_id]);
+
+    }
+
+    public function deleteAboutLoveWall(Request $request)
+    {
+        $params = $request->get('params');
+
+        $systemNotice = SystemNotice::find($params['id']);
+        if ($systemNotice) {
+            $systemNotice_id = $systemNotice->id;
+            
+            $systemNotice->delete();
+        }
+
+        return response()->json(['status' => 200,'aboutLoveWall_id' => $systemNotice_id]);
 
     }
 
