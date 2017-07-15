@@ -361,6 +361,7 @@ class UserController extends Controller
         $wesecret = $request->get('wesecret');
 
         $users = User::where('role', 1)->get();
+        $dataLength = count($users);
         $datas = [];
         foreach ($users as $user) {
 
@@ -635,12 +636,13 @@ class UserController extends Controller
         // }
         }
 
-        return response()->json(['status'=>200,'data'=>$datas]);
+        return response()->json(['status'=>200,'data'=>$datas, 'dataLength' => $dataLength]);
         
     }
 
     public function getCollegeUsers(Request $request) {
         $users = User::where('role', 0)->get();
+        $dataLength = count($users);
         $datas  = [];
         foreach ($users as $user) {
             $data = [];
@@ -652,7 +654,7 @@ class UserController extends Controller
             $datas[] = $data;
         }
 
-        return response()->json(['status'=>200,'data'=>$datas]);
+        return response()->json(['status'=>200,'data'=>$datas, 'dataLength' => $dataLength ]);
     }
 
     public function editCollegesUser(Request $request) {

@@ -62,6 +62,7 @@ class SystemNoticeController extends Controller
         // if($user)
         // {
             $systemNotices = SystemNotice::whereIn('type', [0, 1])->orderBy('created_at','desc')->paginate(5);
+            $dataLength = SystemNotice::whereIn('type', [0, 1])->get()->count();
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
                 $data['id'] = $systemNotice->id;
@@ -104,7 +105,7 @@ class SystemNoticeController extends Controller
             }
         // }
 
-        return response()->json(['status' => 200,'data' => $datas]);
+        return response()->json(['status' => 200,'data' => $datas, 'dataLength' => $dataLength ]);
 
     }
 
@@ -119,6 +120,7 @@ class SystemNoticeController extends Controller
         // if($user)
         // {
             $systemNotices = SystemNotice::where('type', 10)->get();
+            $dataLength = count($systemNotices);
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
                 $data['id'] = $systemNotice->id;
@@ -144,7 +146,7 @@ class SystemNoticeController extends Controller
             }
         // }
 
-        return response()->json(['status' => 200,'data' => $datas]);
+        return response()->json(['status' => 200,'data' => $datas, 'dataLength' => $dataLength ]);
 
     }
 
@@ -159,6 +161,7 @@ class SystemNoticeController extends Controller
         // if($user)
         // {
             $systemNotices = SystemNotice::where('type', 11)->get();
+            $dataLength = count($systemNotices);
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
 
@@ -190,7 +193,7 @@ class SystemNoticeController extends Controller
             }
         // }
 
-        return response()->json(['status' => 200,'data' => $datas]);
+        return response()->json(['status' => 200,'data' => $datas, 'dataLength' => $dataLength]);
 
     }
 
