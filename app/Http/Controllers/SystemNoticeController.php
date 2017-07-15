@@ -131,7 +131,7 @@ class SystemNoticeController extends Controller
         $search = $request->get('search');
 
         $datas = [];
-        $systemNotices = SystemNotice::where('type', 10)->where('title','LIKE','%'.$search.'%')->orderBy('created_at','desc')->get();
+        $systemNotices = SystemNotice::where('type', 10)->where('title','LIKE','%'.$search.'%')->get();
 
         foreach ($systemNotices as $systemNotice) {
             $data = [];
@@ -168,7 +168,7 @@ class SystemNoticeController extends Controller
     {
         $datas = [];
         
-        $systemNotices = SystemNotice::where('type', 11)->orderBy('created_at','desc')->get();
+        $systemNotices = SystemNotice::where('type', 11)->get();
         foreach ($systemNotices as $systemNotice) {
             $data = [];
 
