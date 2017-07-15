@@ -507,6 +507,7 @@ class UserController extends Controller
             $userInfo['role'] = $updateUser->role;
             $userInfo['trust'] = $updateUser->trust;
             $userInfo['available'] = $updateUser->available;
+            $userInfo['disabled_reason'] = $updateUser->disabled_reason;
 
 
             $profile = Profile::where('user_id',$updateUser->id)->first();
@@ -710,6 +711,7 @@ class UserController extends Controller
         $user = User::find($params['id']);
         $user->trust = $params['trust'];
         $user->available = $params['available'];
+        $user->disabled_reason = $params['disabled_reason'];
         $user->save();
         
         return response()->json(['status'=>200,'user_id'=>$user->id]);
