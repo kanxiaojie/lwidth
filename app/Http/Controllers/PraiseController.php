@@ -213,7 +213,7 @@ class PraiseController extends Controller
                                 }
                             })
                             ->whereIn('id',$praiseUserIds)
-                            ->orderBy('created_at', 'desc')->paginate(5);
+                            ->orderBy('created_at', 'desc')->paginate(15);
 
             if(count($praiseUsers))
             {
@@ -225,7 +225,14 @@ class PraiseController extends Controller
                     $data['id']=$praiseUser->id;
                     $data['nickname']=$praiseUser->nickname;
                     $data['avatarUrl']=$praiseUser->avatarUrl;
-                    $data['college_name']=$praiseUser->college->name;
+
+                    if ($praiseUser->college_id)
+                    {
+                        $data['college_name']=$praiseUser->college->name;
+                    }else
+                    {
+                        $data['college_name'] = "";
+                    }
 
                     if (!$praiseUser->gender)
                     {

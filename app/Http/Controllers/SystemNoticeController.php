@@ -61,7 +61,7 @@ class SystemNoticeController extends Controller
         $datas = [];
         if($user)
         {
-            $systemNotices = SystemNotice::where('type', 0)->orWhere('user_id', $user->id)->orderBy('created_at','desc')->paginate(5);
+            $systemNotices = SystemNotice::where('type', 0)->orWhere('user_id', $user->id)->orderBy('created_at','desc')->paginate(15);
             foreach ($systemNotices as $systemNotice) {
                 $data = [];
                 $data['id'] = $systemNotice->id;
@@ -121,5 +121,92 @@ class SystemNoticeController extends Controller
         }
 
         return response()->json(['status' => 200,'data' => '标注已读成功']);
+    }
+
+
+
+
+    public function get_applets(Request $request)
+    {
+        $search = $request->get('search');
+
+        $datas = [];
+        $systemNotices = SystemNotice::where('type', 10)->where('title','LIKE','%'.$search.'%')->get();
+
+        foreach ($systemNotices as $systemNotice) {
+            $data = [];
+            $data['id'] = $systemNotice->id;
+            $data['appId'] = $systemNotice->video_url;
+            
+
+            if (!empty($systemNotice->title)) {
+                $data['name'] = $systemNotice->title;
+            } else {
+                $data['name'] = '';
+            }
+            if (!empty($systemNotice->image)) {
+                $data['avatarUrl'] = $systemNotice->image;
+            } else {
+                $data['avatarUrl'] = '';
+            }
+            if (!empty($systemNotice->content)) {
+                $data['summary'] = $systemNotice->content;
+            } else {
+                $data['summary'] = '';
+            }
+            
+            $datas[] = $data;
+        }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
+
+    
+    public function get_aboutLoveWalls(Request $request)
+    {
+        $datas = [];
+        
+        $systemNotices = SystemNotice::where('type', 11)->get();
+        foreach ($systemNotices as $systemNotice) {
+            $data = [];
+
+            $data['id'] = $systemNotice->id;
+
+            $diff_time = $this->postRepository->getTime($systemNotice->created_at);
+            $data['created_at'] = $diff_time;
+
+            if (!empty($systemNotice->title)) {
+                $data['title'] = $systemNotice->title;
+            } else {
+                $data['title'] = '';
+            }
+            if (!empty($systemNotice->image)) {
+                $data['image'] = $systemNotice->image;
+            } else {
+                $data['image'] = '';
+            }
+            if (!empty($systemNotice->video_url)) {
+                $data['video_url'] = $systemNotice->video_url;
+            } else {
+                $data['video_url'] = '';
+            }
+            if (!empty($systemNotice->content)) {
+                $data['content'] = $systemNotice->content;
+            } else {
+                $data['content'] = '';
+            }
+            
+            $datas[] = $data;
+        }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
+
+    public function get_available(Request $request) {
+        return response()->json(['status' => 200,'data' => 0]);
     }
 }

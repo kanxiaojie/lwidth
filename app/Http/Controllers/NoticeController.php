@@ -64,7 +64,7 @@ class NoticeController extends Controller
 
             // $notices = $num1 + $num2 + $num3;
 
-            return response()->json(['status'=>200,'message'=>'success','unreadNoticeNums'=>$notices, 'availablePostLove'=>0]);
+            return response()->json(['status'=>200,'message'=>'success','unreadNoticeNums'=>$notices]);
         }
         else
         {
@@ -99,9 +99,9 @@ class NoticeController extends Controller
             // $notices = Notice::where('source_type',1)->whereIn('source_id',$commentIds)
             //     ->orWhere('source_type',2)->whereIn('source_id',$replyIds)
             //     ->orWhere('source_type',3)->whereIn('source_id',$replyIds1)
-            //     ->orderBy('created_at', 'desc')->paginate(5);
+            //     ->orderBy('created_at', 'desc')->paginate(15);
 
-            $notices = Notice::where('objectUser_id', $user->id)->orderBy('created_at', 'desc')->paginate(5);
+            $notices = Notice::where('objectUser_id', $user->id)->orderBy('created_at', 'desc')->paginate(15);
 
             if($notices)
             {

@@ -49,8 +49,8 @@ $app->get('/api/collegeLoves','PostController@getCollegeLoves');
 //获取我发表的所有表白
 $app->get('/api/myLoves','PostController@getMyLoves');
 
-//获取单个表白及评论内容
-$app->get('/api/loves/{id}/comments','PostController@postAndSelfComments');
+// //获取单个表白及评论内容
+// $app->get('/api/loves/{id}/comments','PostController@postAndSelfComments');
 
 //给某条表白评论
 $app->post('/api/loves/{id}/comments','CommentController@publishComments');
@@ -62,7 +62,7 @@ $app->post('/api/loves/{id}/praises','PraiseController@praiseToPost');
 $app->post('/api/comments/{id}/replies','CommentController@commentToComment');
 
 //获取某条评论的所有再评论 改为回复
-$app->get('/api/comments/{id}/replies','CommentController@getCommentToComments');
+// $app->get('/api/comments/{id}/replies','CommentController@getCommentToComments');
 
 //给某条回复点赞/或取消点赞
 $app->post('/api/replies/{id}/praises','PraiseController@praiseToReplies');
@@ -161,3 +161,12 @@ $app->get('/api/genderLoves','PostController@getGenderLoves');
 $app->get('/api/blacklists','UserController@getBlackLists');
 //把某人加入黑名单或者从黑名单中移除
 $app->post('/api/blacklists','UserController@addOrRemoveBlackLists');
+
+//获取相关小程序
+$app->get('/api/applets','SystemNoticeController@get_applets');
+
+//获取关于表白墙
+$app->get('/api/aboutLoveWalls','SystemNoticeController@get_aboutLoveWalls');
+
+// 审核是否可见
+$app->get('/api/get_available','SystemNoticeController@get_available');
