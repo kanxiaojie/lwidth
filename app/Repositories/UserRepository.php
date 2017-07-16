@@ -82,7 +82,7 @@ class UserRepository
                 $user->gender = $inputs['gender'];
             }
 
-            $user->college_id = 1;
+            // $user->college_id = 1;
         }
         
 
