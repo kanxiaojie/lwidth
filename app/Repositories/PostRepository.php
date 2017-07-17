@@ -467,7 +467,7 @@ class PostRepository
             }
         }
 
-        if(isset($inputs['images']) && !empty($inputs['images']))
+        if(isset($inputs['images']) && count($inputs['images']) > 0)
         {
             $post->pictures = implode(',',$inputs['images']);
         }
@@ -483,7 +483,7 @@ class PostRepository
             $post->visiable = $inputs['visiable'];
         }
 
-        if(isset($inputs['video_url']) && !empty($inputs['video_url']))
+        if(isset($inputs['video_url']) && strlen($inputs['video_url']) > 0)
         {
             $post->video_url = $inputs['video_url'];
         }
