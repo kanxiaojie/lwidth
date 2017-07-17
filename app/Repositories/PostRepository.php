@@ -199,7 +199,7 @@ class PostRepository
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })
-                ->where('pictures', '<>', null)
+                ->where('pictures', '<>', '')
                 ->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
@@ -228,7 +228,7 @@ class PostRepository
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
                 })
-                ->where('video_url', '<>', null)
+                ->where('video_url', '<>', '')
                 ->orderBy($orderby,$direction)->paginate(15);
 
         return $posts;
