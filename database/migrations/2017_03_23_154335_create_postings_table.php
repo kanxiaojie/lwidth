@@ -26,7 +26,7 @@ class CreatePostingsTable extends Migration
             $table->string('pictures',4000)->nullable();
             $table->string('video_url')->nullable();
             $table->string('location',4000)->nullable();
-            $table->integer('visiable')->default(0)
+            $table->integer('visiable')->default(0);
 
             $table->integer('anonymous')->default(0);
 
