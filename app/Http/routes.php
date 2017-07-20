@@ -168,5 +168,8 @@ $app->get('/api/applets','SystemNoticeController@get_applets');
 //获取关于表白墙
 $app->get('/api/aboutLoveWalls','SystemNoticeController@get_aboutLoveWalls');
 
+//获取关注范围
+tLoveWalls'
+
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');

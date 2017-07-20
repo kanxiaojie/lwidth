@@ -163,13 +163,24 @@ class UserController extends Controller
 
             if(!$updateUser->college_id)
             {
-                $userInfo['college'] = '';
+                $userInfo['college_id'] = '';
                 $userInfo['college_name'] = '';
             }
             else
             {
-                $userInfo['college'] = (int)($updateUser->college_id);
-                $userInfo['college_name'] = College::where('id',(int)($updateUser->college_id))->first()->name;
+                $userInfo['college_id'] = $updateUser->college_id;
+                $userInfo['college_name'] = $updateUser->college->name;
+            }
+
+            if(!$updateUser->interest_id)
+            {
+                $userInfo['interest_id'] = '';
+                $userInfo['interest_name'] = '';
+            }
+            else
+            {
+                $userInfo['interest_id'] = $updateUser->interest_id;
+                $userInfo['interest_name'] = $updateUser->interest->name;
             }
 
 
@@ -184,12 +195,11 @@ class UserController extends Controller
 
             if($updateUser->grade)
             {
-                $userInfo['grade'] = (int)($updateUser->grade);
-                $userInfo['grade_name'] = Grade::where('id',(int)($updateUser->grade))->first()->name;
-            }else
+                $userInfo['grade'] = $updateUser->grade;
+            }
+            else
             {
                 $userInfo['grade'] = '';
-                $userInfo['grade_name'] = '';
             }
 
             if($updateUser->wechat)
@@ -439,13 +449,24 @@ class UserController extends Controller
 
             if(!$updateUser->college_id)
             {
-                $userInfo['college'] = '';
+                $userInfo['college_id'] = '';
                 $userInfo['college_name'] = '';
             }
             else
             {
-                $userInfo['college'] = (int)($updateUser->college_id);
-                $userInfo['college_name'] = College::where('id',(int)($updateUser->college_id))->first()->name;
+                $userInfo['college_id'] = $updateUser->college_id;
+                $userInfo['college_name'] = $updateUser->college->name;
+            }
+
+            if(!$updateUser->interest_id)
+            {
+                $userInfo['interest_id'] = '';
+                $userInfo['interest_name'] = '';
+            }
+            else
+            {
+                $userInfo['interest_id'] = $updateUser->interest_id;
+                $userInfo['interest_name'] = $updateUser->interest->name;
             }
 
             if($updateUser->major)
@@ -459,12 +480,11 @@ class UserController extends Controller
 
             if($updateUser->grade)
             {
-                $userInfo['grade'] = (int)($updateUser->grade);
-                $userInfo['grade_name'] = Grade::where('id',(int)($updateUser->grade))->first()->name;
-            }else
+                $userInfo['grade'] = $updateUser->grade;
+            }
+            else
             {
                 $userInfo['grade'] = '';
-                $userInfo['grade_name'] = '';
             }
 
             if($updateUser->wechat)
