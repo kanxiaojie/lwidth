@@ -79,7 +79,7 @@ class UserRepository
 
             if(isset($inputs['gender']) && (!empty($inputs['gender'])))
             {
-                $user->gender = $inputs['gender'];
+                $user->gender_id = $inputs['gender'];
             }
         }
         
@@ -192,9 +192,9 @@ class UserRepository
             $user->wechat = $inputs['wechat'];
         }
 
-        if(isset($inputs['gender']) && (!empty($inputs['gender'])))
+        if(isset($inputs['gender_id']) && (!empty($inputs['gender_id'])))
         {
-            $user->gender = $inputs['gender'];
+            $user->gender_id = $inputs['gender_id'];
         }
 
         if(isset($inputs['qq']) && (!empty($inputs['qq'])))

@@ -94,18 +94,17 @@ class UserController extends Controller
             $userInfo['praise_nums'] = $updateUser->praiseNums;
             $userInfo['nickname'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
-            if (!$updateUser->gender)
+
+            $userInfo['gender_id'] = $updateUser->gender_id;
+            if ($updateUser->gender_id == 1)
             {
-                $userInfo['gender'] = "";
-                $userInfo['gender_name'] = "";
-            }elseif($updateUser->gender == 1)
-            {
-                $userInfo['gender'] = 1;
                 $userInfo['gender_name'] = "男";
+            }elseif($updateUser->gender_id == 2)
+            {
+                $userInfo['gender_name'] = "女";
             }else
             {
-                $userInfo['gender'] = 2;
-                $userInfo['gender_name'] = "女";
+                $userInfo['gender_name'] = "";
             }
 
             if(!empty($updateUser->pictures))
@@ -372,18 +371,17 @@ class UserController extends Controller
             $userInfo['nickname'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
             $userInfo['pictureOnWall'] = $updateUser->pictureOnWall ;
-            if (!$updateUser->gender)
+
+            $userInfo['gender_id'] = $updateUser->gender_id;
+            if ($updateUser->gender_id == 1)
             {
-                $userInfo['gender'] = "";
-                $userInfo['gender_name'] = "";
-            }elseif($updateUser->gender == 1)
-            {
-                $userInfo['gender'] = 1;
                 $userInfo['gender_name'] = "男";
+            }elseif($updateUser->gender_id == 2)
+            {
+                $userInfo['gender_name'] = "女";
             }else
             {
-                $userInfo['gender'] = 2;
-                $userInfo['gender_name'] = "女";
+                $userInfo['gender_name'] = "";
             }
 
             if(!empty($updateUser->pictures))

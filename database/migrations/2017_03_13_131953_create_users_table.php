@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('unionId');
             $table->string('avatarUrl');
             $table->string('nickname');  
-            $table->integer('gender');
+            $table->integer('gender_id');
             $table->string('realname');
             $table->string('password', 60);
 

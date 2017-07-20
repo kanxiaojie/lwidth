@@ -8,7 +8,7 @@ class Gender extends Model
 {
     protected $table = "genders";
 
-    public function user()
+    public function users()
     {
         return $this->hasMany('App\User');
     }
