@@ -53,6 +53,11 @@ class User extends Model implements
         return $this->hasMany('App\Post');
     }
 
+    public function interest()
+    {
+        return $this->belongsTo('App\Interest','interest_id');
+    }
+
     public function systemNotices()
     {
         return $this->hasMany('App\SystemNotice');

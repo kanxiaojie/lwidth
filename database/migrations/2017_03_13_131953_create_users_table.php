@@ -37,11 +37,12 @@ class CreateUsersTable extends Migration
 
             $table->string('college_id');
             $table->string('major');
-            $table->string('grade',400);
+            $table->string('grade');
 
             $table->string('city_id');
             $table->string('province_id');
             $table->string('country_id');
+            $table->string('interest_id')->default(1);
             $table->integer('language_id')->default(1);
             
 

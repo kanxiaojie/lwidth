@@ -14,13 +14,19 @@ class CreatePostingsTable extends Migration
     {
         Schema::create('postings', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('province_id');
+            $table->bigInteger('city_id');
+            $table->bigInteger('college_id');
+
+            $table->integer('postingType_id');
+            
             $table->string('title',255);
             $table->text('content');
             $table->string('pictures',4000)->nullable();
             $table->string('video_url')->nullable();
             $table->string('location',4000)->nullable();
-            $table->integer('visiable')->default(0);
+            $table->integer('visiable')->default(0)
 
             $table->integer('anonymous')->default(0);
 

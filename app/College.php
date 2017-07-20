@@ -12,4 +12,9 @@ class College extends Model
     {
         return $this->hasMany('App\User');
     }
+
+    public function cities()
+    {
+        return $this->belongsTo('App\City','city_id');
+    }
 }
