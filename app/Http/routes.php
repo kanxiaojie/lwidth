@@ -92,9 +92,6 @@ $app->post('/api/delete/user/picture','UserController@deletePicture');
 //删除表白
 $app->post('/api/delete/love','PostController@deletePost');
 
-$app->get('/api/colleges','ExampleController@getColleges');
-$app->get('/api/grades','ExampleController@getGrades');
-
 //删除某条评论
 $app->post('/api/delete/comment','CommentController@deleteComment');
 //删除某条回复
@@ -169,7 +166,10 @@ $app->get('/api/applets','SystemNoticeController@get_applets');
 $app->get('/api/aboutLoveWalls','SystemNoticeController@get_aboutLoveWalls');
 
 //获取关注范围
-tLoveWalls'
+$app->get('/api/interests', 'ExampleController@getInterests');
+
+$app->get('/api/colleges','ExampleController@getColleges');
+$app->get('/api/grades','ExampleController@getGrades');
 
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');

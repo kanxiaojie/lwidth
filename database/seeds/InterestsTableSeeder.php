@@ -13,19 +13,23 @@ class InterestsTableSeeder extends Seeder
     public function run()
     {
         Interest::create([
-            'name' => '全国'
+            'name' => '全国',
+            'description' => '看所有的帖子'
         ]);
 
         Interest::create([
-            'name' => '本省'
+            'name' => '本省',
+            'description' => '看学校所在省份的帖子'
         ]);
 
         Interest::create([
-            'name' => '本市'
+            'name' => '本市',
+            'description' => '看学校所在城市的帖子'
         ]);
 
         Interest::create([
-            'name' => '本校'
+            'name' => '本校',
+            'description' => '看学校的帖子'
         ]);
     }
 }
