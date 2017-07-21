@@ -37,9 +37,7 @@ class ExampleController extends Controller
         return response()->json(['code' => 200,'message'=>'successful.','data'=>$datas]);
     }
 
-    public function getCities(Request $request) {
-        $id = $request->get('id');
-
+    public function getCities(Request $request, $id) {
         $cities = City::where('province_id', $id)->get();
         
         $datas = [];
@@ -55,9 +53,7 @@ class ExampleController extends Controller
         return response()->json(['code' => 200,'message'=>'successful.','data'=>$datas]);
     }
 
-    public function getColleges(Request $request) {
-        $id = $request->get('id');
-
+    public function getColleges(Request $request, $id) {
         $colleges = College::where('city_id', $id)->get();
         
         $datas = [];
