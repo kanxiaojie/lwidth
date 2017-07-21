@@ -7,6 +7,8 @@ use App\City;
 use App\College;
 use App\Interest;
 
+use Illuminate\Http\Request;
+
 class ExampleController extends Controller
 {
     /**
