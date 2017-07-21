@@ -88,5 +88,4 @@ class ExampleController extends Controller
         return response()->json(['code' => 200,'message'=>'successful.','data'=>$datas]);
     }
 
-    public
 }
