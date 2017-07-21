@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Province;
+use App\City;
 use App\College;
-use App\Grade;
 use App\Interest;
 
 class ExampleController extends Controller
@@ -18,32 +19,56 @@ class ExampleController extends Controller
         //
     }
 
-    public function getColleges()
-    {
-        $colleges = College::all();
+    public function getProvinces() {
+        $provinces = Province::all();
 
-        $data = [];
+        $datas = [];
 
-        foreach ($colleges as $college)
-        {
-            $data[] = $college->name;
+        foreach ($provinces as $province) {
+            $data = [];
+            $data['id'] = $province->id;
+            $data['name'] = $province->name;
+
+            $datas[] = $data;
         }
 
-        return response()->json(['code' => 200,'message'=>'successful.','data'=>$data]);
+        return response()->json(['code' => 200,'message'=>'successful.','data'=>$datas]);
     }
 
-    public function getGrades()
-    {
-        $grades = Grade::all();
+    public function getCities(Request $request) {
+        $id = $request->get('id');
 
-        $data = [];
+        $cities = City::where('province_id', $id)->get();
+        
+        $datas = [];
 
-        foreach ($grades as $grade)
-        {
-            $data[] = $grade->name;
+        foreach ($cities as $city) {
+            $data = [];
+            $data['id'] = $city->id;
+            $data['name'] = $city->name;
+
+            $datas[] = $data;
         }
 
-        return response()->json(['code' => 200,'message'=>'successful.','data'=>$data]);
+        return response()->json(['code' => 200,'message'=>'successful.','data'=>$datas]);
+    }
+
+    public function getColleges(Request $request) {
+        $id = $request->get('id');
+
+        $colleges = College::where('city_id', $id)->get();
+        
+        $datas = [];
+
+        foreach ($colleges as $college) {
+            $data = [];
+            $data['id'] = $college->id;
+            $data['name'] = $college->name;
+
+            $datas[] = $data;
+        }
+
+        return response()->json(['code' => 200,'message'=>'successful.','data'=>$datas]);
     }
 
     public function getInterests() {
@@ -62,4 +87,6 @@ class ExampleController extends Controller
 
         return response()->json(['code' => 200,'message'=>'successful.','data'=>$datas]);
     }
+
+    public
 }

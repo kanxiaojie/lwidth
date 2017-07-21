@@ -165,11 +165,13 @@ $app->get('/api/applets','SystemNoticeController@get_applets');
 //获取关于表白墙
 $app->get('/api/aboutLoveWalls','SystemNoticeController@get_aboutLoveWalls');
 
-//获取关注范围
+//获取/省份/城市/学校/关注范围
+$app->get('/api/provinces', 'ExampleController@getProvinces');
+$app->get('/api/provinces/{id}/cities', 'ExampleController@getCities');
+$app->get('/api/cities/{id}/colleges','ExampleController@getColleges');
 $app->get('/api/interests', 'ExampleController@getInterests');
 
-$app->get('/api/colleges','ExampleController@getColleges');
-$app->get('/api/grades','ExampleController@getGrades');
+// $app->get('/api/grades','ExampleController@getGrades');
 
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');
