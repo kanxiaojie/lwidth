@@ -174,11 +174,21 @@ class UserRepository
             $user->nickname = $inputs['nickname'];
         }
 
-        if(isset($inputs['college']) && (!empty($inputs['college'])))
+        // if(isset($inputs['college']) && (!empty($inputs['college'])))
+        // {
+        //     $collegeIds = College::pluck('id')->toArray();
+        //     $theCollegeIndex = intval($inputs['college']) - 1;
+        //     $user->college_id = $collegeIds[$theCollegeIndex];
+        // }
+
+        if(isset($inputs['college_id']) && (!empty($inputs['college_id'])))
         {
-            $collegeIds = College::pluck('id')->toArray();
-            $theCollegeIndex = intval($inputs['college']) - 1;
-            $user->college_id = $collegeIds[$theCollegeIndex];
+            $user->college_id = $inputs['college_id'];
+        }
+
+        if(isset($inputs['interest_id']) && (!empty($inputs['interest_id'])))
+        {
+            $user->interest_id = $inputs['interest_id'];
         }
 
 
