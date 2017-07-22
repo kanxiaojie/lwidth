@@ -170,6 +170,7 @@ $app->get('/api/provinces', 'ExampleController@getProvinces');
 $app->get('/api/provinces/{id}/cities', 'ExampleController@getCities');
 $app->get('/api/cities/{id}/colleges','ExampleController@getColleges');
 $app->get('/api/interests', 'ExampleController@getInterests');
+$app->get('/api/postingTypes', 'ExampleController@getPostingTypes');
 
 // $app->get('/api/grades','ExampleController@getGrades');
 

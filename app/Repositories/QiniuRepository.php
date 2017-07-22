@@ -10,7 +10,7 @@ class QiniuRepository
         $secretKey= "z7_Jx8-sCMGUFmrP5bPqM_GOT2FiIq3AEeEoQKZE";
         $auth=new Auth($accessKey, $secretKey);
         $bucketMgr = new BucketManager($auth);
-        $bucket= "lovewall";//空间名称
+        $bucket= "life";//空间名称
 
         $err = $bucketMgr->delete($bucket, $key);
         echo "\n====> delete $key : \n";

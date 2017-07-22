@@ -6,6 +6,7 @@ use App\Province;
 use App\City;
 use App\College;
 use App\Interest;
+use App\PostingType;
 
 use Illuminate\Http\Request;
 
@@ -79,6 +80,22 @@ class ExampleController extends Controller
             $data['id'] = $interest->id;
             $data['name'] = $interest->name;
             $data['description'] = $interest->description;
+
+            $datas[] = $data;
+        }
+
+        return response()->json(['code' => 200,'message'=>'successful.','data'=>$datas]);
+    }
+
+    public function getPostingTypes() {
+        $postingTypes = PostingType::all();
+
+        $datas = [];
+
+        foreach ($postingTypes as $postingType) {
+            $data = [];
+            $data['id'] = $postingType->id;
+            $data['name'] = $postingType->name;
 
             $datas[] = $data;
         }
