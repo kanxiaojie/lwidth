@@ -472,6 +472,16 @@ class PostRepository
             $post->pictures = implode(',',$inputs['images']);
         }
 
+        if(isset($inputs['video_url']) && strlen($inputs['video_url']) > 0)
+        {
+            $post->video_url = $inputs['video_url'];
+        }
+
+        if(isset($inputs['postingType_id']) && !empty($inputs['postingType_id']))
+        {
+            $post->postingType_id = $inputs['postingType_id'];
+        }
+
         if(isset($inputs['location']) && !empty($inputs['location']))
         {
             $post->location = implode(',',$inputs['location']);
@@ -483,10 +493,7 @@ class PostRepository
             $post->visiable = $inputs['visiable'];
         }
 
-        if(isset($inputs['video_url']) && strlen($inputs['video_url']) > 0)
-        {
-            $post->video_url = $inputs['video_url'];
-        }
+        
 
         if(isset($inputs['anonymous']) && !empty($inputs['anonymous']))
         {
