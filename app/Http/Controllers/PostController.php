@@ -1496,7 +1496,7 @@ class PostController extends Controller
                             foreach ($needDelete_pictures as $needDelete_picture)
                             {
                                 $pictureArray = explode('/', $needDelete_picture); 
-                                $key = $pictureArray[3];
+                                $key = $pictureArray[3]."/".$pictureArray[4];
                                 $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
                             }
                         }
