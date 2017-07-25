@@ -740,7 +740,7 @@ class UserController extends Controller
             // 从七牛云上删除照片  $input['the_delete_picture']
             if(!empty($input['the_delete_picture'])){
                 $pictureArray = explode('/', $input['the_delete_picture']); 
-                $key = $pictureArray[3];
+                $key = $pictureArray[3]."/".$pictureArray[4];
                 $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
             }
 
