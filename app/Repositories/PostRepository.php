@@ -448,6 +448,12 @@ class PostRepository
         if (isset($inputs['user_id']) && !empty($inputs['user_id']))
         {
             $post->user_id = $inputs['user_id'];
+
+            $user = User::find($inputs['user_id']);
+            
+            $post->province_id = $user->college->city->province->id;
+            $post->city_id = $user->college->city->id;
+            $post->college_id = $user->college->id;
         }
 
         if(isset($inputs['content']) && !empty($inputs['content']))
