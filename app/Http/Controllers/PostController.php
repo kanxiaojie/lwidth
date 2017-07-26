@@ -2270,15 +2270,43 @@ class PostController extends Controller
         $type = $request->get('type');
         switch ($type) 
         {
+            case 'newLoves': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'created_at');
+                break;
             case 'hotLoves': 
-                $posts = $this->postRepository->getHotLoves($search);
+                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
                 break;
-            case 'imageLoves':
-                $posts = $this->postRepository->getImageLoves($search);
+            case 'topLoves':
+                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
                 break;
-            case 'videoLoves':
-                $posts = $this->postRepository->getVideoLoves($search);
+            case 'newActivities': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'created_at');
                 break;
+            case 'hotActivities': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
+                break;
+            case 'topActivities':
+                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
+                break;
+            case 'newQuestions': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'created_at');
+                break;
+            case 'hotQuestions': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
+                break;
+            case 'topQuestions':
+                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
+                break;
+            case 'goods': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 4, 'created_at');
+                break;
+            case 'complaints': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 5, 'created_at');
+                break;
+            case 'jobs':
+                $posts = $this->postRepository->getNewLoves($search, $user, 6, 'created_at');
+                break;
+            
             case 'commentLoves':
                 $posts = $this->postRepository->getCommentLoves($search, $user);
                 break;
@@ -2321,6 +2349,8 @@ class PostController extends Controller
                     $data = [];
 
                     $data['id'] = $post->id;
+                    $data['postingType_id'] = $post->postingType_id;
+                    $data['postingType_name'] = $post->postingType->name;
                     $data['content'] = $post->content;
                     if(!empty($user) && $post->user_id == $user->id)
                     {
