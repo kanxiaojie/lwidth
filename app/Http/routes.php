@@ -120,7 +120,7 @@ $app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');
 $app->post('/api/users/{id}/praises','PraiseController@praiseToUser');
 
 //22-1-1   获取单个表白
-$app->get('/api/loves/{id}','PostController@getLonePost');
+$app->get('/api/loves/{id}','PostController@getLove');
 
 //获取点赞我的人
 $app->get('/api/praiseMeUsers','PraiseController@getPraiseMeUsers');

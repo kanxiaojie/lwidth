@@ -1661,7 +1661,7 @@ class PostController extends Controller
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
                     $data['video_url'] = $post->video_url;
-                    $data['muted'] = true;                    
+                    // $data['muted'] = true;                    
 
                     if(!empty($post->pictures))
                     {
@@ -2301,19 +2301,7 @@ class PostController extends Controller
             default:
                 $posts = $this->postRepository->getNewLoves($search);
         }
-        // if (type == 'newestLoves') {
-
-        // } elseif (type == 'hottestLoves') {
-
-        // } elseif (type == 'imageLoves') {
-
-        // } 
-
-
-
-        // $posts = $this->postRepository->getAllPosts($search);
-        
-        
+          
 
         $datas = [];
 
@@ -2342,7 +2330,7 @@ class PostController extends Controller
                         $data['belongsToMe'] = 0;
                     }
                     $data['video_url'] = $post->video_url;
-                    $data['muted'] = true;
+                    // $data['muted'] = true;
                     if(!empty($post->pictures))
                     {
                         $data['images'] = explode(',',$post->pictures);
@@ -2441,6 +2429,128 @@ class PostController extends Controller
 
         return response()->json(['status' => 200,'data' => $datas]);
 
+    }
+
+
+    public function getLove(Request $request, $id)
+    {
+        $wesecret = $request->get('wesecret');
+
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        } else {
+            $user = null;
+        }
+
+        $post = $this->postRepository->getPost($id);
+        
+        $data = [];
+
+        $data['id'] = $post->id;
+        $data['postingType_id'] = $post->postingType_id;
+        $data['postingType_name'] = $post->postingType->name;
+        $data['content'] = $post->content;
+        if(!empty($user) && $post->user_id == $user->id)
+        {
+            $data['belongsToMe'] = 1;
+        }else
+        {
+            $data['belongsToMe'] = 0;
+        }
+        $data['video_url'] = $post->video_url;
+        // $data['muted'] = true;
+        if(!empty($post->pictures))
+        {
+            $data['images'] = explode(',',$post->pictures);
+        }
+        else
+        {
+            $data['images'] = [];
+        }
+
+        $userInfo = [];
+        if($post->anonymous == 1)
+        {
+            $anonymousUser = User::where('role', 0)->first();
+            $userInfo['id'] = $anonymousUser->id;
+            $userInfo['nickname'] = $anonymousUser->nickname;
+            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+
+        }else
+        {
+            $userInfo['id'] = $post->user_id;
+            $userInfo['nickname'] = $post->user->nickname;
+            $userInfo['avatarUrl'] = $post->user->avatarUrl;
+        }
+        
+        $userInfo['college_name'] = $post->college->name;
+        
+        $data['userInfo'] = $userInfo;
+
+        $diff_time = $this->postRepository->getTime($post->created_at);
+        $data['created_at'] = $diff_time;
+
+        if($post->likenum)
+        {
+            $data['praise_nums'] = $post->likenum;
+        }
+        else
+        {
+            $data['praise_nums'] = 0;
+        }
+        if($post->commentnum)
+        {
+            $data['comment_nums'] = $post->commentnum;
+        }
+        else
+        {
+            $data['comment_nums'] = 0;
+        }
+
+        if (!empty($user)) {
+            $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+            if($if_my_comment)
+            {
+                $data['if_my_comment'] = 1;
+            }
+            else
+            {
+                $data['if_my_comment'] = 0;
+            }
+        } else {
+            $data['if_my_comment'] = 0;
+        }               
+        if (!empty($user)) {
+            $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+            if($if_my_praise)
+            {
+                $data['if_my_praise'] = 1;
+            }
+            else
+            {
+                $data['if_my_praise'] = 0;
+            }
+        } else {
+            $data['if_my_praise'] = 0;
+        }
+
+        if($post->location)
+        {
+            $location = explode(',',$post->location);
+
+            $data['location']['name'] = $location[2];
+            $data['location']['address'] = $location[3];
+            $data['location']['longitude'] = $location[1];
+            $data['location']['latitude'] = $location[0];
+        }
+        else
+        {
+            $data['location'] = '';
+        }
+
+        return response()->json(['status' => 200,'data' => $data]);
     }
 
 
