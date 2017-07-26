@@ -123,24 +123,18 @@ class PostRepository
 
     public function getNewLoves($search = null,$orderby = 'created_at', $direction = 'desc')
     {
-        if($search == '男') {
-            $search_gender = 1;
-        } elseif($search == '女') {
-            $search_gender = 2;
-        } else {
-            $search_gender = '哈哈哈';
-        }
-
-        $posts = Post::where(function ($query) use($search, $search_gender){
+        $posts = Post::where(function ($query) use($search){
                     if(!empty($search))
                     {
-                        $query->whereHas('user',function ($queryUser) use ($search, $search_gender){
+                        $query->whereHas('user',function ($queryUser) use ($search){
                                 $queryUser->where('realname','LIKE','%'.$search.'%')
-                                ->orWhere('nickname','LIKE','%'.$search.'%')
-                                ->orWhere('gender','LIKE','%'.$search_gender.'%');
+                                ->orWhere('nickname','LIKE','%'.$search.'%');
                             })
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
+                            })
+                            ->orWhereHas('user.gender',function ($queryGender) use ($search){
+                                $queryGender->where('name','LIKE','%'.$search.'%');
                             })
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
@@ -148,6 +142,33 @@ class PostRepository
 
         return $posts;
     }
+    // public function getNewLoves($search = null,$orderby = 'created_at', $direction = 'desc')
+    // {
+    //     if($search == '男') {
+    //         $search_gender = 1;
+    //     } elseif($search == '女') {
+    //         $search_gender = 2;
+    //     } else {
+    //         $search_gender = '哈哈哈';
+    //     }
+
+    //     $posts = Post::where(function ($query) use($search, $search_gender){
+    //                 if(!empty($search))
+    //                 {
+    //                     $query->whereHas('user',function ($queryUser) use ($search, $search_gender){
+    //                             $queryUser->where('realname','LIKE','%'.$search.'%')
+    //                             ->orWhere('nickname','LIKE','%'.$search.'%')
+    //                             ->orWhere('gender','LIKE','%'.$search_gender.'%');
+    //                         })
+    //                         ->orWhereHas('user.college',function ($queryCollege) use ($search){
+    //                             $queryCollege->where('name','LIKE','%'.$search.'%');
+    //                         })
+    //                         ->orWhere('content','LIKE','%'.$search.'%');
+    //                 }
+    //             })->orderBy($orderby,$direction)->paginate(15);
+
+    //     return $posts;
+    // }
     public function getHotLoves($search = null,$orderby = 'commentnum', $direction = 'desc')
     {
         if($search == '男') {
