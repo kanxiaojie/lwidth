@@ -1661,6 +1661,7 @@ class PostController extends Controller
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
                     $data['video_url'] = $post->video_url;
+                    $data['muted'] = true;                    
 
                     if(!empty($post->pictures))
                     {
@@ -2341,6 +2342,7 @@ class PostController extends Controller
                         $data['belongsToMe'] = 0;
                     }
                     $data['video_url'] = $post->video_url;
+                    $data['muted'] = true;
                     if(!empty($post->pictures))
                     {
                         $data['images'] = explode(',',$post->pictures);
