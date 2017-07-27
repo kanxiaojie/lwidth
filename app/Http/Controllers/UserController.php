@@ -95,6 +95,8 @@ class UserController extends Controller
             $userInfo['nickname'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
 
+            $userInfo['background_image'] = 'http://lifecdn.collhome.com/user_background_image.jpg';
+
             $userInfo['gender_id'] = $updateUser->gender_id;
             if ($updateUser->gender_id == 1)
             {
