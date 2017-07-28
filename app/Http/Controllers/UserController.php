@@ -874,4 +874,344 @@ class UserController extends Controller
             return response()->json(['status' => 201,'message' => 'User does not exist']);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     public function getUsers(Request $request)
+    {
+        // $user = $this->userRepository->getUserById($id);
+        $wesecret = $request->get('wesecret');
+        $users = User::where('role', 1)->get();
+        $dataLength = count($users);
+        $datas = [];
+        foreach ($users as $user) {
+            $userInfo = [];
+        // if($user)
+        // {
+            $updateUser = $user;
+            $userInfo['id'] = $updateUser->id ;
+            // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
+            $userInfo['praise_nums'] = $updateUser->praiseNums;
+            $userInfo['nickname'] = $updateUser->nickname ;
+            $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
+            if (!$updateUser->gender)
+            {
+                $userInfo['gender'] = "";
+                $userInfo['gender_name'] = "";
+            }elseif($updateUser->gender == 1)
+            {
+                $userInfo['gender'] = 1;
+                $userInfo['gender_name'] = "男";
+            }else
+            {
+                $userInfo['gender'] = 2;
+                $userInfo['gender_name'] = "女";
+            }
+            if(!empty($updateUser->pictures))
+            {
+                if(substr(trim($updateUser->pictures),-1) == ',')
+                {
+                    $userInfo['pictures'] = explode(',',$updateUser->pictures);
+                }else
+                {
+                    $userInfo['pictures'] = explode(',',$updateUser->pictures);
+                }
+            }
+            else
+            {
+                $userInfo['pictures'] = [];
+            }
+            if($updateUser->province_id)
+            {
+                $userInfo['province'] = $updateUser->province_id;
+            }
+            else
+            {
+                $userInfo['province'] = "";
+            }
+            if($updateUser->city_id)
+            {
+                $userInfo['city'] = $updateUser->city_id;
+            }
+            else
+            {
+                $userInfo['city'] = "";
+            }
+            if($updateUser->country_id)
+            {
+                $userInfo['country'] = $updateUser->country_id;
+            }
+            else
+            {
+                $userInfo['country'] = "中国";
+            }
+            if($updateUser->realname)
+            {
+                $userInfo['realname'] = $updateUser->realname;
+            }
+            else
+            {
+                $userInfo['realname'] = '';
+            }
+            if(!$updateUser->college_id)
+            {
+                $userInfo['college'] = '';
+                $userInfo['college_name'] = '';
+            }
+            else
+            {
+                $userInfo['college'] = (int)($updateUser->college_id);
+                $userInfo['college_name'] = College::where('id',(int)($updateUser->college_id))->first()->name;
+            }
+            if($updateUser->major)
+            {
+                $userInfo['major'] = $updateUser->major;
+            }
+            else
+            {
+                $userInfo['major'] = '';
+            }
+            if($updateUser->grade)
+            {
+                $userInfo['grade'] = (int)($updateUser->grade);
+                $userInfo['grade_name'] = Grade::where('id',(int)($updateUser->grade))->first()->name;
+            }else
+            {
+                $userInfo['grade'] = '';
+                $userInfo['grade_name'] = '';
+            }
+            if($updateUser->wechat)
+            {
+                $userInfo['wechat'] = $updateUser->wechat;
+            }else
+            {
+                $userInfo['wechat'] = '';
+            }
+            if($updateUser->QQ)
+            {
+                $userInfo['qq'] = $updateUser->QQ;
+            }else
+            {
+                $userInfo['qq'] = '';
+            }
+            if($updateUser->weibo)
+            {
+                $userInfo['weibo'] = $updateUser->weibo;
+            }else
+            {
+                $userInfo['weibo'] = '';
+            }
+            if($updateUser->phone)
+            {
+                $userInfo['mobilePhone'] = $updateUser->phone;
+            }else
+            {
+                $userInfo['mobilePhone'] = '';
+            }
+            $userInfo['role'] = $updateUser->role;
+            $userInfo['trust'] = $updateUser->trust;
+            $userInfo['available'] = $updateUser->available;
+            $userInfo['disabled_reason'] = $updateUser->disabled_reason;
+            $profile = Profile::where('user_id',$updateUser->id)->first();
+            if($profile->birthday)
+            {
+                $userInfo['birthday'] = $profile->birthday;
+            }
+            else
+            {
+                $userInfo['birthday'] = '';
+            }
+            if($profile->height)
+            {
+                $userInfo['height'] = $profile->height;
+            }
+            else
+            {
+                $userInfo['height'] = '';
+            }
+            if($profile->weight)
+            {
+                $userInfo['weight'] = $profile->weight;
+            }
+            else
+            {
+                $userInfo['weight'] = '';
+            }
+            if($profile->hometown)
+            {
+                $userInfo['hometown'] = $profile->hometown;
+            }
+            else
+            {
+                $userInfo['hometown'] = '';
+            }
+            if($profile->signature)
+            {
+                $userInfo['signature'] = $profile->signature;
+            }
+            else
+            {
+                $userInfo['signature'] = '';
+            }
+            if($profile->character)
+            {
+                $userInfo['character'] = $profile->character;
+            }
+            else
+            {
+                $userInfo['character'] = '';
+            }
+            if($profile->hobby)
+            {
+                $userInfo['hobby'] = $profile->hobby;
+            }
+            else
+            {
+                $userInfo['hobby'] = '';
+            }
+            if($profile->love_history)
+            {
+                $userInfo['love_history'] = $profile->love_history;
+            }
+            else
+            {
+                $userInfo['love_history'] = '';
+            }
+            if($profile->love_selecting)
+            {
+                $userInfo['love_selecting'] = $profile->love_selecting;
+            }
+            else
+            {
+                $userInfo['love_selecting'] = '';
+            }
+            if($profile->age)
+            {
+                $userInfo['age'] = $profile->age;
+            }else
+            {
+                $userInfo['age'] = '';
+            }
+            $userInfo['constellation'] = $profile->constellation;
+            if($wesecret)
+            {
+                $openid = $this->baseRepository->decryptCode($wesecret);
+                $whoPraise = $this->userRepository->getUserByOpenId($openid);
+                $praiseUser = PraiseUser::where('praise_user_id',$whoPraise->id)->where('praised_user_id',$user->id)->first();
+                if($praiseUser)
+                {
+                    $userInfo['if_my_praise'] = 1;
+                }else
+                {
+                    $userInfo['if_my_praise'] = 0;
+                }
+                $inBlacklistUserIds = BlackList::where('own_user_id', $whoPraise->id)->pluck('black_user_id')->toArray();
+                if (in_array($id, $inBlacklistUserIds)) {
+                    $userInfo['inMyBlackList'] = 1;
+                } else {
+                    $userInfo['inMyBlackList'] = 0;
+                }
+            }
+            else
+            {
+                $userInfo['if_my_praise'] = 0;
+                $userInfo['inMyBlackList'] = 0;
+            }
+            $datas[] = $userInfo;
+        // }else
+        // {
+        //     return response()->json(['status'=>201,'message'=>'user not exist']);
+        // }
+        }
+        return response()->json(['status'=>200,'data'=>$datas, 'dataLength' => $dataLength]);
+        
+    }
+    public function editUser(Request $request) {
+        $params = $request->get('params');
+        $user = User::find($params['id']);
+        $user->trust = $params['trust'];
+        $user->available = $params['available'];
+        $user->disabled_reason = $params['disabled_reason'];
+        $user->save();
+        
+        return response()->json(['status'=>200,'user_id'=>$user->id]);
+    }
+    public function getCollegeUsers(Request $request) {
+        $users = User::where('role', 0)->get();
+        $dataLength = count($users);
+        $datas  = [];
+        foreach ($users as $user) {
+            $data = [];
+            $data['id'] = $user->id;
+            $data['nickname'] = $user->nickname;
+            $data['avatarUrl'] = $user->avatarUrl;
+            $data['college_name'] = $user->college->name;
+            $data['signature'] = $user->profile->signature;
+            $datas[] = $data;
+        }
+        return response()->json(['status'=>200,'data'=>$datas, 'dataLength' => $dataLength ]);
+    }
+    public function editCollegesUser(Request $request) {
+        $params = $request->get('params');
+        if (empty($params['id'])) {
+            $college = new College();
+            $college->name = $params['college_name'];
+            $college->save();
+            $user = new User();
+            $user->nickname = $params['nickname'];
+            $user->avatarUrl = $params['avatarUrl'];
+            $user->college_id = $college->id;
+            $user->role = 0;
+            $user->save();
+            $profile = new Profile();
+            $profile->user_id = $user->id;
+            $profile->signature = $params['signature'];
+            $profile->save();
+        } else {
+            $user = User::find($params['id']);
+            $user->nickname = $params['nickname'];
+            $user->avatarUrl = $params['avatarUrl'];
+            $user->save();
+            $profile = Profile::where('user_id',$user->id)->first();
+            $profile->signature = $params['signature'];
+            $profile->save();
+            $college = College::find($user->college_id);
+            $college->name = $params['college_name'];
+            $college->save();
+        }
+        return response()->json(['status'=>200,'user_id'=>$user->id]);
+    }
+    // public function deleteCollegesUser(Request $request) {
+    //     $params = $request->get('params');
+    //     $user = User::find($params['id']);
+    //     $user_id = $user->id;
+    //     $profile = Profile::where('user_id',$user->id)->first();
+    //     $college = College::find($user->college_id);
+    //     $college->delete();
+    //     $profile->delete();
+    //     $user->delete();
+    //     return response()->json(['status'=>200,'user_id'=>$user_id]);
+    // }
+    
 }

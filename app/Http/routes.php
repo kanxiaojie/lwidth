@@ -176,3 +176,44 @@ $app->get('/api/postingTypes', 'ExampleController@getPostingTypes');
 
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');
+
+
+
+
+
+
+
+
+
+
+//获取所有的系统通知
+$app->get('/api/systemNotices','SystemNoticeController@getSystemNotices');
+//发布系统通知
+$app->post('/api/systemNotices','SystemNoticeController@postSystemNotices');
+//删除系统通知
+$app->post('/api/delete/systemNotice','SystemNoticeController@deleteSystemNotice');
+//获取所有的相关小程序
+$app->get('/api/relatedApplets','SystemNoticeController@getRelatedApplets');
+//发布相关小程序
+$app->post('/api/relatedApplets','SystemNoticeController@postRelatedApplets');
+//删除相关小程序
+$app->post('/api/delete/relatedApplet','SystemNoticeController@deleteRelatedApplet');
+//获取所有的关于表白墙
+$app->get('/api/aboutLoveWalls','SystemNoticeController@getAboutLoveWalls');
+//发布关于表白墙
+$app->post('/api/aboutLoveWalls','SystemNoticeController@postAboutLoveWalls');
+//删除关于表白墙
+$app->post('/api/delete/aboutLoveWall','SystemNoticeController@deleteAboutLoveWall');
+
+
+
+//获取用户的详细信息
+$app->get('/api/users','UserController@getUsers');
+//编辑用户的详细信息
+$app->post('/api/users','UserController@editUser');
+//获取学校用户
+$app->get('/api/collegeUsers','UserController@getCollegeUsers');
+//编辑学校用户
+$app->post('/api/collegeUsers','UserController@editCollegesUser');
+//删除学校用户
+// $app->post('/api/delete/collegeUser','UserController@deleteCollegesUser');
