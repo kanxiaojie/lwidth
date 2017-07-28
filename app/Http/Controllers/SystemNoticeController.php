@@ -51,54 +51,54 @@ class SystemNoticeController extends Controller
         return response()->json(['status' => 200,'data' => $data]);
     }
 
-    public function getSystemNotices(Request $request)
-    {
-        $wesecret = $request->get('wesecret');
+    // public function getSystemNotices(Request $request)
+    // {
+    //     $wesecret = $request->get('wesecret');
 
-        $openid = $this->baseRepository->decryptCode($wesecret);
-        $user = $this->userRepository->getUserByOpenId($openid);
+    //     $openid = $this->baseRepository->decryptCode($wesecret);
+    //     $user = $this->userRepository->getUserByOpenId($openid);
 
-        $datas = [];
-        if($user)
-        {
-            $systemNotices = SystemNotice::where('type', 0)->orWhere('user_id', $user->id)->orderBy('created_at','desc')->paginate(15);
-            foreach ($systemNotices as $systemNotice) {
-                $data = [];
-                $data['id'] = $systemNotice->id;
-                $data['type'] = $systemNotice->type;
-                $data['if_read'] = $systemNotice->if_read;
+    //     $datas = [];
+    //     if($user)
+    //     {
+    //         $systemNotices = SystemNotice::where('type', 0)->orWhere('user_id', $user->id)->orderBy('created_at','desc')->paginate(15);
+    //         foreach ($systemNotices as $systemNotice) {
+    //             $data = [];
+    //             $data['id'] = $systemNotice->id;
+    //             $data['type'] = $systemNotice->type;
+    //             $data['if_read'] = $systemNotice->if_read;
 
-                $diff_time = $this->postRepository->getTime($systemNotice->created_at);
-                $data['created_at'] = $diff_time;
+    //             $diff_time = $this->postRepository->getTime($systemNotice->created_at);
+    //             $data['created_at'] = $diff_time;
 
-                if (!empty($systemNotice->title)) {
-                    $data['title'] = $systemNotice->title;
-                } else {
-                    $data['title'] = '';
-                }
-                if (!empty($systemNotice->image)) {
-                    $data['image'] = $systemNotice->image;
-                } else {
-                    $data['image'] = '';
-                }
-                if (!empty($systemNotice->video_url)) {
-                    $data['video_url'] = $systemNotice->video_url;
-                } else {
-                    $data['video_url'] = '';
-                }
-                if (!empty($systemNotice->content)) {
-                    $data['content'] = $systemNotice->content;
-                } else {
-                    $data['content'] = '';
-                }
+    //             if (!empty($systemNotice->title)) {
+    //                 $data['title'] = $systemNotice->title;
+    //             } else {
+    //                 $data['title'] = '';
+    //             }
+    //             if (!empty($systemNotice->image)) {
+    //                 $data['image'] = $systemNotice->image;
+    //             } else {
+    //                 $data['image'] = '';
+    //             }
+    //             if (!empty($systemNotice->video_url)) {
+    //                 $data['video_url'] = $systemNotice->video_url;
+    //             } else {
+    //                 $data['video_url'] = '';
+    //             }
+    //             if (!empty($systemNotice->content)) {
+    //                 $data['content'] = $systemNotice->content;
+    //             } else {
+    //                 $data['content'] = '';
+    //             }
                 
-                $datas[] = $data;
-            }
-        }
+    //             $datas[] = $data;
+    //         }
+    //     }
 
-        return response()->json(['status' => 200,'data' => $datas]);
+    //     return response()->json(['status' => 200,'data' => $datas]);
 
-    }
+    // }
 
     public function labelRead(Request $request) {
         $wesecret = $request->get('wesecret');
