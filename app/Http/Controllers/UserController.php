@@ -915,17 +915,17 @@ class UserController extends Controller
             $userInfo['praise_nums'] = $updateUser->praiseNums;
             $userInfo['nickname'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
-            if (!$updateUser->gender)
+            if (!$updateUser->gender_id)
             {
-                $userInfo['gender'] = "";
+                $userInfo['gender_id'] = "";
                 $userInfo['gender_name'] = "";
             }elseif($updateUser->gender == 1)
             {
-                $userInfo['gender'] = 1;
+                $userInfo['gender_id'] = 1;
                 $userInfo['gender_name'] = "男";
             }else
             {
-                $userInfo['gender'] = 2;
+                $userInfo['gender_id'] = 2;
                 $userInfo['gender_name'] = "女";
             }
             if(!empty($updateUser->pictures))
