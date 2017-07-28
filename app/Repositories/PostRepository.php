@@ -123,7 +123,7 @@ class PostRepository
 
     public function getNewLoves($search = null, $user = null, $postingType_id, $orderby, $direction = 'desc')
     {
-        if (!empty($user) && $user->interest_id != 1) {
+        if (!empty($user) && $user->interest_id > 1) {
             if ($user->interest_id == 2) {
                 $interest_name = 'province_id';
                 $interest_value = $user->college->city->province->id;
