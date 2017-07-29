@@ -190,7 +190,7 @@ class PostRepository
                                 $queryUser->where('realname','LIKE','%'.$search.'%')
                                 ->orWhere('nickname','LIKE','%'.$search.'%');
                             })
-                            ->orWhereHas('user.college',function ($queryCollege) use ($search){
+                            ->orWhereHas('college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
                             ->orWhereHas('user.gender',function ($queryGender) use ($search){
@@ -215,7 +215,7 @@ class PostRepository
                                 $queryUser->where('realname','LIKE','%'.$search.'%')
                                 ->orWhere('nickname','LIKE','%'.$search.'%');
                             })
-                            ->orWhereHas('user.college',function ($queryCollege) use ($search){
+                            ->orWhereHas('college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
                             ->orWhereHas('user.gender',function ($queryGender) use ($search){
@@ -238,7 +238,7 @@ class PostRepository
                                 $queryUser->where('realname','LIKE','%'.$search.'%')
                                 ->orWhere('nickname','LIKE','%'.$search.'%');
                             })
-                            ->orWhereHas('user.college',function ($queryCollege) use ($search){
+                            ->orWhereHas('college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
                             })
                             ->orWhereHas('user.gender',function ($queryGender) use ($search){
