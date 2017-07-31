@@ -1557,24 +1557,25 @@ class PostController extends Controller
 
     public function getUnreadLoveNums(Request $request)
     {
-        // $wesecret = $request->get('wesecret');
+        $wesecret = $request->get('wesecret');
         $post_id = $request->get('love_id');
+        $postingType_id = $request->get('postingType_id');
 
-        // if (!empty($wesecret))
-        // {
-        //     $openid = $this->baseRepository->decryptCode($wesecret);
-        //     $user = $this->userRepository->getUserByOpenId($openid);
-        // }
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        }
 
-        // if(empty($wesecret))
-        // {
+        if(empty($wesecret))
+        {
             $post = $this->postRepository->getPost($post_id);
 
             if($post)
             {
                 $created_time = $post->created_at;
 
-                $nums = count(Post::where('available', 1)->where('created_at','>',$created_time)->get());
+                $nums = count(Post::where(['available' => 1, 'postingType_id' => $postingType_id ])->where('created_at','>',$created_time)->get());
                 if($nums)
                 {
                     $unreadLoveNums = $nums;
@@ -1589,50 +1590,43 @@ class PostController extends Controller
             {
                 return response()->json(['status' => 201,'message' => 'Post Does Not Exist.','unreadLoveNums' => 0]);
             }
-        // }elseif ((!empty($wesecret)) && ($user))
-        // {
-        //     $post = $this->postRepository->getPost($post_id);
+        }elseif ((!empty($wesecret)) && ($user))
+        {
+            $post = $this->postRepository->getPost($post_id);
 
-        //     if($post)
-        //     {
-        //         $created_time = $post->created_at;
+            if($post)
+            {
+                $created_time = $post->created_at;
 
-        //         $nums1 = count(Post::where('visiable',0)->where('created_at','>',$created_time)->get());
-        //         $nums2 = 0;
+                if ($user->interest_id = 2) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'province_id' => $user->college->city->province->id ])->where('created_at','>',$created_time)->get();
+                } elseif($user->interest_id = 3) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'city_id' => $user->college->city->id ])->where('created_at','>',$created_time)->get();
+                } elseif($user->interest_id = 4) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'college_id' => $user->college->id ])->where('created_at','>',$created_time)->get();
+                } else {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id ])->where('created_at','>',$created_time)->get();
+                }
 
-        //         if($user->college_id)
-        //         {
-        //             $userIds = User::where('college_id',$user->college_id)->pluck('id')->toArray();
+                $nums = count($unread_loves);
 
-        //             $nums2 += count(Post::whereIn('user_id',$userIds)->where('visiable',1)
-        //                 ->where('created_at','>',$created_time)->get());
-        //         }
+                if($nums)
+                {
+                    $unreadLoveNums = $nums;
+                }else
+                {
+                    $unreadLoveNums = 0;
+                }
 
-        //         $nums3 = 0;
-        //         if(($user->gender = 0) ||($user->gender = 1))
-        //         {
+                return response()->json(['status' => 200,'message' => 'success','unreadLoveNums' => $unreadLoveNums]);
 
-        //             $userIds = User::where("gender",$user->gender)->pluck('id')->toArray();
+            }else
+            {
+                return response()->json(['status' => 201,'message' => 'Post Does Not Exist.','unreadLoveNums' => 0]);
+            }
 
-        //             if($user->gender = 1)
-        //             {
-        //                 $nums3 += count(Post::whereIn('user_id',$userIds)->where('visiable',2)
-        //                     ->where('created_at','>',$created_time)->get());
-        //             }elseif ($user->gender = 0)
-        //             {
-        //                 $nums3 += count(Post::whereIn('user_id',$userIds)->where('visiable',3)
-        //                     ->where('created_at','>',$created_time)->get());
-        //             }
-        //         }
-
-        //         $unreadLoveNums = $nums1+$nums2+$nums3;
-        //         return response()->json(['status' => 200,'message' => 'success','unreadLoveNums' => $unreadLoveNums]);
-
-        //     }else
-        //     {
-        //         return response()->json(['status' => 201,'message' => 'Post Does Not Exist.']);
-        //     }
-        // }
+            
+        }
 
     }
 
