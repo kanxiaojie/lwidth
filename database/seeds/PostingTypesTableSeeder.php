@@ -33,7 +33,7 @@ class PostingTypesTableSeeder extends Seeder
         ]);
 
         PostingType::create([
-            'name' => '兼职'
+            'name' => '工作'
         ]);
     }
 }
