@@ -75,7 +75,7 @@ class UserController extends Controller
 
             if (!empty($just_college_changed)) {
                 if ($user->interest_id == 1) {
-                    $need_refresh_loves = 0
+                    $need_refresh_loves = 0;
                 } elseif ($user->interest_id == 2) {
                     $old_college = College::find($old_college_id);
                     $college = College::find($input['college_id']);
