@@ -136,9 +136,13 @@ class SystemNoticeController extends Controller
         foreach ($systemNotices as $systemNotice) {
             $data = [];
             $data['id'] = $systemNotice->id;
-            $data['appId'] = $systemNotice->video_url;
-            
+            $data['if_applet'] = $systemNotice->if_read;
 
+            if (!empty($systemNotice->video_url)) {
+                $data['appId'] = $systemNotice->video_url;
+            } else {
+                $data['appId'] = '';
+            }            
             if (!empty($systemNotice->title)) {
                 $data['name'] = $systemNotice->title;
             } else {
@@ -204,6 +208,50 @@ class SystemNoticeController extends Controller
         return response()->json(['status' => 200,'data' => $datas]);
 
     }
+
+    public function get_aboutCollegeServices(Request $request)
+    {
+        $service_id = $request->get('service_id');
+        $systemNotices = SystemNotice::where(['type' => 100, 'user_id' => $service_id ])->get();
+        
+        $datas = [];
+        
+        foreach ($systemNotices as $systemNotice) {
+            $data = [];
+
+            $data['id'] = $systemNotice->id;
+
+            $diff_time = $this->postRepository->getTime($systemNotice->created_at);
+            $data['created_at'] = $diff_time;
+
+            if (!empty($systemNotice->title)) {
+                $data['title'] = $systemNotice->title;
+            } else {
+                $data['title'] = '';
+            }
+            if (!empty($systemNotice->image)) {
+                $data['image'] = $systemNotice->image;
+            } else {
+                $data['image'] = '';
+            }
+            if (!empty($systemNotice->video_url)) {
+                $data['video_url'] = $systemNotice->video_url;
+            } else {
+                $data['video_url'] = '';
+            }
+            if (!empty($systemNotice->content)) {
+                $data['content'] = $systemNotice->content;
+            } else {
+                $data['content'] = '';
+            }
+            
+            $datas[] = $data;
+        }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+    
 
 
     public function get_available(Request $request) {

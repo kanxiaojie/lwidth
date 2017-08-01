@@ -164,6 +164,9 @@ $app->get('/api/applets','SystemNoticeController@get_applets');
 
 //获取关于表白墙
 $app->get('/api/aboutLoveWalls','SystemNoticeController@get_aboutLoveWalls');
+//获取关于校园服务号
+$app->get('/api/aboutCollegeServices','SystemNoticeController@get_aboutCollegeServices');
+
 
 //获取/省份/城市/学校/关注范围
 $app->get('/api/provinces', 'ExampleController@getProvinces');
