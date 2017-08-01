@@ -65,7 +65,11 @@ class UserController extends Controller
         $openid = Crypt::decrypt($inputs['wesecret']);
         $input = $inputs['userInfo'];
 
-        $just_college_changed = $inputs['just_college_changed'];
+        if (!empty($inputs['just_college_changed'])) {
+            $just_college_changed = $inputs['just_college_changed'];
+        } else {
+            $just_college_changed = null;
+        }
 
         $user = $this->userRepository->getUserByOpenId($openid);
         $old_college_id = $user->college_id;
