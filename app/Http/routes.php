@@ -179,3 +179,4 @@ $app->get('/api/postingTypes', 'ExampleController@getPostingTypes');
 
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');
+$app->get('/api/get_availables','SystemNoticeController@get_availables');
