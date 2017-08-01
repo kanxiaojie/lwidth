@@ -65,12 +65,44 @@ class UserController extends Controller
         $openid = Crypt::decrypt($inputs['wesecret']);
         $input = $inputs['userInfo'];
 
+        $just_college_changed = $inputs['just_college_changed'];
+
         $user = $this->userRepository->getUserByOpenId($openid);
+        $old_college_id = $user->college_id;
         if($user)
         {
             $this->userRepository->updateUser($input,$user);
 
-            return response()->json(['status' => 200]);
+            if (!empty($just_college_changed)) {
+                if ($user->interest_id == 1) {
+                    $need_refresh_loves = 0
+                } elseif ($user->interest_id == 2) {
+                    $old_college = College::find($old_college_id);
+                    $college = College::find($input['college_id']);
+
+                    if ($old_college->city->province->id == $college->city->province->id) {
+                        $need_refresh_loves = 0;
+                    } else {
+                        $need_refresh_loves = 1;
+                    }
+                } elseif ($user->interest_id == 3) {
+                    $old_college = College::find($old_college_id);
+                    $college = College::find($input['college_id']);
+
+                    if ($old_college->city->id == $college->city->id) {
+                        $need_refresh_loves = 0;
+                    } else {
+                        $need_refresh_loves = 1;
+                    }
+                } else {
+                    $need_refresh_loves = 1;
+                }
+
+                return response()->json(['status' => 200, 'need_refresh_loves' => $need_refresh_loves]);
+            } else {
+                return response()->json(['status' => 200]);
+            }
+
 
         }
         else
