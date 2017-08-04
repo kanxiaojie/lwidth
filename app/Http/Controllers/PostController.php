@@ -2433,6 +2433,8 @@ class PostController extends Controller
 
         }
 
+        // return response()->json(['status' => 200,'data' => $datas]);
+
         return response()->json(['status' => 200,'data' => $datas]);
     
     }
