@@ -335,7 +335,12 @@ class PostRepository
 
     public function savePost($inputs,$picturePath = null)
     {
-        $post = new Post();
+        if (isset($inputs['id']) && !empty($inputs['id'])) {
+            $post = Post::find($inputs['id']);
+        } else {
+            $post = new Post();
+        }
+        // $post = new Post();
 
         $post = $this->save($post,$inputs,$picturePath);
 
@@ -372,71 +377,89 @@ class PostRepository
         return $post;
     }
 
-    public function save($post,$inputs,$picturePath = null)
-    {
-        if (isset($inputs['user_id']) && !empty($inputs['user_id']))
-        {
-            $post->user_id = $inputs['user_id'];
+//     public function save($post,$inputs,$picturePath = null)
+//     {
+//         if (isset($inputs['user_id']) && !empty($inputs['user_id']))
+//         {
+//             $post->user_id = $inputs['user_id'];
 
-            $user = User::find($inputs['user_id']);
+//             $user = User::find($inputs['user_id']);
             
-            $post->province_id = $user->college->city->province->id;
-            $post->city_id = $user->college->city->id;
-            $post->college_id = $user->college->id;
-        }
+//             $post->province_id = $user->college->city->province->id;
+//             $post->city_id = $user->college->city->id;
+//             $post->college_id = $user->college->id;
+//         }
 
-        if(isset($inputs['content']) && !empty($inputs['content']))
-        {
-            $post->content = $inputs['content'];
-        }
+//         if(isset($inputs['content']) && !empty($inputs['content']))
+//         {
+//             $post->content = $inputs['content'];
+//         }
 
-        if ($picturePath)
-        {
-            if($post->pictures)
-            {
-                $post->pictures .= ','.$picturePath;
-            }
-            else
-            {
-                $post->pictures = $picturePath;
-            }
-        }
+//         if ($picturePath)
+//         {
+//             if($post->pictures)
+//             {
+//                 $post->pictures .= ','.$picturePath;
+//             }
+//             else
+//             {
+//                 $post->pictures = $picturePath;
+//             }
+//         }
 
-        if(isset($inputs['images']) && count($inputs['images']) > 0)
-        {
-            $post->pictures = implode(',',$inputs['images']);
-        }
+//         if(isset($inputs['images']) && count($inputs['images']) > 0)
+//         {
+//             $post->pictures = implode(',',$inputs['images']);
+//         }
 
-        if(isset($inputs['video_url']) && strlen($inputs['video_url']) > 0)
-        {
-            $post->video_url = $inputs['video_url'];
-        }
+//         if(isset($inputs['video_url']) && strlen($inputs['video_url']) > 0)
+//         {
+//             $post->video_url = $inputs['video_url'];
+//         }
 
-        if(isset($inputs['postingType_id']) && !empty($inputs['postingType_id']))
-        {
-            $post->postingType_id = $inputs['postingType_id'];
-        }
+//         if(isset($inputs['postingType_id']) && !empty($inputs['postingType_id']))
+//         {
+//             $post->postingType_id = $inputs['postingType_id'];
+//         }
 
-        if(isset($inputs['location']) && !empty($inputs['location']))
-        {
-            $post->location = implode(',',$inputs['location']);
-//            $post->location = json_decode($inputs['location']);
-        }
+//         if(isset($inputs['location']) && !empty($inputs['location']))
+//         {
+//             $post->location = implode(',',$inputs['location']);
+// //            $post->location = json_decode($inputs['location']);
+//         }
 
-        if(isset($inputs['visiable']) && !empty($inputs['visiable']))
-        {
-            $post->visiable = $inputs['visiable'];
-        }
+//         if(isset($inputs['visiable']) && !empty($inputs['visiable']))
+//         {
+//             $post->visiable = $inputs['visiable'];
+//         }
 
         
 
-        if(isset($inputs['anonymous']) && !empty($inputs['anonymous']))
-        {
-            $post->anonymous = $inputs['anonymous'];
+//         if(isset($inputs['anonymous']) && !empty($inputs['anonymous']))
+//         {
+//             $post->anonymous = $inputs['anonymous'];
+//         }
+
+//         $post->save();
+
+//         return $post;
+//     }
+
+    public function save($post,$inputs,$picturePath = null)
+    {
+        
+        $post->user_id = $inputs['user_id'];
+        $post->content = $inputs['content'];
+        $post->pictures = $inputs['images'];
+        $post->video_url = $inputs['video_url'];
+        if (!empty($inputs['praise_nums'])) {
+            $post->likenum = $inputs['praise_nums'];
         }
 
-        $post->save();
+        $post->anonymous = $inputs['anonymous'];
+        $post->available = $inputs['available'];
 
+        $post->save();
         return $post;
     }
 
