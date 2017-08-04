@@ -2427,7 +2427,7 @@ class PostController extends Controller
                     }
 
                     $datas[] = $data;
-                }
+                // }
 
             }
 
