@@ -123,18 +123,38 @@ class PostRepository
 
     public function getNewLoves($search = null, $user = null, $postingType_id, $orderby, $direction = 'desc')
     {
-        if (!empty($user) && !empty($user->college_id) && $user->interest_id > 1) {
-            if ($user->interest_id == 2) {
-                $interest_name = 'province_id';
-                $interest_value = $user->college->city->province->id;
-            } else if ($user->interest_id == 3) {
-                $interest_name = 'city_id';
-                $interest_value = $user->college->city->id;
-            } else if ($user->interest_id == 4) {
-                $interest_name = 'college_id';
-                $interest_value = $user->college->id;
-            }
+        // if (!empty($user) && !empty($user->college_id) && $user->interest_id > 1) {
+        //     if ($user->interest_id == 2) {
+        //         $interest_name = 'province_id';
+        //         $interest_value = $user->college->city->province->id;
+        //     } else if ($user->interest_id == 3) {
+        //         $interest_name = 'city_id';
+        //         $interest_value = $user->college->city->id;
+        //     } else if ($user->interest_id == 4) {
+        //         $interest_name = 'college_id';
+        //         $interest_value = $user->college->id;
+        //     }
 
+        //     $posts = Post::where(function ($query) use($search){
+        //             if(!empty($search))
+        //             {
+        //                 $query->whereHas('user',function ($queryUser) use ($search){
+        //                         $queryUser->where('realname','LIKE','%'.$search.'%')
+        //                         ->orWhere('nickname','LIKE','%'.$search.'%');
+        //                     })
+        //                     ->orWhereHas('college',function ($queryCollege) use ($search){
+        //                         $queryCollege->where('name','LIKE','%'.$search.'%');
+        //                     })
+        //                     ->orWhereHas('user.gender',function ($queryGender) use ($search){
+        //                         $queryGender->where('name','LIKE','%'.$search.'%');
+        //                     })
+        //                     ->orWhere('content','LIKE','%'.$search.'%');
+        //             }
+        //         })->where(['postingType_id' => $postingType_id, $interest_name => $interest_value])->orderBy($orderby,$direction)->paginate(15);
+
+        //     return $posts;
+
+        // } else {
             $posts = Post::where(function ($query) use($search){
                     if(!empty($search))
                     {
@@ -150,30 +170,11 @@ class PostRepository
                             })
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
-                })->where(['postingType_id' => $postingType_id, $interest_name => $interest_value])->orderBy($orderby,$direction)->paginate(15);
+                })->orderBy($orderby,$direction)->paginate(15);
+                // })->where('postingType_id', $postingType_id)->orderBy($orderby,$direction)->paginate(15);
 
             return $posts;
-
-        } else {
-            $posts = Post::where(function ($query) use($search){
-                    if(!empty($search))
-                    {
-                        $query->whereHas('user',function ($queryUser) use ($search){
-                                $queryUser->where('realname','LIKE','%'.$search.'%')
-                                ->orWhere('nickname','LIKE','%'.$search.'%');
-                            })
-                            ->orWhereHas('college',function ($queryCollege) use ($search){
-                                $queryCollege->where('name','LIKE','%'.$search.'%');
-                            })
-                            ->orWhereHas('user.gender',function ($queryGender) use ($search){
-                                $queryGender->where('name','LIKE','%'.$search.'%');
-                            })
-                            ->orWhere('content','LIKE','%'.$search.'%');
-                    }
-                })->where('postingType_id', $postingType_id)->orderBy($orderby,$direction)->paginate(15);
-
-            return $posts;
-        }
+        // }
         
     }
     

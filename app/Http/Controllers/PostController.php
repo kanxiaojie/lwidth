@@ -2239,68 +2239,71 @@ class PostController extends Controller
 
     public function getLoves(Request $request)
     {   
-        $wesecret = $request->get('wesecret');
+        // $wesecret = $request->get('wesecret');
         $search = $request->get('search');
-        if (!empty($wesecret))
-        {
-            $openid = $this->baseRepository->decryptCode($wesecret);
-            $user = $this->userRepository->getUserByOpenId($openid);
-        } else {
+        // if (!empty($wesecret))
+        // {
+        //     $openid = $this->baseRepository->decryptCode($wesecret);
+        //     $user = $this->userRepository->getUserByOpenId($openid);
+        // } else {
             $user = null;
-        }
+        // }
 
-        $type = $request->get('type');
-        switch ($type) 
-        {
-            case 'newLoves': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'created_at');
-                break;
-            case 'hotLoves': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
-                break;
-            case 'topLoves':
-                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
-                break;
-            case 'newActivities': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'created_at');
-                break;
-            case 'hotActivities': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
-                break;
-            case 'topActivities':
-                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
-                break;
-            case 'newQuestions': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'created_at');
-                break;
-            case 'hotQuestions': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
-                break;
-            case 'topQuestions':
-                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
-                break;
-            case 'goods': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 4, 'created_at');
-                break;
-            case 'complaints': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 5, 'created_at');
-                break;
-            case 'jobs':
-                $posts = $this->postRepository->getNewLoves($search, $user, 6, 'created_at');
-                break;
+        // $type = $request->get('type');
+
+        $posts = $this->postRepository->getNewLoves($search, $user, 1, 'created_at');
+        
+        // switch ($type) 
+        // {
+        //     case 'newLoves': 
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 1, 'created_at');
+        //         break;
+        //     case 'hotLoves': 
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
+        //         break;
+        //     case 'topLoves':
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
+        //         break;
+        //     case 'newActivities': 
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 2, 'created_at');
+        //         break;
+        //     case 'hotActivities': 
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
+        //         break;
+        //     case 'topActivities':
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
+        //         break;
+        //     case 'newQuestions': 
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 3, 'created_at');
+        //         break;
+        //     case 'hotQuestions': 
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
+        //         break;
+        //     case 'topQuestions':
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
+        //         break;
+        //     case 'goods': 
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 4, 'created_at');
+        //         break;
+        //     case 'complaints': 
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 5, 'created_at');
+        //         break;
+        //     case 'jobs':
+        //         $posts = $this->postRepository->getNewLoves($search, $user, 6, 'created_at');
+        //         break;
             
-            case 'commentLoves':
-                $posts = $this->postRepository->getCommentLoves($search, $user);
-                break;
-            case 'praiseLoves':
-                $posts = $this->postRepository->getPraiseLoves($search, $user);
-                break;
-            case 'myLoves':
-                $posts = $this->postRepository->getMyLoves($search, $user);
-                break;
-            default:
-                $posts = $this->postRepository->getNewLoves($search);
-        }
+        //     case 'commentLoves':
+        //         $posts = $this->postRepository->getCommentLoves($search, $user);
+        //         break;
+        //     case 'praiseLoves':
+        //         $posts = $this->postRepository->getPraiseLoves($search, $user);
+        //         break;
+        //     case 'myLoves':
+        //         $posts = $this->postRepository->getMyLoves($search, $user);
+        //         break;
+        //     default:
+        //         $posts = $this->postRepository->getNewLoves($search);
+        // }
           
 
         $datas = [];
@@ -2314,21 +2317,21 @@ class PostController extends Controller
             foreach ($posts as $post)
             {
                 
-                if($post->user->available == 1 && $post->available == 1)
-                {
+                // if($post->user->available == 1 && $post->available == 1)
+                // {
                     $data = [];
 
                     $data['id'] = $post->id;
                     $data['postingType_id'] = $post->postingType_id;
                     $data['postingType_name'] = $post->postingType->name;
                     $data['content'] = $post->content;
-                    if(!empty($user) && $post->user_id == $user->id)
-                    {
-                        $data['belongsToMe'] = 1;
-                    }else
-                    {
-                        $data['belongsToMe'] = 0;
-                    }
+                    // if(!empty($user) && $post->user_id == $user->id)
+                    // {
+                    //     $data['belongsToMe'] = 1;
+                    // }else
+                    // {
+                    //     $data['belongsToMe'] = 0;
+                    // }
                     $data['video_url'] = $post->video_url;
                     // $data['muted'] = true;
                     if(!empty($post->pictures))
@@ -2341,26 +2344,29 @@ class PostController extends Controller
                     }
 
                     $userInfo = [];
-                    if($post->anonymous == 1)
-                    {
-                        $anonymousUser = User::where('role', 0)->first();
-                        $userInfo['id'] = $anonymousUser->id;
-                        $userInfo['nickname'] = $anonymousUser->nickname;
-                        $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+                    // if($post->anonymous == 1)
+                    // {
+                    //     $anonymousUser = User::where('role', 0)->first();
+                    //     $userInfo['id'] = $anonymousUser->id;
+                    //     $userInfo['nickname'] = $anonymousUser->nickname;
+                    //     $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
-                    }else
-                    {
+                    // }else
+                    // {
                         $userInfo['id'] = $post->user_id;
                         $userInfo['nickname'] = $post->user->nickname;
                         $userInfo['avatarUrl'] = $post->user->avatarUrl;
-                    }
+                    // }
                     
                     $userInfo['college_name'] = $post->college->name;
                     
                     $data['userInfo'] = $userInfo;
 
-                    $diff_time = $this->postRepository->getTime($post->created_at);
-                    $data['created_at'] = $diff_time;
+                    // $diff_time = $this->postRepository->getTime($post->created_at);
+                    // $data['created_at'] = $diff_time;
+                    $data['anonymous'] = $post->anonymous;
+                    $data['available'] = $post->available;
+                    $data['created_at'] = $post->created_at;
 
                     if($post->likenum)
                     {
@@ -2379,32 +2385,32 @@ class PostController extends Controller
                         $data['comment_nums'] = 0;
                     }
 
-                    if (!empty($user)) {
-                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                        if($if_my_comment)
-                        {
-                            $data['if_my_comment'] = 1;
-                        }
-                        else
-                        {
-                            $data['if_my_comment'] = 0;
-                        }
-                    } else {
-                        $data['if_my_comment'] = 0;
-                    }               
-                    if (!empty($user)) {
-                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
-                        if($if_my_praise)
-                        {
-                            $data['if_my_praise'] = 1;
-                        }
-                        else
-                        {
-                            $data['if_my_praise'] = 0;
-                        }
-                    } else {
-                        $data['if_my_praise'] = 0;
-                    }
+                    // if (!empty($user)) {
+                    //     $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    //     if($if_my_comment)
+                    //     {
+                    //         $data['if_my_comment'] = 1;
+                    //     }
+                    //     else
+                    //     {
+                    //         $data['if_my_comment'] = 0;
+                    //     }
+                    // } else {
+                    //     $data['if_my_comment'] = 0;
+                    // }               
+                    // if (!empty($user)) {
+                    //     $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                    //     if($if_my_praise)
+                    //     {
+                    //         $data['if_my_praise'] = 1;
+                    //     }
+                    //     else
+                    //     {
+                    //         $data['if_my_praise'] = 0;
+                    //     }
+                    // } else {
+                    //     $data['if_my_praise'] = 0;
+                    // }
 
                     if($post->location)
                     {
@@ -2428,7 +2434,7 @@ class PostController extends Controller
         }
 
         return response()->json(['status' => 200,'data' => $datas]);
-
+    
     }
 
 
