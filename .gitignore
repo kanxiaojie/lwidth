@@ -1,2 +1,8 @@
-/vendor
 .env
+.idea
+/bootstarp
+/public
+/resources
+/storage
+/tests
+.gitignore
