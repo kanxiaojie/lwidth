@@ -2238,11 +2238,8 @@ class PostController extends Controller
     public function getLoves(Request $request)
     {   
         // $wesecret = $request->get('wesecret');
-        $inputs = $request->get('params');
         
-        $search = $inputs['search'];
-        var_dump('$search', $search);
-        // $search = $request->get('search');
+        $search = $request->get('search');
         // if (!empty($wesecret))
         // {
         //     $openid = $this->baseRepository->decryptCode($wesecret);
