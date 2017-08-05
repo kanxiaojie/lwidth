@@ -2433,9 +2433,11 @@ class PostController extends Controller
 
         }
 
+        $dataLength = count($datas);
+
         // return response()->json(['status' => 200,'data' => $datas]);
 
-        return response()->json(['status' => 200,'data' => $datas]);
+        return response()->json(['status' => 200,'data' => $datas, 'dataLength' => $dataLength]);
     
     }
 

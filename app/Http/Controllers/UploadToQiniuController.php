@@ -135,5 +135,5 @@ class UploadToQiniuController extends Controller
 
         return response()->json(['code' => 100,'message' => 'success','uptoken' => $token]);
     }
-
+    
 }
