@@ -2241,6 +2241,7 @@ class PostController extends Controller
         $inputs = $request->get('params');
         
         $search = $inputs['search'];
+        var_dump('$search', $search);
         // $search = $request->get('search');
         // if (!empty($wesecret))
         // {
