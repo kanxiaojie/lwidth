@@ -21,6 +21,8 @@ class CreateReportPostsTable extends Migration
             $table->string('reported_userName')->nullable();
             $table->integer('post_id');
             $table->string('post_content');
+            $table->integer('report_userId');
+            $table->string('report_userName')->nullable();
             $table->timestamps();
         });
     }

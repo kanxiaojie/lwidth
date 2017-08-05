@@ -4,13 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Gender extends Model
+class Interest extends Model
 {
-    protected $table = "genders";
+    protected $table = "interests";
 
     public function users()
     {
         return $this->hasMany('App\User');
     }
-
 }

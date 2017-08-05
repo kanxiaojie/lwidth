@@ -13,7 +13,9 @@ use App\Repositories\BaseRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\QiniuRepository;
 use App\User;
+use App\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -23,6 +25,7 @@ class PostController extends Controller
     protected $baseRepository;
     protected $userRepository;
     protected $commentRepository;
+    protected $qiniuRepository;
     /**
      * Create a new controller instance.
      *
@@ -32,13 +35,15 @@ class PostController extends Controller
         PostRepository $postRepository,
         BaseRepository $baseRepository,
         UserRepository $userRepository,
-        CommentRepository $commentRepository
+        CommentRepository $commentRepository,
+        QiniuRepository $qiniuRepository
     )
     {
         $this->postRepository = $postRepository;
         $this->baseRepository = $baseRepository;
         $this->userRepository = $userRepository;
         $this->commentRepository = $commentRepository;
+        $this->qiniuRepository = $qiniuRepository;
     }
 
     public function index(Request $request)
@@ -126,13 +131,13 @@ class PostController extends Controller
                     {
                         $anonymousUser = User::where('college_id',$user->college_id)->first();
                         $userInfo['id'] = $anonymousUser->id;
-                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['nickname'] = $anonymousUser->nickname;
                         $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                     }else
                     {
                         $userInfo['id'] = $user->id;
-                        $userInfo['nickName'] = $user->nickname;
+                        $userInfo['nickname'] = $user->nickname;
                         $userInfo['avatarUrl'] = $user->avatarUrl;
                     }
 
@@ -270,15 +275,16 @@ class PostController extends Controller
                         }
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['nickname'] = $post->user->nickname;
                             $userInfo['avatarUrl'] = $post->user->avatarUrl;
                         }
 
@@ -415,15 +421,16 @@ class PostController extends Controller
                         $user =User::where('id',$post->user_id)->first();
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['nickname'] = $user->nickname;
                             $userInfo['avatarUrl'] =  $user->avatarUrl;
                         }
 
@@ -551,15 +558,16 @@ class PostController extends Controller
 
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['nickname'] = $post->user->nickname;
                             $userInfo['avatarUrl'] = $post->user->avatarUrl;
                         }
 
@@ -699,7 +707,7 @@ class PostController extends Controller
                 }
 
                 $userInfo['id'] = $post->user_id;
-                $userInfo['nickName'] = $post->user->nickname;
+                $userInfo['nickname'] = $post->user->nickname;
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 if(!empty($post->user->college_id))
                 {
@@ -757,7 +765,7 @@ class PostController extends Controller
 
                             $userOfComment = User::where('id',$postComment->user_id)->first();
                             $commentOfUserInfo['id'] = $userOfComment->id;
-                            $commentOfUserInfo['nickName'] = $userOfComment->nickname;
+                            $commentOfUserInfo['nickname'] = $userOfComment->nickname;
                             $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
                             $postComments['userInfo'] = $commentOfUserInfo;
 
@@ -855,7 +863,7 @@ class PostController extends Controller
                 }
 
                 $userInfo['id'] = $post->user_id;
-                $userInfo['nickName'] = $post->user->nickname;
+                $userInfo['nickname'] = $post->user->nickname;
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 if(!empty($post->user->college_id))
                 {
@@ -929,7 +937,7 @@ class PostController extends Controller
 
                             $userOfComment = User::where('id',$postComment->user_id)->first();
                             $commentOfUserInfo['id'] = $userOfComment->id;
-                            $commentOfUserInfo['nickName'] = $userOfComment->nickname;
+                            $commentOfUserInfo['nickname'] = $userOfComment->nickname;
                             $commentOfUserInfo['avatarUrl'] = $userOfComment->avatarUrl;
                             $postComments['userInfo'] = $commentOfUserInfo;
 
@@ -1045,14 +1053,15 @@ class PostController extends Controller
 
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['nickname'] = $user->nickname;
                             $userInfo['avatarUrl'] =  $user->avatarUrl;
                         }
 
@@ -1178,14 +1187,15 @@ class PostController extends Controller
 
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $post->user->nickname;
+                            $userInfo['nickname'] = $post->user->nickname;
                             $userInfo['avatarUrl'] = $post->user->avatarUrl;
                         }
 
@@ -1448,7 +1458,24 @@ class PostController extends Controller
             {
                if($post->user_id == $user->id)
                {
-                   $replies = CommentToComment::where('post_id',$post->id)->get();
+                   $comments = Comment::where('post_id',$post_id)->get();
+                   $commentIds = Comment::where('post_id', $post_id)->pluck('id')->toArray();
+                   $comment_notices = Notice::where('source_type', 1)->whereIn('source_id', $commentIds)->get();
+                   if(count($comments))
+                   {
+                       foreach ($comments as $comment)
+                       {
+                           $comment->delete();
+                       }
+                   }
+                   if(count($comment_notices)) {
+                       foreach ($comment_notices as $comment_notice) {
+                           $comment_notice->delete();
+                       }
+                   }
+                   $replies = CommentToComment::where('post_id',$post_id)->get();
+                   $replyIds = CommentToComment::where('post_id',$post_id)->pluck('id')->toArray();
+                   $reply_notices = Notice::whereIn('source_type', [2, 3])->whereIn('source_id', $replyIds)->get();
                    if(count($replies))
                    {
                        foreach ($replies as $reply)
@@ -1456,7 +1483,25 @@ class PostController extends Controller
                            $reply->delete();
                        }
                    }
+                   if(count($reply_notices)) {
+                       foreach ($reply_notices as $reply_notice) {
+                           $reply_notice->delete();
+                       }
+                   }
 
+                   if(!empty($post->pictures)){
+                        $needDelete_pictures = explode(',',$post->pictures);
+                        if(count($needDelete_pictures))
+                        {
+                            foreach ($needDelete_pictures as $needDelete_picture)
+                            {
+                                $pictureArray = explode('/', $needDelete_picture); 
+                                $key = $pictureArray[3]."/".$pictureArray[4];
+                                $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
+                            }
+                        }
+                   }
+                    
                    $post->delete();
                    return response()->json(['status' => 200]);
 
@@ -1514,6 +1559,7 @@ class PostController extends Controller
     {
         $wesecret = $request->get('wesecret');
         $post_id = $request->get('love_id');
+        $postingType_id = $request->get('postingType_id');
 
         if (!empty($wesecret))
         {
@@ -1529,7 +1575,7 @@ class PostController extends Controller
             {
                 $created_time = $post->created_at;
 
-                $nums = count(Post::where('visiable',0)->where('created_at','>',$created_time)->get());
+                $nums = count(Post::where(['available' => 1, 'postingType_id' => $postingType_id ])->where('created_at','>',$created_time)->get());
                 if($nums)
                 {
                     $unreadLoveNums = $nums;
@@ -1542,7 +1588,7 @@ class PostController extends Controller
 
             }else
             {
-                return response()->json(['status' => 201,'message' => 'Post Does Not Exist.']);
+                return response()->json(['status' => 201,'message' => 'Post Does Not Exist.','unreadLoveNums' => 0]);
             }
         }elseif ((!empty($wesecret)) && ($user))
         {
@@ -1552,41 +1598,34 @@ class PostController extends Controller
             {
                 $created_time = $post->created_at;
 
-                $nums1 = count(Post::where('visiable',0)->where('created_at','>',$created_time)->get());
-                $nums2 = 0;
-
-                if($user->college_id)
-                {
-                    $userIds = User::where('college_id',$user->college_id)->pluck('id')->toArray();
-
-                    $nums2 += count(Post::whereIn('user_id',$userIds)->where('visiable',1)
-                        ->where('created_at','>',$created_time)->get());
+                if ($user->interest_id = 2) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'province_id' => $user->college->city->province->id ])->where('created_at','>',$created_time)->get();
+                } elseif($user->interest_id = 3) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'city_id' => $user->college->city->id ])->where('created_at','>',$created_time)->get();
+                } elseif($user->interest_id = 4) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'college_id' => $user->college->id ])->where('created_at','>',$created_time)->get();
+                } else {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id ])->where('created_at','>',$created_time)->get();
                 }
 
-                $nums3 = 0;
-                if(($user->gender = 0) ||($user->gender = 1))
+                $nums = count($unread_loves);
+
+                if($nums)
                 {
-
-                    $userIds = User::where("gender",$user->gender)->pluck('id')->toArray();
-
-                    if($user->gender = 1)
-                    {
-                        $nums3 += count(Post::whereIn('user_id',$userIds)->where('visiable',2)
-                            ->where('created_at','>',$created_time)->get());
-                    }elseif ($user->gender = 0)
-                    {
-                        $nums3 += count(Post::whereIn('user_id',$userIds)->where('visiable',3)
-                            ->where('created_at','>',$created_time)->get());
-                    }
+                    $unreadLoveNums = $nums;
+                }else
+                {
+                    $unreadLoveNums = 0;
                 }
 
-                $unreadLoveNums = $nums1+$nums2+$nums3;
                 return response()->json(['status' => 200,'message' => 'success','unreadLoveNums' => $unreadLoveNums]);
 
             }else
             {
-                return response()->json(['status' => 201,'message' => 'Post Does Not Exist.']);
+                return response()->json(['status' => 201,'message' => 'Post Does Not Exist.','unreadLoveNums' => 0]);
             }
+
+            
         }
 
     }
@@ -1616,6 +1655,7 @@ class PostController extends Controller
                     $data['id'] = $post->id;
                     $data['content'] = $post->content;
                     $data['video_url'] = $post->video_url;
+                    // $data['muted'] = true;                    
 
                     if(!empty($post->pictures))
                     {
@@ -1646,39 +1686,20 @@ class PostController extends Controller
                         $data['location'] = '';
                     }
 
-                    if($post->anonymous)
+                    if($post->anonymous == 1)
                     {
-                        $postuser =User::where('id',$post->user_id)->first();
-                        $anonymousUser = User::where('college_id',$postuser->college_id)->first();
+                        $anonymousUser = User::where('role', 0)->first();
                         $userInfo['id'] = $anonymousUser->id;
-                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['nickname'] = $anonymousUser->nickname;
                         $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
-
-                        if(!empty($anonymousUser->college_id))
-                        {
-                            $userInfo['college'] = College::where('id',(int)($anonymousUser->college_id))->first()->name;
-                        }
-                        else
-                        {
-                            $userInfo['college'] = '';
-                        }
-
                     }else
                     {
-                        $postuser =User::where('id',$post->user_id)->first();
-                        $userInfo['id'] = $postuser->id;
-                        $userInfo['nickName'] = $postuser->nickname;
-                        $userInfo['avatarUrl'] =  $postuser->avatarUrl;
-
-                        if(!empty($postuser->college_id))
-                        {
-                            $userInfo['college'] = College::where('id',(int)($postuser->college_id))->first()->name;
-                        }
-                        else
-                        {
-                            $userInfo['college'] = '';
-                        }
+                        $userInfo['id'] = $post->user_id;
+                        $userInfo['nickname'] = $post->user->nickname;
+                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
                     }
+                    $userInfo['college'] = $post->college->name;
+                    
                     $data['userInfo'] = $userInfo;
 
                     $diff_time = $this->postRepository->getTime($post->created_at);
@@ -1773,7 +1794,7 @@ class PostController extends Controller
                         $postuser =User::where('id',$post->user_id)->first();
                         $anonymousUser = User::where('college_id',$postuser->college_id)->first();
                         $userInfo['id'] = $anonymousUser->id;
-                        $userInfo['nickName'] = $anonymousUser->nickname;
+                        $userInfo['nickname'] = $anonymousUser->nickname;
                         $userInfo['avatarUrl'] =  $anonymousUser->avatarUrl;
                         if(!empty($anonymousUser->college_id))
                         {
@@ -1787,7 +1808,7 @@ class PostController extends Controller
                     {
                         $postuser =User::where('id',$post->user_id)->first();
                         $userInfo['id'] = $postuser->id;
-                        $userInfo['nickName'] = $postuser->nickname;
+                        $userInfo['nickname'] = $postuser->nickname;
                         $userInfo['avatarUrl'] =  $postuser->avatarUrl;
 
                         if(!empty($postuser->college_id))
@@ -1876,9 +1897,10 @@ class PostController extends Controller
         $replys = [];
         $objectUserInfo = [];
 
+        $comments = Comment::where(['post_id' => $id, 'available' => 1])->orderBy('created_at','desc')->paginate(15);
+        
         if(empty($wesecret))
         {
-            $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(5);
             if(count($comments))
             {
                 foreach ($comments as $comment)
@@ -1888,7 +1910,7 @@ class PostController extends Controller
                     $commentuser =User::where('id',$comment->user_id)->first();
 
                     $commentUserInfo['id'] = $commentuser->id;
-                    $commentUserInfo['nickName'] = $commentuser->nickname;
+                    $commentUserInfo['nickname'] = $commentuser->nickname;
                     $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
                     $data['userInfo'] = $commentUserInfo;
 
@@ -1896,7 +1918,7 @@ class PostController extends Controller
                     $data['created_at'] = $diff_time;
 
                     $data['reply_nums'] = $comment->r_commentnum;
-                    $replies = CommentToComment::where('comment_id',$comment->id)
+                    $replies = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])
                         ->orderBy('created_at','desc')->limit(3)->get();
                     if(count($replies))
                     {
@@ -1907,13 +1929,13 @@ class PostController extends Controller
 
                             $user1 = $this->userRepository->getUserById($reply->user_id);
                             $replyUserInfo['id'] = $user1->id;
-                            $replyUserInfo['nickName'] = $user1->nickname;
+                            $replyUserInfo['nickname'] = $user1->nickname;
                             $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
                             $replys['userInfo'] = $replyUserInfo;
 
                             $objectUserInfo['id'] = $reply->parent_id;
                             $objectUser = $this->userRepository->getUserById($reply->parent_id);
-                            $objectUserInfo['nickName'] = $objectUser->nickname;
+                            $objectUserInfo['nickname'] = $objectUser->nickname;
                             $replys['objectUserInfo'] = $objectUserInfo;
                             $replys['praise_nums'] = $reply->praise_nums;
                             $replys['if_my_praise'] = 0;
@@ -1945,7 +1967,6 @@ class PostController extends Controller
         }
         elseif ((!empty($wesecret)) && ($user))
         {
-            $comments = Comment::where('post_id',$id)->orderBy('created_at','desc')->paginate(5);
             if(count($comments))
             {
                 foreach ($comments as $comment)
@@ -1955,7 +1976,7 @@ class PostController extends Controller
                     $commentuser =User::where('id',$comment->user_id)->first();
 
                     $commentUserInfo['id'] = $commentuser->id;
-                    $commentUserInfo['nickName'] = $commentuser->nickname;
+                    $commentUserInfo['nickname'] = $commentuser->nickname;
                     $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
                     $data['userInfo'] = $commentUserInfo;
 
@@ -1963,7 +1984,7 @@ class PostController extends Controller
                     $data['created_at'] = $diff_time;
 
                     $data['reply_nums'] = $comment->r_commentnum;
-                    $replies = CommentToComment::where('comment_id',$comment->id)
+                    $replies = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])
                         ->orderBy('created_at','desc')->limit(3)->get();
                     if(count($replies))
                     {
@@ -1974,13 +1995,13 @@ class PostController extends Controller
 
                             $user1 = $this->userRepository->getUserById($reply->user_id);
                             $replyUserInfo['id'] = $user1->id;
-                            $replyUserInfo['nickName'] = $user1->nickname;
+                            $replyUserInfo['nickname'] = $user1->nickname;
                             $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
                             $replys['userInfo'] = $replyUserInfo;
 
                             $objectUserInfo['id'] = $reply->parent_id;
                             $objectUser = $this->userRepository->getUserById($reply->parent_id);
-                            $objectUserInfo['nickName'] = $objectUser->nickname;
+                            $objectUserInfo['nickname'] = $objectUser->nickname;
                             $replys['objectUserInfo'] = $objectUserInfo;
                             $replys['praise_nums'] = $reply->praise_nums;
 
@@ -2084,13 +2105,13 @@ class PostController extends Controller
                        {
                            $anonymousUser = User::where('college_id',$user->college_id)->first();
                            $userInfo['id'] = $anonymousUser->id;
-                           $userInfo['nickName'] = $anonymousUser->nickname;
+                           $userInfo['nickname'] = $anonymousUser->nickname;
                            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                        }else
                        {
                            $userInfo['id'] = $user->id;
-                           $userInfo['nickName'] = $user->nickname;
+                           $userInfo['nickname'] = $user->nickname;
                            $userInfo['avatarUrl'] = $user->avatarUrl;
                        }
 
@@ -2175,6 +2196,355 @@ class PostController extends Controller
         {
             return response()->json(['status'=>201,'message'=>'user not exist']);
         }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function getLoves(Request $request)
+    {   
+        $wesecret = $request->get('wesecret');
+        $search = $request->get('search');
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        } else {
+            $user = null;
+        }
+
+        $type = $request->get('type');
+        switch ($type) 
+        {
+            case 'newLoves': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'created_at');
+                break;
+            case 'hotLoves': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
+                break;
+            case 'topLoves':
+                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
+                break;
+            case 'newActivities': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'created_at');
+                break;
+            case 'hotActivities': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
+                break;
+            case 'topActivities':
+                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
+                break;
+            case 'newQuestions': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'created_at');
+                break;
+            case 'hotQuestions': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
+                break;
+            case 'topQuestions':
+                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
+                break;
+            case 'goods': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 4, 'created_at');
+                break;
+            case 'complaints': 
+                $posts = $this->postRepository->getNewLoves($search, $user, 5, 'created_at');
+                break;
+            case 'jobs':
+                $posts = $this->postRepository->getNewLoves($search, $user, 6, 'created_at');
+                break;
+            
+            case 'commentLoves':
+                $posts = $this->postRepository->getCommentLoves($search, $user);
+                break;
+            case 'praiseLoves':
+                $posts = $this->postRepository->getPraiseLoves($search, $user);
+                break;
+            case 'myLoves':
+                $posts = $this->postRepository->getMyLoves($search, $user);
+                break;
+            default:
+                $posts = $this->postRepository->getNewLoves($search);
+        }
+          
+
+        $datas = [];
+
+        if(empty($posts))
+        {
+            $datas = [];
+        }
+        else
+        {
+            foreach ($posts as $post)
+            {
+                
+                if($post->user->available == 1 && $post->available == 1)
+                {
+                    $data = [];
+
+                    $data['id'] = $post->id;
+                    $data['postingType_id'] = $post->postingType_id;
+                    $data['postingType_name'] = $post->postingType->name;
+                    $data['content'] = $post->content;
+                    if(!empty($user) && $post->user_id == $user->id)
+                    {
+                        $data['belongsToMe'] = 1;
+                    }else
+                    {
+                        $data['belongsToMe'] = 0;
+                    }
+                    $data['video_url'] = $post->video_url;
+                    // $data['muted'] = true;
+                    if(!empty($post->pictures))
+                    {
+                        $data['images'] = explode(',',$post->pictures);
+                    }
+                    else
+                    {
+                        $data['images'] = [];
+                    }
+
+                    $userInfo = [];
+                    if($post->anonymous == 1)
+                    {
+                        $anonymousUser = User::where('role', 0)->first();
+                        $userInfo['id'] = $anonymousUser->id;
+                        $userInfo['nickname'] = $anonymousUser->nickname;
+                        $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+
+                    }else
+                    {
+                        $userInfo['id'] = $post->user_id;
+                        $userInfo['nickname'] = $post->user->nickname;
+                        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+                    }
+                    
+                    $userInfo['college_name'] = $post->college->name;
+                    
+                    $data['userInfo'] = $userInfo;
+
+                    $diff_time = $this->postRepository->getTime($post->created_at);
+                    $data['created_at'] = $diff_time;
+
+                    if($post->likenum)
+                    {
+                        $data['praise_nums'] = $post->likenum;
+                    }
+                    else
+                    {
+                        $data['praise_nums'] = 0;
+                    }
+                    if($post->commentnum)
+                    {
+                        $data['comment_nums'] = $post->commentnum;
+                    }
+                    else
+                    {
+                        $data['comment_nums'] = 0;
+                    }
+
+                    if (!empty($user)) {
+                        $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_comment)
+                        {
+                            $data['if_my_comment'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_comment'] = 0;
+                        }
+                    } else {
+                        $data['if_my_comment'] = 0;
+                    }               
+                    if (!empty($user)) {
+                        $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+                        if($if_my_praise)
+                        {
+                            $data['if_my_praise'] = 1;
+                        }
+                        else
+                        {
+                            $data['if_my_praise'] = 0;
+                        }
+                    } else {
+                        $data['if_my_praise'] = 0;
+                    }
+
+                    if($post->location)
+                    {
+                        $location = explode(',',$post->location);
+
+                        $data['location']['name'] = $location[2];
+                        $data['location']['address'] = $location[3];
+                        $data['location']['longitude'] = $location[1];
+                        $data['location']['latitude'] = $location[0];
+                    }
+                    else
+                    {
+                        $data['location'] = '';
+                    }
+
+                    $datas[] = $data;
+                }
+
+            }
+
+        }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
+
+    public function getLove(Request $request, $id)
+    {
+        $wesecret = $request->get('wesecret');
+
+        if (!empty($wesecret))
+        {
+            $openid = $this->baseRepository->decryptCode($wesecret);
+            $user = $this->userRepository->getUserByOpenId($openid);
+        } else {
+            $user = null;
+        }
+
+        $post = $this->postRepository->getPost($id);
+        
+        $data = [];
+
+        $data['id'] = $post->id;
+        $data['postingType_id'] = $post->postingType_id;
+        $data['postingType_name'] = $post->postingType->name;
+        $data['content'] = $post->content;
+        if(!empty($user) && $post->user_id == $user->id)
+        {
+            $data['belongsToMe'] = 1;
+        }else
+        {
+            $data['belongsToMe'] = 0;
+        }
+        $data['video_url'] = $post->video_url;
+        // $data['muted'] = true;
+        if(!empty($post->pictures))
+        {
+            $data['images'] = explode(',',$post->pictures);
+        }
+        else
+        {
+            $data['images'] = [];
+        }
+
+        $userInfo = [];
+        if($post->anonymous == 1)
+        {
+            $anonymousUser = User::where('role', 0)->first();
+            $userInfo['id'] = $anonymousUser->id;
+            $userInfo['nickname'] = $anonymousUser->nickname;
+            $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
+
+        }else
+        {
+            $userInfo['id'] = $post->user_id;
+            $userInfo['nickname'] = $post->user->nickname;
+            $userInfo['avatarUrl'] = $post->user->avatarUrl;
+        }
+        
+        $userInfo['college_name'] = $post->college->name;
+        
+        $data['userInfo'] = $userInfo;
+
+        $diff_time = $this->postRepository->getTime($post->created_at);
+        $data['created_at'] = $diff_time;
+
+        if($post->likenum)
+        {
+            $data['praise_nums'] = $post->likenum;
+        }
+        else
+        {
+            $data['praise_nums'] = 0;
+        }
+        if($post->commentnum)
+        {
+            $data['comment_nums'] = $post->commentnum;
+        }
+        else
+        {
+            $data['comment_nums'] = 0;
+        }
+
+        if (!empty($user)) {
+            $if_my_comment = Comment::where('post_id',$post->id)->where('user_id',$user->id)->first();
+            if($if_my_comment)
+            {
+                $data['if_my_comment'] = 1;
+            }
+            else
+            {
+                $data['if_my_comment'] = 0;
+            }
+        } else {
+            $data['if_my_comment'] = 0;
+        }               
+        if (!empty($user)) {
+            $if_my_praise = Praise::where('post_id',$post->id)->where('user_id',$user->id)->first();
+            if($if_my_praise)
+            {
+                $data['if_my_praise'] = 1;
+            }
+            else
+            {
+                $data['if_my_praise'] = 0;
+            }
+        } else {
+            $data['if_my_praise'] = 0;
+        }
+
+        if($post->location)
+        {
+            $location = explode(',',$post->location);
+
+            $data['location']['name'] = $location[2];
+            $data['location']['address'] = $location[3];
+            $data['location']['longitude'] = $location[1];
+            $data['location']['latitude'] = $location[0];
+        }
+        else
+        {
+            $data['location'] = '';
+        }
+
+        return response()->json(['status' => 200,'data' => $data]);
     }
 
 

@@ -143,18 +143,29 @@ class PraiseController extends Controller
                         $praiseToUser->praise_user_id = $user->id;
                         $praiseToUser->praised_user_id = $praisedUser->id;
                         $praiseToUser->save();
+
+                        $praisedUser->praiseNums = $praisedUser->praiseNums + 1;
+                        $praisedUser->save();
                     }
                 }else
                 {
-                    $praisedToUsers = PraiseUser::where('praise_user_id',$user->id)
-                        ->where('praised_user_id',$praisedUser->id)->get();
-                    if($praisedToUsers)
-                    {
-                        foreach ($praisedToUsers as $praisedToUser)
-                        {
-                            $praisedToUser->delete();
-                        }
+                    $praisedToUser = PraiseUser::where('praise_user_id',$user->id)
+                        ->where('praised_user_id',$praisedUser->id)->first();
+
+                    if ($praisedToUser) {
+                        $praisedToUser->delete();
+                        
+                        $praisedUser->praiseNums = $praisedUser->praiseNums - 1;
+                        $praisedUser->save();
                     }
+
+                    // if($praisedToUsers)
+                    // {
+                    //     foreach ($praisedToUsers as $praisedToUser)
+                    //     {
+                    //         $praisedToUser->delete();
+                    //     }
+                    // }
                 }
 
                 return response()->json(['status' =>200,'message' => 'success']);
@@ -170,29 +181,63 @@ class PraiseController extends Controller
     public function getPraiseMeUsers(Request $request)
     {
         $wesecret = $request->get('wesecret');
+        $search = $request->get('search');
 
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
 
+        if($search == '男') {
+            $search_gender = 1;
+        } elseif($search == '女') {
+            $search_gender = 2;
+        } else {
+            $search_gender = '哈哈哈';
+        }
+
         if($user)
         {
-            $data = array();
             $datas = array();
 
-            $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
-            if(count($praiseToUsers))
-            {
-                foreach ($praiseToUsers as $praiseToUser)
-                {
-                    $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
-                    $data['id']=$praise_user->id;
-                    $data['nickName']=$praise_user->nickname;
-                    $data['avatarUrl']=$praise_user->avatarUrl;
+            // $praiseToUsers = PraiseUser::where('praised_user_id',$user->id)->get();
+            $praiseUserIds = PraiseUser::where('praised_user_id',$user->id)->pluck('praise_user_id')->toArray();
 
-                    if (!$praise_user->gender)
+            $praiseUsers = User::where(function ($query) use($search, $search_gender){
+                                if(!empty($search))
+                                {
+                                    $query->whereHas('college',function ($queryCollege) use ($search){
+                                            $queryCollege->where('name','LIKE','%'.$search.'%');
+                                        })
+                                        ->orWhere('nickname','LIKE','%'.$search.'%')
+                                        ->orWhere('realname','LIKE','%'.$search.'%')
+                                        ->orWhere('gender','LIKE','%'.$search_gender.'%');
+                                }
+                            })
+                            ->whereIn('id',$praiseUserIds)
+                            ->orderBy('created_at', 'desc')->paginate(15);
+
+            if(count($praiseUsers))
+            {
+                foreach ($praiseUsers as $praiseUser)
+                {
+                    // $praise_user = User::where('id',$praiseToUser->praise_user_id)->first();
+                    $data = array();
+
+                    $data['id']=$praiseUser->id;
+                    $data['nickname']=$praiseUser->nickname;
+                    $data['avatarUrl']=$praiseUser->avatarUrl;
+
+                    if ($praiseUser->college_id)
+                    {
+                        $data['college_name']=$praiseUser->college->name;
+                    }else
+                    {
+                        $data['college_name'] = "";
+                    }
+
+                    if (!$praiseUser->gender)
                     {
                         $data['gender_name'] = "";
-                    }elseif($praise_user->gender == 1)
+                    }elseif($praiseUser->gender == 1)
                     {
                         $data['gender_name'] = "男";
                     }else

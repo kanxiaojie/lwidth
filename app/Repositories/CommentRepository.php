@@ -34,7 +34,7 @@ class CommentRepository
 
     public function getPostComments($post_id)
     {
-        $comments = $this->comment->where('post_id',$post_id)->orderBy('created_at','desc')->paginate(5);
+        $comments = $this->comment->where('post_id',$post_id)->orderBy('created_at','desc')->paginate(15);
 
         return $comments;
     }
@@ -59,13 +59,15 @@ class CommentRepository
         return $commentToComment;
     }
 
-    public function saveNotice($source_type,$source_id,$user_id,$content)
+    public function saveNotice($source_type,$source_id,$user_id,$content,$objectUser_id)
     {
         $notice = new Notice();
         $notice->source_type=$source_type;
         $notice->source_id=$source_id;
         $notice->user_id=$user_id;
         $notice->content=$content;
+        $notice->objectUser_id=$objectUser_id;
+        
         $notice->save();
     }
 
@@ -78,7 +80,9 @@ class CommentRepository
 
         $comment->save();
 
-        $this->saveNotice(1,$comment->id,$inputs['user_id'],$inputs['content']);
+        $objectUser_id = Post::where('id', $id)->first()->user_id;
+
+        $this->saveNotice(1,$comment->id,$inputs['user_id'],$inputs['content'],$objectUser_id);
     }
 
     public function saveCommentToComment($inputs, $comment)
@@ -93,7 +97,10 @@ class CommentRepository
         $commentToComment->content = $inputs['content'];
         $commentToComment->save();
 
-        $this->saveNotice(2,$commentToComment->id,$inputs['user_id'],$inputs['content']);
+        $this->saveNotice(2,$commentToComment->id,$inputs['user_id'],$inputs['content'],$comment->user_id);
+        if($inputs['objectUser_id'] != $comment->user_id) {
+            $this->saveNotice(3,$commentToComment->id,$inputs['user_id'],$inputs['content'],$inputs['objectUser_id']);
+        }
 
         $comment = Comment::where('id',$comment->id)->first();
         $comment->r_commentnum += 1;

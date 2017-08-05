@@ -19,11 +19,11 @@ class CreateProvincesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('provinces', function (Blueprint $table) {
-            $table->foreign('country_id')->references('id')->on('countries')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+        // Schema::table('provinces', function (Blueprint $table) {
+        //     $table->foreign('country_id')->references('id')->on('countries')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        // });
     }
 
     /**
@@ -33,9 +33,9 @@ class CreateProvincesTable extends Migration
      */
     public function down()
     {
-        Schema::table('provinces', function(Blueprint $table) {
-            $table->dropForeign('provinces_country_id_foreign');
-        });
+        // Schema::table('provinces', function(Blueprint $table) {
+        //     $table->dropForeign('provinces_country_id_foreign');
+        // });
         Schema::drop('provinces');
     }
 }

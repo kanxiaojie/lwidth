@@ -47,17 +47,22 @@ class NoticeController extends Controller
 
         if($user)
         {
-            $postIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
-            $commentIds = Comment::whereIn('post_id',$postIds)->pluck('id')->toArray();
-            $num1 = count(Notice::where('source_type',1)->whereIn('source_id',$commentIds)
-                ->where('if_read',0)->get());
+            // $myPostIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
+            // $commentIds = Comment::whereIn('post_id',$myPostIds)->pluck('id')->toArray();
+            // $num1 = count(Notice::where('source_type',1)->whereIn('source_id',$commentIds)
+            //     ->where('if_read',0)->get());
 
-            $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
-            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
-            $num2 = count(Notice::where('source_type',2)->whereIn('source_id',$replyIds)
-                ->where('if_read',0)->get());
+            // $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
+            // $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
+            // $num2 = count(Notice::where('source_type', 2)->whereIn('source_id',$replyIds)
+            //     ->where('if_read',0)->get());
+            // $replyIds1 = CommentToComment::where('parent_id', $user->id)->pluck('id')->toArray();
+            // $num3 = count(Notice::where('source_type', 3)->whereIn('source_id',$replyIds1)
+            //     ->where('if_read',0)->get());
 
-            $notices = $num1+$num2;
+            $notices = Notice::where('objectUser_id', $user->id)->where('if_read',0)->get()->count();
+
+            // $notices = $num1 + $num2 + $num3;
 
             return response()->json(['status'=>200,'message'=>'success','unreadNoticeNums'=>$notices]);
         }
@@ -75,73 +80,101 @@ class NoticeController extends Controller
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
 
-        $datas = [];
-        $data = [];
-        $commentOrReplyUserInfo = [];
-        $objectUserInfo = [];
-        $postOrCommentUserInfo = [];
-        $source = [];
+        // $datas = [];
+        // $data = [];
+        // $commentOrReplyUserInfo = [];
+        // $objectUserInfo = [];
+        // $postOrCommentUserInfo = [];
+        // $source = [];
 
         if($user)
         {
-            $postIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
-            $commentIds = Comment::whereIn('post_id',$postIds)->pluck('id')->toArray();
+            // $myPostIds = Post::where('user_id',$user->id)->pluck('id')->toArray();
+            // $commentIds = Comment::whereIn('post_id',$myPostIds)->pluck('id')->toArray();
 
-            $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
-            $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
+            // $myCommentIds = Comment::where('user_id',$user->id)->pluck('id')->toArray();
+            // $replyIds = CommentToComment::whereIn('comment_id',$myCommentIds)->pluck('id')->toArray();
+            // $replyIds1 = CommentToComment::where('parent_id', $user->id)->pluck('id')->toArray();
+            
+            // $notices = Notice::where('source_type',1)->whereIn('source_id',$commentIds)
+            //     ->orWhere('source_type',2)->whereIn('source_id',$replyIds)
+            //     ->orWhere('source_type',3)->whereIn('source_id',$replyIds1)
+            //     ->orderBy('created_at', 'desc')->paginate(15);
 
-            $notices = Notice::where('source_type',1)->whereIn('source_id',$commentIds)
-                ->orWhere('source_type',2)->whereIn('source_id',$replyIds)->paginate(10);
+            $notices = Notice::where('objectUser_id', $user->id)->orderBy('created_at', 'desc')->paginate(15);
 
             if($notices)
             {
+
+                $datas = [];
+
                 foreach ($notices as $notice)
                 {
+                    $data = [];
+                    $commentOrReplyUserInfo = [];
+                    
                     $data['if_read'] = $notice->if_read;
                     $data['id'] = $notice->id;
                     $data['content'] = $notice->content;
 
                     $diff_time = $this->postRepository->getTime($notice->created_at);
-                    $replys['created_at'] = $diff_time;
+                    $data['created_at'] = $diff_time;
 
                     $user = User::where('id',$notice->user_id)->first();
                     $commentOrReplyUserInfo['id'] =$notice->user_id;
-                    $commentOrReplyUserInfo['nickName'] = $user->nickname;
-                    $commentOrReplyUserInfo['avatar'] = $user->avatar;
+                    $commentOrReplyUserInfo['nickname'] = $user->nickname;
+                    $commentOrReplyUserInfo['avatarUrl'] = $user->avatarUrl;
                     $data['userInfo'] = $commentOrReplyUserInfo;
 
                     if($notice->source_type == 1)
                     {
-                        $data['type'] = 'comment';
                         $comment = Comment::where('id',$notice->source_id)->first();
-                        $post = Post::where('id',$comment->post_id)->first();
-                        $source['love_id'] = $post->id;
-                        $source['content'] = $post->content;
-                        $postOrCommentUserInfo['id'] = $post->user_id;
-                        $postOrCommentUserInfo['nickName'] = $post->user->nickname;
-                        $postOrCommentUserInfo['avatarUrl'] = $post->user->avatar;
-
+                        if (!empty($comment)) {
+                            $source = [];
+                            $postOrCommentUserInfo = [];
+                            
+                            $data['type'] = 'comment';
+                            $data['source_type'] = $notice->source_type;
+                            $post = Post::where('id',$comment->post_id)->first();
+                            $source['source_id'] = $notice->source_id;
+                            $source['love_id'] = $post->id;
+                            $source['content'] = $post->content;
+                            $postOrCommentUserInfo['id'] = $post->user_id;
+                            $postOrCommentUserInfo['nickname'] = $post->user->nickname;
+                            $postOrCommentUserInfo['avatarUrl'] = $post->user->avatarUrl;
+                            $source['userInfo'] = $postOrCommentUserInfo;
+                            $data['source'] = $source;
+                        }
                     }
-                    elseif ($notice->source_type == 2)
+                    elseif ($notice->source_type != 1)
                     {
-                        $data['type'] = 'reply';
                         $reply = CommentToComment::where('id',$notice->source_id)->first();
-                        $objectUser = User::where('id',$reply->parent_id)->first();
-                        $objectUserInfo['id'] = $objectUser->id;
-                        $objectUserInfo['nickName'] = $objectUser->nickname;
-                        $objectUserInfo['nickName'] = $objectUser->avatarUrl;
-                        $data['objectUserInfo'] = $objectUserInfo;
+                        if(!empty($reply)) {
+                            $source = [];
+                            $objectUserInfo = [];
+                            $postOrCommentUserInfo = [];
+                            
+                            $data['type'] = 'reply';
+                            $data['source_type'] = $notice->source_type;
+                            $objectUser = User::where('id',$reply->parent_id)->first();
+                            $objectUserInfo['id'] = $objectUser->id;
+                            $objectUserInfo['nickname'] = $objectUser->nickname;
+                            $objectUserInfo['avatarUrl'] = $objectUser->avatarUrl;
+                            $data['objectUserInfo'] = $objectUserInfo;
 
-                        $source['comment_id'] = $reply->comment_id;
-                        $comment = Comment::where('id',$reply->comment_id)->first();
-                        $source['comment_id'] = $comment->id;
-                        $source['content'] = $comment->content;
-                        $postOrCommentUser = User::where('id',$comment->user_id)->first();
-                        $postOrCommentUserInfo['id'] = $postOrCommentUser->id;
-                        $postOrCommentUserInfo['nickName'] = $postOrCommentUser->nickname;
-                        $postOrCommentUserInfo['avatarUrl'] = $postOrCommentUser->avatarUrl;
-                        $source['userInfo'] = $postOrCommentUserInfo;
-                        $data['source'] = $source;
+                            $source['source_id'] = $notice->source_id;
+                            $source['love_id'] = $reply->post_id;
+                            $source['comment_id'] = $reply->comment_id;
+                            $comment = Comment::where('id',$reply->comment_id)->first();
+                            $source['comment_id'] = $comment->id;
+                            $source['content'] = $comment->content;
+                            $postOrCommentUser = User::where('id',$comment->user_id)->first();
+                            $postOrCommentUserInfo['id'] = $postOrCommentUser->id;
+                            $postOrCommentUserInfo['nickname'] = $postOrCommentUser->nickname;
+                            $postOrCommentUserInfo['avatarUrl'] = $postOrCommentUser->avatarUrl;
+                            $source['userInfo'] = $postOrCommentUserInfo;
+                            $data['source'] = $source;
+                        }
                     }
 
                     $datas[] = $data;

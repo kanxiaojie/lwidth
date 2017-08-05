@@ -14,6 +14,7 @@ use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
 use App\User;
+use App\Notice;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -113,7 +114,7 @@ class CommentController extends Controller
             $data['id'] = $comment->id;
 
             $userInfo1['id'] = $comment->user_id;
-            $userInfo1['nickName'] = $commentUser->nickname;
+            $userInfo1['nickname'] = $commentUser->nickname;
             $userInfo1['avatarUrl'] = $commentUser->avatarUrl;
             $data['userInfo'] = $userInfo1;
 
@@ -165,13 +166,13 @@ class CommentController extends Controller
 
                         $user1 = $this->userRepository->getUserById($commentToComment->user_id);
                         $userInfo2['id'] = $user1->id;
-                        $userInfo2['nickName'] = $user1->nickname;
+                        $userInfo2['nickname'] = $user1->nickname;
                         $userInfo2['avatarUrl'] = $user1->avatarUrl;
                         $data2['userInfo'] = $userInfo2;
 
                         $objectUserInfo['id'] = $commentToComment->parent_id;
                         $objectUser = $this->userRepository->getUserById($commentToComment->parent_id);
-                        $objectUserInfo['nickName'] = $objectUser->nickname;
+                        $objectUserInfo['nickname'] = $objectUser->nickname;
                         $data2['objectUserInfo'] = $objectUserInfo;
                         $data2['praise_nums'] = $commentToComment->praise_nums;
 
@@ -221,9 +222,17 @@ class CommentController extends Controller
                         $comment->post->commentnum -= 1;
                         $comment->post->save();
                     }
-                    $comment->delete();
+
+                    $comment_notices = Notice::where(['source_type' => 1, 'source_id' => $comment_id])->get();
+                    if(count($comment_notices)) {
+                       foreach ($comment_notices as $comment_notice) {
+                           $comment_notice->delete();
+                       }
+                   }
 
                     $replies = CommentToComment::where('comment_id',$comment_id)->get();
+                    $replyIds = CommentToComment::where('comment_id',$comment_id)->pluck('id')->toArray();
+                    $reply_notices = Notice::whereIn('source_type', [2, 3])->whereIn('source_id', $replyIds)->get();
                     if(count($replies))
                     {
                         foreach ($replies as $reply)
@@ -231,7 +240,13 @@ class CommentController extends Controller
                             $reply->delete();
                         }
                     }
+                    if(count($reply_notices)) {
+                       foreach ($reply_notices as $reply_notice) {
+                           $reply_notice->delete();
+                       }
+                   }
 
+                    $comment->delete();
                     return response()->json(['status' => 200]);
                 }else
                 {
@@ -266,11 +281,19 @@ class CommentController extends Controller
                 if($reply->user_id == $user->id)
                 {
                     $comment = Comment::where('id',$reply->comment_id)->first();
-                    if($comment->r_commentnum)
+                    if($comment->r_commentnum > 0)
                     {
                         $comment->r_commentnum -= 1;
                         $comment->save();
                     }
+
+                    $reply_notices = Notice::where('source_id', $reply_id)->whereIn('source_type', [2, 3])->get();
+                    if(count($reply_notices)) {
+                        foreach ($reply_notices as $reply_notice) {
+                            $reply_notice->delete();
+                        }
+                    }
+
                     $reply->delete();
 
                     return response()->json(['status' => 200]);
@@ -318,7 +341,7 @@ class CommentController extends Controller
             })
             ->where('visiable',0)
             ->whereIn('id',$postIds)
-            ->orderBy('created_at','desc')->paginate(5);
+            ->orderBy('created_at','desc')->paginate(15);
 
             $data = array();
             $datas = array();
@@ -350,15 +373,16 @@ class CommentController extends Controller
                         $user =User::where('id',$post->user_id)->first();
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $user->nickname;
+                            $userInfo['nickname'] = $user->nickname;
                             $userInfo['avatarUrl'] =  $user->avatarUrl;
                         }
 
@@ -473,7 +497,7 @@ class CommentController extends Controller
             })
                 ->where('visiable',0)
                 ->whereIn('id',$postIds)
-                ->orderBy('created_at','desc')->paginate(5);
+                ->orderBy('created_at','desc')->paginate(15);
 
             $data = array();
             $datas = array();
@@ -505,15 +529,16 @@ class CommentController extends Controller
                         $User =User::where('id',$post->user_id)->first();
                         if($post->anonymous == 1)
                         {
-                            $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            // $anonymousUser = User::where('college_id',$post->user->college_id)->first();
+                            $anonymousUser = User::where(['college_id' => $post->user->college_id, 'role' => 0])->first();
                             $userInfo['id'] = $anonymousUser->id;
-                            $userInfo['nickName'] = $anonymousUser->nickname;
+                            $userInfo['nickname'] = $anonymousUser->nickname;
                             $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                         }else
                         {
                             $userInfo['id'] = $post->user_id;
-                            $userInfo['nickName'] = $User->nickname;
+                            $userInfo['nickname'] = $User->nickname;
                             $userInfo['avatarUrl'] =  $User->avatarUrl;
                         }
 
@@ -615,7 +640,7 @@ class CommentController extends Controller
 
             $user = User::where('id',$comment->user_id)->first();
             $userInfo['id'] = $user->id;
-            $userInfo['nickName'] = $user->nickname;
+            $userInfo['nickname'] = $user->nickname;
             $userInfo['avatarUrl'] =  $user->avatarUrl;
             $data['userInfo'] = $userInfo;
 
@@ -675,13 +700,13 @@ class CommentController extends Controller
 
                     $user1 = $this->userRepository->getUserById($reply->user_id);
                     $replyUserInfo['id'] = $user1->id;
-                    $replyUserInfo['nickName'] = $user1->nickname;
+                    $replyUserInfo['nickname'] = $user1->nickname;
                     $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
                     $replys['userInfo'] = $replyUserInfo;
 
                     $objectUserInfo['id'] = $reply->parent_id;
                     $objectUser = $this->userRepository->getUserById($reply->parent_id);
-                    $objectUserInfo['nickName'] = $objectUser->nickname;
+                    $objectUserInfo['nickname'] = $objectUser->nickname;
                     $replys['objectUserInfo'] = $objectUserInfo;
                     $replys['praise_nums'] = $reply->praise_nums;
                     $replys['if_my_praise'] = 0;
@@ -713,7 +738,7 @@ class CommentController extends Controller
         $userInfo = array();
         $objectUserInfo = array();
 
-        $replies = CommentToComment::where('comment_id',$id)->orderBy('created_at','desc')->paginate(5);
+        $replies = CommentToComment::where(['comment_id' => $id, 'available' => 1])->orderBy('created_at','desc')->paginate(15);
         if($replies)
         {
             foreach ($replies as $reply)
@@ -723,13 +748,13 @@ class CommentController extends Controller
 
                 $replyUser = User::where('id',$reply->user_id)->first();
                 $userInfo['id'] = $replyUser->id;
-                $userInfo['nickName'] = $replyUser->nickname;
+                $userInfo['nickname'] = $replyUser->nickname;
                 $userInfo['avatarUrl'] = $replyUser->avatarUrl;
                 $data['userInfo'] = $userInfo;
 
                 $objectUser = User::where('id',$reply->parent_id)->first();
                 $objectUserInfo['id'] = $objectUser->id;
-                $objectUserInfo['nickName'] = $objectUser->nickname;
+                $objectUserInfo['nickname'] = $objectUser->nickname;
                 $data['objectUserInfo'] = $objectUserInfo;
 
                 $data['praise_nums'] = $reply->praise_nums;

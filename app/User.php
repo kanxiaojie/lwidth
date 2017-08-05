@@ -53,6 +53,16 @@ class User extends Model implements
         return $this->hasMany('App\Post');
     }
 
+    public function interest()
+    {
+        return $this->belongsTo('App\Interest','interest_id');
+    }
+
+    public function systemNotices()
+    {
+        return $this->hasMany('App\SystemNotice');
+    }
+
     public function comments()
     {
         return $this->hasMany('App\Comment');
@@ -65,7 +75,7 @@ class User extends Model implements
 
     public function gender()
     {
-        return $this->belongsTo('App\Gender','gender');
+        return $this->belongsTo('App\Gender','gender_id');
     }
 
     public function college()

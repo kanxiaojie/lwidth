@@ -20,14 +20,14 @@ class CreatePraisesTable extends Migration
             $table->timestamps();
         });
 
-//        Schema::table('praises', function (Blueprint $table) {
-//            $table->foreign('user_id')->references('id')->on('users')
-//                ->onDelete('cascade')
-//                ->onUpdate('cascade');
-//            $table->foreign('post_id')->references('id')->on('postings')
-//                ->onDelete('cascade')
-//                ->onUpdate('cascade');
-//        });
+        // Schema::table('praises', function (Blueprint $table) {
+        //     $table->foreign('user_id')->references('id')->on('users')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        //     $table->foreign('post_id')->references('id')->on('postings')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        // });
     }
 
     /**
@@ -37,10 +37,10 @@ class CreatePraisesTable extends Migration
      */
     public function down()
     {
-//        Schema::table('praises', function(Blueprint $table) {
-//            $table->dropForeign('praises_user_id_foreign');
-//            $table->dropForeign('praises_post_id_foreign');
-//        });
+        // Schema::table('praises', function(Blueprint $table) {
+        //     $table->dropForeign('praises_user_id_foreign');
+        //     $table->dropForeign('praises_post_id_foreign');
+        // });
         Schema::drop('praises');
     }
 }

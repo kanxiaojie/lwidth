@@ -11,6 +11,7 @@ use App\PraiseUser;
 use App\Profile;
 use App\Repositories\BaseRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\QiniuRepository;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -21,6 +22,7 @@ class UserController extends Controller
 {
     protected $userRepository;
     protected $baseRepository;
+    protected $qiniuRepository;
     /**
      * Create a new controller instance.
      *
@@ -28,11 +30,13 @@ class UserController extends Controller
      */
     public function __construct(
         UserRepository $userRepository,
-        BaseRepository $baseRepository
+        BaseRepository $baseRepository,
+        QiniuRepository $qiniuRepository
     )
     {
         $this->userRepository = $userRepository;
         $this->baseRepository = $baseRepository;
+        $this->qiniuRepository = $qiniuRepository;
     }
 
     public function encryptCode(Request $request)
@@ -61,12 +65,48 @@ class UserController extends Controller
         $openid = Crypt::decrypt($inputs['wesecret']);
         $input = $inputs['userInfo'];
 
+        if (!empty($inputs['just_college_changed'])) {
+            $just_college_changed = $inputs['just_college_changed'];
+        } else {
+            $just_college_changed = null;
+        }
+
         $user = $this->userRepository->getUserByOpenId($openid);
+        $old_college_id = $user->college_id;
         if($user)
         {
             $this->userRepository->updateUser($input,$user);
 
-            return response()->json(['status' => 200]);
+            if (!empty($just_college_changed)) {
+                if ($user->interest_id == 1) {
+                    $need_refresh_loves = 0;
+                } elseif ($user->interest_id == 2) {
+                    $old_college = College::find($old_college_id);
+                    $college = College::find($input['college_id']);
+
+                    if ($old_college->city->province->id == $college->city->province->id) {
+                        $need_refresh_loves = 0;
+                    } else {
+                        $need_refresh_loves = 1;
+                    }
+                } elseif ($user->interest_id == 3) {
+                    $old_college = College::find($old_college_id);
+                    $college = College::find($input['college_id']);
+
+                    if ($old_college->city->id == $college->city->id) {
+                        $need_refresh_loves = 0;
+                    } else {
+                        $need_refresh_loves = 1;
+                    }
+                } else {
+                    $need_refresh_loves = 1;
+                }
+
+                return response()->json(['status' => 200, 'need_refresh_loves' => $need_refresh_loves]);
+            } else {
+                return response()->json(['status' => 200]);
+            }
+
 
         }
         else
@@ -86,21 +126,23 @@ class UserController extends Controller
             $updateUser = $user;
 
             $userInfo['id'] = $updateUser->id ;
-            $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
-            $userInfo['nickName'] = $updateUser->nickname ;
+            // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
+            $userInfo['praise_nums'] = $updateUser->praiseNums;
+            $userInfo['nickname'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
-            if (!$updateUser->gender)
+
+            $userInfo['background_image'] = 'http://lifecdn.collhome.com/user_background_image.jpg';
+
+            $userInfo['gender_id'] = $updateUser->gender_id;
+            if ($updateUser->gender_id == 1)
             {
-                $userInfo['gender'] = "";
-                $userInfo['gender_name'] = "";
-            }elseif($updateUser->gender == 1)
-            {
-                $userInfo['gender'] = 1;
                 $userInfo['gender_name'] = "男";
+            }elseif($updateUser->gender_id == 2)
+            {
+                $userInfo['gender_name'] = "女";
             }else
             {
-                $userInfo['gender'] = 2;
-                $userInfo['gender_name'] = "女";
+                $userInfo['gender_name'] = "";
             }
 
             if(!empty($updateUser->pictures))
@@ -159,13 +201,24 @@ class UserController extends Controller
 
             if(!$updateUser->college_id)
             {
-                $userInfo['college'] = '';
+                $userInfo['college_id'] = '';
                 $userInfo['college_name'] = '';
             }
             else
             {
-                $userInfo['college'] = (int)($updateUser->college_id);
-                $userInfo['college_name'] = College::where('id',(int)($updateUser->college_id))->first()->name;
+                $userInfo['college_id'] = $updateUser->college_id;
+                $userInfo['college_name'] = $updateUser->college->name;
+            }
+
+            if(!$updateUser->interest_id)
+            {
+                $userInfo['interest_id'] = '';
+                $userInfo['interest_name'] = '';
+            }
+            else
+            {
+                $userInfo['interest_id'] = $updateUser->interest_id;
+                $userInfo['interest_name'] = $updateUser->interest->name;
             }
 
 
@@ -180,12 +233,11 @@ class UserController extends Controller
 
             if($updateUser->grade)
             {
-                $userInfo['grade'] = (int)($updateUser->grade);
-                $userInfo['grade_name'] = Grade::where('id',(int)($updateUser->grade))->first()->name;
-            }else
+                $userInfo['grade'] = $updateUser->grade;
+            }
+            else
             {
                 $userInfo['grade'] = '';
-                $userInfo['grade_name'] = '';
             }
 
             if($updateUser->wechat)
@@ -328,10 +380,17 @@ class UserController extends Controller
                 {
                     $userInfo['if_my_praise'] = 0;
                 }
+                $inBlacklistUserIds = BlackList::where('own_user_id', $whoPraise->id)->pluck('black_user_id')->toArray();
+                if (in_array($id, $inBlacklistUserIds)) {
+                    $userInfo['inMyBlackList'] = 1;
+                } else {
+                    $userInfo['inMyBlackList'] = 0;
+                }
             }
             else
             {
                 $userInfo['if_my_praise'] = 0;
+                $userInfo['inMyBlackList'] = 0;
             }
 
 
@@ -355,21 +414,22 @@ class UserController extends Controller
             $updateUser = $user;
 
             $userInfo['id'] = $updateUser->id ;
-            $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
-            $userInfo['nickName'] = $updateUser->nickname ;
+            // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
+            $userInfo['praise_nums'] = $updateUser->praiseNums;
+            $userInfo['nickname'] = $updateUser->nickname ;
             $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
-            if (!$updateUser->gender)
+            $userInfo['pictureOnWall'] = $updateUser->pictureOnWall ;
+
+            $userInfo['gender_id'] = $updateUser->gender_id;
+            if ($updateUser->gender_id == 1)
             {
-                $userInfo['gender'] = "";
-                $userInfo['gender_name'] = "";
-            }elseif($updateUser->gender == 1)
-            {
-                $userInfo['gender'] = 1;
                 $userInfo['gender_name'] = "男";
+            }elseif($updateUser->gender_id == 2)
+            {
+                $userInfo['gender_name'] = "女";
             }else
             {
-                $userInfo['gender'] = 2;
-                $userInfo['gender_name'] = "女";
+                $userInfo['gender_name'] = "";
             }
 
             if(!empty($updateUser->pictures))
@@ -427,13 +487,24 @@ class UserController extends Controller
 
             if(!$updateUser->college_id)
             {
-                $userInfo['college'] = '';
+                $userInfo['college_id'] = '';
                 $userInfo['college_name'] = '';
             }
             else
             {
-                $userInfo['college'] = (int)($updateUser->college_id);
-                $userInfo['college_name'] = College::where('id',(int)($updateUser->college_id))->first()->name;
+                $userInfo['college_id'] = $updateUser->college_id;
+                $userInfo['college_name'] = $updateUser->college->name;
+            }
+
+            if(!$updateUser->interest_id)
+            {
+                $userInfo['interest_id'] = '';
+                $userInfo['interest_name'] = '';
+            }
+            else
+            {
+                $userInfo['interest_id'] = $updateUser->interest_id;
+                $userInfo['interest_name'] = $updateUser->interest->name;
             }
 
             if($updateUser->major)
@@ -447,12 +518,11 @@ class UserController extends Controller
 
             if($updateUser->grade)
             {
-                $userInfo['grade'] = (int)($updateUser->grade);
-                $userInfo['grade_name'] = Grade::where('id',(int)($updateUser->grade))->first()->name;
-            }else
+                $userInfo['grade'] = $updateUser->grade;
+            }
+            else
             {
                 $userInfo['grade'] = '';
-                $userInfo['grade_name'] = '';
             }
 
             if($updateUser->wechat)
@@ -482,6 +552,7 @@ class UserController extends Controller
             $userInfo['role'] = $user->role;
             $userInfo['trust'] = $user->trust;
             $userInfo['available'] = $user->available;
+            $userInfo['disabled_reason'] = $user->disabled_reason;
 
             if($updateUser->phone)
             {
@@ -632,31 +703,46 @@ class UserController extends Controller
     public function getPictures(Request $request)
     {
         $wesecret = $request->get('wesecret');
-        if($wesecret)
-        {
-            $users = $this->userRepository->getMaleOrFemalePictures($wesecret);
-        }else
-        {
-            $users = $this->userRepository->getPictures();
-        }
+        $search = $request->get('search');
+        // if($wesecret)
+        // {
+        //     $users = $this->userRepository->getMaleOrFemalePictures($wesecret, $search);
+        // }else
+        // {
+        //     $users = $this->userRepository->getPictures($search);
+        // }
 
-        $data = [];
+        $users = $this->userRepository->getPictures($search);
+        
+
+        // $data = [];
         $datas = [];
 
         if($users)
         {
             foreach ($users as $user)
             {
-                if($user->available)
+                if($user->available == 1 && $user->pictureOnWall == 1 && $user->role == 1)
                 {
-                    if(!empty($user->pictures))
-                    {
+                    if (!empty($user->pictures) || !empty($user->avatarUrl)) {
+                        $data = [];       
+
                         $data['id'] = $user->id;
-                        if(substr(trim($user->pictures),-1) == ',')
-                        {
-                            $data['pictures'] = explode(',',$user->pictures);
-                        }else
-                        {
+                        $data['nickname'] = $user->nickname;
+                        $data['gender'] = $user->gender;
+                        $data['avatarUrl'] = $user->avatarUrl;
+
+                        if(empty($user->college_id)) {
+                            $data['college_name'] = '';
+                        } else {
+                            $data['college_name'] = College::find($user->college_id)->name;
+                            // $data['college_name'] = College::where('id',(int)($user->college_id))->first()->name;             
+                        }
+
+                        if(empty($user->pictures))
+                        { 
+                            $data['pictures'] = [$user->avatarUrl];                  
+                        } else {
                             $data['pictures'] = explode(',',$user->pictures);
                         }
 
@@ -677,6 +763,7 @@ class UserController extends Controller
     public function deletePicture(Request $request)
     {
         $inputs = $request->all();
+        $input = $inputs['userInfo'];
 
         $openid = Crypt::decrypt($inputs['wesecret']);
 
@@ -685,28 +772,42 @@ class UserController extends Controller
         {
             $user = $this->userRepository->getUserById($user->id);
 
-            if(!empty($user->pictures))
-            {
-                $pictures = explode(',',$user->pictures);
-                if(in_array($inputs['picture'],$pictures))
-                {
-                    $key = array_search($inputs['picture'],$pictures);
+            $user->pictures = implode(',', $input['remain_pictures']);
+            $user->save();
 
-                    array_splice($pictures,$key,1);
-
-                    $user->pictures = implode(',',$pictures);
-                    $user->save();
-
-                    return response()->json(['status' => 200]);
-                }else
-                {
-                    return response()->json(['status' => 201,'message' => $inputs['picture'].' does not exist in user pictures']);
-                }
-            }else
-            {
-                return response()->json(['status' => 201,'message' => "User's pictures do not exist"]);
-
+            // 从七牛云上删除照片  $input['the_delete_picture']
+            if(!empty($input['the_delete_picture'])){
+                $pictureArray = explode('/', $input['the_delete_picture']); 
+                $key = $pictureArray[3]."/".$pictureArray[4];
+                $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
             }
+
+
+
+
+
+            // if(!empty($user->pictures))
+            // {
+            //     $pictures = explode(',',$user->pictures);
+            //     if(in_array($inputs['picture'],$pictures))
+            //     {
+            //         $key = array_search($inputs['picture'],$pictures);
+
+            //         array_splice($pictures,$key,1);
+
+            //         $user->pictures = implode(',',$pictures);
+            //         $user->save();
+
+            //         return response()->json(['status' => 200]);
+            //     }else
+            //     {
+            //         return response()->json(['status' => 201,'message' => $inputs['picture'].' does not exist in user pictures']);
+            //     }
+            // }else
+            // {
+            //     return response()->json(['status' => 201,'message' => "User's pictures do not exist"]);
+
+            // }
 
         }
         else
@@ -777,7 +878,8 @@ class UserController extends Controller
                 {
                     $blackUser = User::where('id',$blackListUser->black_user_id)->first();
                     $data['id'] = $blackUser->id;
-                    $data['nickName'] = $blackUser->nickname;
+                    $data['nickname'] = $blackUser->nickname;
+                    $data['avatarUrl'] = $blackUser->avatarUrl;
                     if (!$blackUser->gender)
                     {
                         $data['gender_name'] = "";

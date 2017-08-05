@@ -3,12 +3,16 @@
 
 use App\Profile;
 use App\User;
+use App\College;
 use Illuminate\Support\Facades\Crypt;
+use App\Repositories\QiniuRepository;
+
 
 class UserRepository
 {
     protected $user;
     protected $baseRepository;
+    protected $qiniuRepository;
     /**
      * Create a new UserRepository instance.
      *
@@ -18,11 +22,13 @@ class UserRepository
      */
     public function __construct(
         User $user,
-        BaseRepository $baseRepository
+        BaseRepository $baseRepository,
+        QiniuRepository $qiniuRepository
     )
     {
         $this->user = $user;
         $this->baseRepository = $baseRepository;
+        $this->qiniuRepository = $qiniuRepository;
     }
 
     public function getUserByOpenId($openId)
@@ -43,20 +49,20 @@ class UserRepository
     {
         $user = new User();
 
-       $res = $this->saveUser($inputs,$user);
+       $res = $this->saveUser($inputs,$user,1);
 
         return $res;
     }
 
     public function update($inputs, $user)
     {
-        $inputs['updateOpenId'] = 1;
-       $res = $this->saveUser($inputs,$user);
+        // $inputs['updateOpenId'] = 1;
+       $res = $this->saveUser($inputs,$user,2);
 
         return $res;
     }
 
-    public function saveUser($inputs,$user,$user_id = null)
+    public function saveUser($inputs,$user,$type)
     {
 //        $res = array('status'=>1,'error'=>'');
 
@@ -65,15 +71,18 @@ class UserRepository
             $user->openid = $inputs['openId'];
         }
 
-        if(isset($inputs['nickName']))
-        {
-            $user->nickname = $inputs['nickName'];
-        }
+        if ($type == 1) {
+            if(isset($inputs['nickName']) && (!empty($inputs['nickName'])))
+            {
+                $user->nickname = $inputs['nickName'];
+            }
 
-        if(isset($inputs['gender']) && (!empty($inputs['gender'])))
-        {
-            $user->gender = $inputs['gender'];
+            if(isset($inputs['gender']) && (!empty($inputs['gender'])))
+            {
+                $user->gender_id = $inputs['gender'];
+            }
         }
+        
 
         if(isset($inputs['language']))
         {
@@ -145,6 +154,14 @@ class UserRepository
         if(isset($inputs['avatarUrl']) && (!empty($inputs['avatarUrl'])))
         {
             $user->avatarUrl = $inputs['avatarUrl'];
+
+            // 如果头像是放在七牛云上，那么从七牛上删除
+            $pictureArray = explode('/', $inputs['avatarUrl']); 
+            $key = $pictureArray[3];
+            $start_key = substr($key, 0, 3);
+            if ($start_key == 'tmp') {
+                $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
+            }
         }
 
         if(isset($inputs['realname']) && (!empty($inputs['realname'])))
@@ -152,14 +169,26 @@ class UserRepository
             $user->realname = $inputs['realname'];
         }
 
-        if(isset($inputs['nickName']) && (!empty($inputs['nickName'])))
+        if(isset($inputs['nickname']) && (!empty($inputs['nickname'])))
         {
-            $user->nickname = $inputs['nickName'];
+            $user->nickname = $inputs['nickname'];
         }
 
-        if(isset($inputs['college']) && (!empty($inputs['college'])))
+        // if(isset($inputs['college']) && (!empty($inputs['college'])))
+        // {
+        //     $collegeIds = College::pluck('id')->toArray();
+        //     $theCollegeIndex = intval($inputs['college']) - 1;
+        //     $user->college_id = $collegeIds[$theCollegeIndex];
+        // }
+
+        if(isset($inputs['college_id']) && (!empty($inputs['college_id'])))
         {
-            $user->college_id = $inputs['college'];
+            $user->college_id = $inputs['college_id'];
+        }
+
+        if(isset($inputs['interest_id']) && (!empty($inputs['interest_id'])))
+        {
+            $user->interest_id = $inputs['interest_id'];
         }
 
 
@@ -173,9 +202,9 @@ class UserRepository
             $user->wechat = $inputs['wechat'];
         }
 
-        if(isset($inputs['gender']) && (!empty($inputs['gender'])))
+        if(isset($inputs['gender_id']) && (!empty($inputs['gender_id'])))
         {
-            $user->gender = $inputs['gender'];
+            $user->gender_id = $inputs['gender_id'];
         }
 
         if(isset($inputs['qq']) && (!empty($inputs['qq'])))
@@ -355,32 +384,84 @@ class UserRepository
 
     }
 
-    public function getPictures()
+    public function getPictures($search)
     {
-        $users = User::all();
+        if($search == '男') {
+            $search_gender = 1;
+        } elseif($search == '女') {
+            $search_gender = 2;
+        } else {
+            $search_gender = '哈哈哈';
+        }
+        $users = User::where(function ($query) use($search, $search_gender){
+                            if(!empty($search))
+                            {
+                                $query->whereHas('college',function ($queryCollege) use ($search, $search_gender){
+                                        $queryCollege->where('name','LIKE','%'.$search.'%');
+                                    })
+                                    ->orWhere('nickname','LIKE','%'.$search.'%')
+                                    ->orWhere('realname','LIKE','%'.$search.'%')
+                                    ->orWhere('gender','LIKE','%'.$search_gender.'%');
+                            }
+                        })
+                        
+                        ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(15);
 
         return $users;
     }
 
-    public function getMaleOrFemalePictures($wesecret)
-    {
-        $openid = Crypt::decrypt($wesecret);
-        $user = $this->getUserByOpenId($openid);
+    // public function getMaleOrFemalePictures($wesecret, $search)
+    // {
+    //     $openid = Crypt::decrypt($wesecret);
+    //     $user = $this->getUserByOpenId($openid);
 
-        if($user->gender)
-        {
-            if($user->gender == 1)
-            {
-                $users = User::where('gender',2)->get();
-            }else
-            {
-                $users = User::where('gender',1)->get();
-            }
-        }
-        else
-        {
-            $users = User::all();
-        }
-        return $users;
-    }
+    //     if($user->gender)
+    //     {
+    //         if($user->gender == 1)
+    //         {
+    //             $users1 = User::where('gender',2)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users2 = User::where('gender',1)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users3 = User::whereNotIn('gender',[1,2])->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+                
+    //             // $users = array_merge($users1, $users2, $users3);
+    //             $users = $users1->merge($users2)->merge($users3);
+    //         } elseif ($user->gender == 2){
+    //             $users1 = User::where('gender',1)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users2 = User::where('gender',2)->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users3 = User::whereNotIn('gender',[1,2])->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+
+    //             $users = $users1->merge($users2)->merge($users3);
+    //         } else {
+    //             // $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //             $users = User::where(function ($query) use($search){
+    //                             if(!empty($search))
+    //                             {
+    //                                 $query->whereHas('college',function ($queryCollege) use ($search){
+    //                                         $queryCollege->where('name','LIKE','%'.$search.'%');
+    //                                     })
+    //                                     ->orWhere('nickname','LIKE','%'.$search.'%')
+    //                                     ->orWhere('realname','LIKE','%'.$search.'%');
+    //                             }
+    //                         })
+    //                         ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(15);
+                
+    //         }
+    //     }
+    //     else
+    //     {
+    //         // $users = User::orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->get();
+    //          $users = User::where(function ($query) use($search){
+    //                             if(!empty($search))
+    //                             {
+    //                                 $query->whereHas('college',function ($queryCollege) use ($search){
+    //                                         $queryCollege->where('name','LIKE','%'.$search.'%');
+    //                                     })
+    //                                     ->orWhere('nickname','LIKE','%'.$search.'%')
+    //                                     ->orWhere('realname','LIKE','%'.$search.'%');
+    //                             }
+    //                         })
+    //                         ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(15);
+    //     }
+    //     return $users;
+    // }
 }

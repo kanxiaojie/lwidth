@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNoticesTable extends Migration
+class CreateSystemNoticesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,17 @@ class CreateNoticesTable extends Migration
      */
     public function up()
     {
-        Schema::create('notices', function (Blueprint $table) {
+        Schema::create('systemNotices', function (Blueprint $table) {
             $table->increments('id');
+
+            $table->integer('type')->default(0);
             $table->integer('if_read')->default(0);
-            $table->integer('source_type');
-            $table->integer('source_id');
-            $table->integer('user_id');
-            $table->integer('objectUser_id');
-            $table->string('content')->nullable();
-            
+            $table->integer('user_id')->nullable();
+            $table->string('title')->nullable();
+            $table->string('image')->nullable();
+            $table->string('video_url')->nullable();
+            $table->text('content');
+
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateNoticesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('notices');
+        Schema::drop('systemNotices');
     }
 }

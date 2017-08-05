@@ -19,20 +19,24 @@ class CreateCommentToCommentsTable extends Migration
             $table->integer('comment_id')->unsigned();
             $table->integer('parent_id')->unsigned()->default(0);
             $table->text('content');
+
+            $table->bigInteger('praise_nums')->default(0);
+            $table->integer('available')->default(1);
+            
             $table->timestamps();
         });
 
-        Schema::table('commentToComments', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('post_id')->references('id')->on('postings')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('comment_id')->references('id')->on('comments')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+        // Schema::table('commentToComments', function (Blueprint $table) {
+        //     $table->foreign('user_id')->references('id')->on('users')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        //     $table->foreign('post_id')->references('id')->on('postings')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        //     $table->foreign('comment_id')->references('id')->on('comments')
+        //         ->onDelete('cascade')
+        //         ->onUpdate('cascade');
+        // });
     }
 
     /**
@@ -42,11 +46,11 @@ class CreateCommentToCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('commentToComments', function(Blueprint $table) {
-            $table->dropForeign('commentToComments_user_id_foreign');
-            $table->dropForeign('commentToComments_post_id_foreign');
-            $table->dropForeign('commentToComments_comments_id_foreign');
-        });
+        // Schema::table('commentToComments', function(Blueprint $table) {
+        //     $table->dropForeign('commentToComments_user_id_foreign');
+        //     $table->dropForeign('commentToComments_post_id_foreign');
+        //     $table->dropForeign('commentToComments_comments_id_foreign');
+        // });
 
         Schema::drop('commentToComments');
     }

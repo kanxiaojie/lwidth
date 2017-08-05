@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddAvailableToCommentsTable extends Migration
+class CreateInterestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,11 @@ class AddAvailableToCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->integer('available')->default(1)->after('parent_id');
-
+        Schema::create('interests', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('description');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddAvailableToCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('comments', function (Blueprint $table) {
-            //
-        });
+        Schema::drop('interests');
     }
 }

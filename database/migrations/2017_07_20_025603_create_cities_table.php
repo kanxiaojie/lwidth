@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddReportUserToReportPostsTable extends Migration
+class CreateCitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,12 @@ class AddReportUserToReportPostsTable extends Migration
      */
     public function up()
     {
-        Schema::table('reportPosts', function (Blueprint $table) {
-            $table->integer('report_userId');
-            $table->string('report_userName')->nullable();
+        Schema::create('cities', function (Blueprint $table) {
+            $table->increments('id');
+            $table->bigInteger('province_id')->unsigned();
+            $table->string('name');
 
+            $table->timestamps();
         });
     }
 
@@ -26,8 +28,6 @@ class AddReportUserToReportPostsTable extends Migration
      */
     public function down()
     {
-        Schema::table('reportPosts', function (Blueprint $table) {
-            //
-        });
+        Schema::drop('cities');
     }
 }

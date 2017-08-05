@@ -113,9 +113,9 @@ class WeixinController extends Controller
 
             $token = Crypt::encrypt($datas['openId']);
 
-            $data['status'] = 200;
-            $data['user_id'] = $res->id;
-            $data['wesecret'] = $token;
+            // $data['status'] = 200;
+            // $data['user_id'] = $res->id;
+            // $data['wesecret'] = $token;
 
 
             return $token;

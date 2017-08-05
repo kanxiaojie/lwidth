@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddGradeToUsersTable extends Migration
+class CreatePostingTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,10 @@ class AddGradeToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('grade',400);
+        Schema::create('postingTypes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -24,8 +26,6 @@ class AddGradeToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::drop('postingTypes');
     }
 }

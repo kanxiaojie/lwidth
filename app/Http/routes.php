@@ -40,7 +40,8 @@ $app->post('/api/virtual/loves/images','PostController@virtualUploadPostImages')
 $app->get('/api/posts','PostController@index');
 
 //所有帖子
-$app->get('/api/loves','PostController@lists');
+// $app->get('/api/loves','PostController@lists');
+$app->get('/api/loves','PostController@getLoves');
 
 //获取本校表白  (本校的表白 时间倒序)
 $app->get('/api/collegeLoves','PostController@getCollegeLoves');
@@ -48,8 +49,8 @@ $app->get('/api/collegeLoves','PostController@getCollegeLoves');
 //获取我发表的所有表白
 $app->get('/api/myLoves','PostController@getMyLoves');
 
-//获取单个表白及评论内容
-$app->get('/api/loves/{id}/comments','PostController@postAndSelfComments');
+// //获取单个表白及评论内容
+// $app->get('/api/loves/{id}/comments','PostController@postAndSelfComments');
 
 //给某条表白评论
 $app->post('/api/loves/{id}/comments','CommentController@publishComments');
@@ -61,7 +62,7 @@ $app->post('/api/loves/{id}/praises','PraiseController@praiseToPost');
 $app->post('/api/comments/{id}/replies','CommentController@commentToComment');
 
 //获取某条评论的所有再评论 改为回复
-$app->get('/api/comments/{id}/replies','CommentController@getCommentToComments');
+// $app->get('/api/comments/{id}/replies','CommentController@getCommentToComments');
 
 //给某条回复点赞/或取消点赞
 $app->post('/api/replies/{id}/praises','PraiseController@praiseToReplies');
@@ -91,9 +92,6 @@ $app->post('/api/delete/user/picture','UserController@deletePicture');
 //删除表白
 $app->post('/api/delete/love','PostController@deletePost');
 
-$app->get('/api/colleges','ExampleController@getColleges');
-$app->get('/api/grades','ExampleController@getGrades');
-
 //删除某条评论
 $app->post('/api/delete/comment','CommentController@deleteComment');
 //删除某条回复
@@ -107,7 +105,6 @@ $app->post('api/badReports/love/{id}','BadReportTypeController@reportPost');
 $app->post('api/badReports/comment/{id}','BadReportTypeController@reportComment');
 $app->post('api/badReports/reply/{id}','BadReportTypeController@reportReply');
 $app->post('api/badReports/user/{id}','BadReportTypeController@reportUser');
-
 
 //获取我评论过的帖子/我赞过的帖子  (新增需求提示  只要是获取表白列表的  都需要支持 page search  wesecret参数)
 $app->get('api/myCommentLoves','CommentController@getMyCommentPosts');
@@ -123,7 +120,7 @@ $app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');
 $app->post('/api/users/{id}/praises','PraiseController@praiseToUser');
 
 //22-1-1   获取单个表白
-$app->get('/api/loves/{id}','PostController@getLonePost');
+$app->get('/api/loves/{id}','PostController@getLove');
 
 //获取点赞我的人
 $app->get('/api/praiseMeUsers','PraiseController@getPraiseMeUsers');
@@ -139,11 +136,20 @@ $app->get('/api/comments/{id}/replies','CommentController@getCommentReplyInfos')
 //19  获取我未读的提醒数
 $app->get('/api/unreadNoticeNums','NoticeController@getUnreadNoticeNums');
 
+//获取我未读的系统通知数
+$app->get('/api/unreadSystemNoticeNums','SystemNoticeController@getUnreadSystemNoticeNums');
+
 //获取所有的提醒
 $app->get('/api/notices','NoticeController@getNotices');
 
+//获取所有的系统通知
+$app->get('/api/systemNotices','SystemNoticeController@getSystemNotices');
+
 //标注评论/回复已读
 $app->post('/api/read/notice','NoticeController@labelRead');
+
+//标注系统通知已读
+$app->post('/api/read/systemNotice','SystemNoticeController@labelRead');
 
 //获取异性表白
 $app->get('/api/genderLoves','PostController@getGenderLoves');
@@ -152,3 +158,25 @@ $app->get('/api/genderLoves','PostController@getGenderLoves');
 $app->get('/api/blacklists','UserController@getBlackLists');
 //把某人加入黑名单或者从黑名单中移除
 $app->post('/api/blacklists','UserController@addOrRemoveBlackLists');
+
+//获取相关小程序
+$app->get('/api/applets','SystemNoticeController@get_applets');
+
+//获取关于表白墙
+$app->get('/api/aboutLoveWalls','SystemNoticeController@get_aboutLoveWalls');
+//获取关于校园服务号
+$app->get('/api/aboutCollegeServices','SystemNoticeController@get_aboutCollegeServices');
+
+
+//获取/省份/城市/学校/关注范围
+$app->get('/api/provinces', 'ExampleController@getProvinces');
+$app->get('/api/provinces/{id}/cities', 'ExampleController@getCities');
+$app->get('/api/cities/{id}/colleges','ExampleController@getColleges');
+$app->get('/api/interests', 'ExampleController@getInterests');
+$app->get('/api/postingTypes', 'ExampleController@getPostingTypes');
+
+// $app->get('/api/grades','ExampleController@getGrades');
+
+// 审核是否可见
+$app->get('/api/get_available','SystemNoticeController@get_available');
+$app->get('/api/get_availables','SystemNoticeController@get_availables');
