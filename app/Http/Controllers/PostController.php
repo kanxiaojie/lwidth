@@ -2333,15 +2333,14 @@ class PostController extends Controller
                     // }
                     $data['video_url'] = $post->video_url;
                     $data['images'] = $post->pictures;
-                    // $data['muted'] = true;
-                    // if(!empty($post->pictures))
-                    // {
-                    //     $data['images'] = explode(',',$post->pictures);
-                    // }
-                    // else
-                    // {
-                    //     $data['images'] = [];
-                    // }
+                    if(!empty($post->pictures))
+                    {
+                        $data['images_array'] = explode(',',$post->pictures);
+                    }
+                    else
+                    {
+                        $data['images_array'] = [];
+                    }
 
                     $userInfo = [];
                     // if($post->anonymous == 1)
