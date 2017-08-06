@@ -32,6 +32,12 @@ $app->post('/api/register','WeixinController@firstLogin');
 //发表白接口
 $app->post('/api/loves','PostController@publishPost');
 $app->post('/api/loves/images','PostController@uploadPostImages');
+
+//增加表白图片
+$app->post('/api/addImage/love','PostController@addImagePost');
+//删除表白图片
+$app->post('/api/removeImage/love','PostController@removeImagePost');
+
 //虚拟用户发布帖子
 $app->post('/api/virtual/loves','PostController@virtualPublishPost');
 $app->post('/api/virtual/loves/images','PostController@virtualUploadPostImages');
@@ -91,6 +97,8 @@ $app->post('/api/delete/user/picture','UserController@deletePicture');
 
 //删除表白
 $app->post('/api/delete/love','PostController@deletePost');
+
+
 
 //删除某条评论
 $app->post('/api/delete/comment','CommentController@deleteComment');
