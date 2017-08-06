@@ -340,9 +340,11 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
 
     public static $classMap = array (
         'AddColumnsToReportsTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_06_012043_add_columns_to_reports_table.php',
+        'AdminUserTableSeeder' => __DIR__ . '/../..' . '/database/seeds/AdminUserTableSeeder.php',
         'BadReportTypesTableSeeder' => __DIR__ . '/../..' . '/database/seeds/BadReportTypesTableSeeder.php',
         'CollegeTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CollegeTableSeeder.php',
         'CountryTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CountryTableSeeder.php',
+        'CreateAdminUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_06_052108_create_admin_users_table.php',
         'CreateBadReportTypesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_004725_create_badReportTypes_table.php',
         'CreateBlacklistsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_07_065204_create_blacklists_table.php',
         'CreateCitiesTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_20_025603_create_cities_table.php',
