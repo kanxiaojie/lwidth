@@ -9,6 +9,7 @@ use App\CommentToComment;
 use App\Post;
 use App\Praise;
 use App\PraiseToComment;
+use App\Report;
 use App\ReportComment;
 use App\ReportPost;
 use App\ReportReply;
@@ -226,6 +227,53 @@ class BadReportTypeController extends Controller
             if(count($ReportedUser))
             {
                 $reportUser = new ReportUser();
+                $reportUser->badReport_type = $badReport_type;
+                $reportUser->badReport_name = $bad_report_type->name;
+                $reportUser->badReport_content = $badReport_content;
+                $reportUser->reported_userId = $ReportedUser->id;
+                if($ReportedUser->nickname)
+                {
+                    $reportUser->reported_userName = $ReportedUser->nickname;
+                }
+
+                $reportUser->report_userId = $user->id;
+                if($user->nickname)
+                {
+                    $reportUser->report_userName = $user->nickname;
+                }
+                $reportUser->save();
+
+                return response()->json(['code' => 200,'message' => 'report successfully.']);
+
+            }
+            else
+            {
+                return response()->json(['code' => 201,'message' => 'Post does not exist.']);
+            }
+        }
+    }
+
+    public function report($typeId, $id, Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $badReport_type = $request->get('badReport_type');
+        $badReport_content = $request->get('badReport_content');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if(!$user)
+        {
+            return response()->json(['status' => 201,'message' => 'User Does Not Exist!']);
+        }
+        else
+        {
+            $ReportedUser = $this->userRepository->getUserById($id);
+            $bad_report_type = BadReportType::where('id',$badReport_type)->first();
+            if(count($ReportedUser))
+            {
+                $reportUser = new Report();
+                $reportUser->type = $typeId;
                 $reportUser->badReport_type = $badReport_type;
                 $reportUser->badReport_name = $bad_report_type->name;
                 $reportUser->badReport_content = $badReport_content;

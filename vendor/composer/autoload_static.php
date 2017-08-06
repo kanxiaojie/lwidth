@@ -339,6 +339,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
     );
 
     public static $classMap = array (
+        'AddColumnsToReportsTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_06_012043_add_columns_to_reports_table.php',
         'BadReportTypesTableSeeder' => __DIR__ . '/../..' . '/database/seeds/BadReportTypesTableSeeder.php',
         'CollegeTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CollegeTableSeeder.php',
         'CountryTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CountryTableSeeder.php',
@@ -367,6 +368,7 @@ class ComposerStaticInitf9da96c1146b7e7f367ff1af43c30e17
         'CreateReportPostsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_011314_create_reportPosts_table.php',
         'CreateReportReplyTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_132620_create_reportReply_table.php',
         'CreateReportUserTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_11_134415_create_reportUser_table.php',
+        'CreateReportsTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_05_101902_create_reports_table.php',
         'CreateSystemNoticesTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_18_050946_create_systemNotices_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_13_131953_create_users_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
