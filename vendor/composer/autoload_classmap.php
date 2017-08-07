@@ -6,9 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AdminUserTableSeeder' => $baseDir . '/database/seeds/AdminUserTableSeeder.php',
     'BadReportTypesTableSeeder' => $baseDir . '/database/seeds/BadReportTypesTableSeeder.php',
     'CollegeTableSeeder' => $baseDir . '/database/seeds/CollegeTableSeeder.php',
     'CountryTableSeeder' => $baseDir . '/database/seeds/CountryTableSeeder.php',
+    'CreateAdminUsersTable' => $baseDir . '/database/migrations/2017_08_07_115356_create_admin_users_table.php',
     'CreateBadReportTypesTable' => $baseDir . '/database/migrations/2017_05_11_004725_create_badReportTypes_table.php',
     'CreateBlacklistsTable' => $baseDir . '/database/migrations/2017_06_07_065204_create_blacklists_table.php',
     'CreateCitiesTable' => $baseDir . '/database/migrations/2017_07_20_025603_create_cities_table.php',
