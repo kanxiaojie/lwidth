@@ -2333,15 +2333,14 @@ class PostController extends Controller
                     // }
                     $data['video_url'] = $post->video_url;
                     $data['images'] = $post->pictures;
-                    // $data['muted'] = true;
-                    // if(!empty($post->pictures))
-                    // {
-                    //     $data['images'] = explode(',',$post->pictures);
-                    // }
-                    // else
-                    // {
-                    //     $data['images'] = [];
-                    // }
+                    if(!empty($post->pictures))
+                    {
+                        $data['images_array'] = explode(',',$post->pictures);
+                    }
+                    else
+                    {
+                        $data['images_array'] = [];
+                    }
 
                     $userInfo = [];
                     // if($post->anonymous == 1)
@@ -2433,9 +2432,11 @@ class PostController extends Controller
 
         }
 
+        $dataLength = count($datas);
+
         // return response()->json(['status' => 200,'data' => $datas]);
 
-        return response()->json(['status' => 200,'data' => $datas]);
+        return response()->json(['status' => 200,'data' => $datas, 'dataLength' => $dataLength]);
     
     }
 
@@ -2559,6 +2560,69 @@ class PostController extends Controller
         }
 
         return response()->json(['status' => 200,'data' => $data]);
+    }
+
+
+    public function addImagePost(Request $request)
+    {
+        $inputs = $request->get('params');
+
+        $post = Post::find($inputs['love_id']);
+        if ($post) {
+            if(!empty($post->pictures))
+            {
+                $old_imamges = explode(',',$post->pictures);
+            }
+            else
+            {
+                $old_imamges = [];
+            }
+            $old_imamges[] = $inputs['key'];
+            $post->pictures = implode(',', $old_imamges);
+            $post->save();
+        }
+
+    }
+
+    public function removeImagePost(Request $request)
+    {
+        $inputs = $request->get('params');
+        $the_delete_picture = $inputs['key'];
+
+        $post = Post::find($inputs['love_id']);
+        if ($post && !empty($the_delete_picture)) {
+            if(!empty($post->pictures))
+            {
+                $old_imamges = explode(',',$post->pictures);
+            }
+            else
+            {
+                $old_imamges = [];
+            }
+
+            function delByValue($arr, $value){  
+                if(!is_array($arr)){  
+                    return $arr;  
+                }  
+                foreach($arr as $k=>$v){  
+                    if($v == $value){  
+                        unset($arr[$k]);  
+                    }  
+                }  
+                return $arr;  
+            }  
+
+            $new_images = delByValue($old_imamges, $the_delete_picture);
+    
+            $post->pictures = implode(',', $new_images);
+            $post->save();
+
+            // 从七牛云上删除照片  $input['the_delete_picture']
+            $pictureArray = explode('/', $the_delete_picture); 
+            $key = $pictureArray[3]."/".$pictureArray[4];
+            $deleteResult = $this->qiniuRepository->deleteImageFormQiniu($key);
+        }
+
     }
 
 
