@@ -170,7 +170,7 @@ class PostRepository
                             })
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
-                })->orderBy($orderby,$direction)->paginate(15);
+                })->orderBy($orderby,$direction)->get();
                 // })->where('postingType_id', $postingType_id)->orderBy($orderby,$direction)->paginate(15);
 
             return $posts;
