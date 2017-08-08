@@ -900,8 +900,9 @@ class UserController extends Controller
 
     public function getUsers(Request $request)
     {
-        $users = User::where('role', 1)->where('trust', '>', -1)->get();
-        $dataLength = count($users);
+        $users = User::where('role', 1)->where('trust', '>', -1)->paginate(10);
+        $allUsers = User::where('role', 1)->where('trust', '>', -1)->get();
+        $dataLength = count($allUsers);
         $datas = [];
         foreach ($users as $user) {
             $userInfo = [];
@@ -1037,6 +1038,7 @@ class UserController extends Controller
             $userInfo['role'] = $updateUser->role;
             $userInfo['trust'] = $updateUser->trust;
             $userInfo['available'] = $updateUser->available;
+            $userInfo['disabled_reason'] = $updateUser->disabled_reason;
             $profile = Profile::where('user_id',$updateUser->id)->first();
             if($profile->birthday)
             {

@@ -2432,7 +2432,8 @@ class PostController extends Controller
 
         }
 
-        $dataLength = count($datas);
+        $allPosts = Post::all();
+        $dataLength = count($allPosts);
 
         // return response()->json(['status' => 200,'data' => $datas]);
 
