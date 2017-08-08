@@ -229,3 +229,8 @@ $app->get('/api/collegeUsers','UserController@getCollegeUsers');
 $app->post('/api/collegeUsers','UserController@editCollegesUser');
 //删除学校用户
 // $app->post('/api/delete/collegeUser','UserController@deleteCollegesUser');
+
+
+//后台管理API
+//登录接口
+$app->post('/admin/login','AdminUserController@login');
