@@ -449,6 +449,13 @@ class PostRepository
     {
         
         $post->user_id = $inputs['user_id'];
+        
+        $user = User::find($inputs['user_id']);
+        $post->province_id = $user->college->city->province->id;
+        $post->city_id = $user->college->city->id;
+        $post->college_id = $user->college->id;
+
+        $post->postingType_id = $inputs['postingType_id'];
         $post->content = $inputs['content'];
         $post->pictures = $inputs['images'];
         $post->video_url = $inputs['video_url'];
