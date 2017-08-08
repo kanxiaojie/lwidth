@@ -2321,7 +2321,7 @@ class PostController extends Controller
                     $data = [];
 
                     $data['id'] = $post->id;
-                    $data['postingType_id'] = $post->postingType_id;
+                    $data['postingType_id'] = strval($post->postingType_id);
                     $data['postingType_name'] = $post->postingType->name;
                     $data['content'] = $post->content;
                     // if(!empty($user) && $post->user_id == $user->id)
