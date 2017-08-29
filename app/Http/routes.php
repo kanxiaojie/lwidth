@@ -6,11 +6,6 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-$app->get('/api', function () use ($app) {
-    return response()->json(['name' => 'Abigail', 'state' => 'CA']);
-});
-
-
 $app->post('/api/encrypt/user','UserController@encryptCode');
 $app->post('/api/decrypt/user','UserController@decryptCode');
 
@@ -49,9 +44,6 @@ $app->get('/api/collegeLoves','PostController@getCollegeLoves');
 //获取我发表的所有表白
 $app->get('/api/myLoves','PostController@getMyLoves');
 
-// //获取单个表白及评论内容
-// $app->get('/api/loves/{id}/comments','PostController@postAndSelfComments');
-
 //给某条表白评论
 $app->post('/api/loves/{id}/comments','CommentController@publishComments');
 
@@ -60,9 +52,6 @@ $app->post('/api/loves/{id}/praises','PraiseController@praiseToPost');
 
 //给某条评论再评论 改为回复
 $app->post('/api/comments/{id}/replies','CommentController@commentToComment');
-
-//获取某条评论的所有再评论 改为回复
-// $app->get('/api/comments/{id}/replies','CommentController@getCommentToComments');
 
 //给某条回复点赞/或取消点赞
 $app->post('/api/replies/{id}/praises','PraiseController@praiseToReplies');
@@ -175,8 +164,6 @@ $app->get('/api/provinces/{id}/cities', 'ExampleController@getCities');
 $app->get('/api/cities/{id}/colleges','ExampleController@getColleges');
 $app->get('/api/interests', 'ExampleController@getInterests');
 $app->get('/api/postingTypes', 'ExampleController@getPostingTypes');
-
-// $app->get('/api/grades','ExampleController@getGrades');
 
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');
