@@ -30,11 +30,6 @@ class UploadToQiniuController extends Controller
         $this->postRepository = $postRepository;
     }
 
-    public function index()
-    {
-        return view('images.upload');
-    }
-
     /**
      * 生成上传凭证
      * @return string
@@ -59,7 +54,6 @@ class UploadToQiniuController extends Controller
         $inputs['location'] = $request->input('location');
         $inputs['visiable'] = $request->input('visiable');
 
-
         $openid = Crypt::decrypt($inputs['wesecret']);
 
         $user = User::where('openid',$openid)->first();
@@ -67,9 +61,6 @@ class UploadToQiniuController extends Controller
         {
             $inputs['user_id'] = $user->id;
 
-            $datas = array();
-
-//            if(file_exists($request->input('file')))
             if(array_key_exists('file',$input))
             {
                 $picturePath = '';
@@ -98,11 +89,6 @@ class UploadToQiniuController extends Controller
                 {
                     return response()->json(['status' => 201,'message' => 'post content can not be null']);
                 }
-//                $datas['picturePath'] = $picturePath;
-//                $datas['wesecret'] = $inputs['wesecret'];
-//                $datas['content'] = $inputs['content'];
-//                $datas['location'] = explode(',',$post->location);
-//                $datas['visiable'] = $post->visiable;
 
                 return response()->json(['status' => 200,'message' =>'posting success']);//返回结果到上传页面
 

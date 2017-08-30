@@ -25,13 +25,7 @@ class WeixinController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function login()
-    {
-
-    }
-
-    public function useInfo()
-    {
+    public function useInfo(){
         $appid = 'wx3bf755439a8b5173';
         $sessionKey = 'ukjJb2IOwUfXnxzjlrNHBg==';
 
@@ -43,11 +37,9 @@ class WeixinController extends Controller
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
-//            print($data. "\n");
             return json_decode($data,true);
         } else {
             return $errCode;
-//            print($errCode . "\n");
         }
     }
 
@@ -71,19 +63,20 @@ class WeixinController extends Controller
         $pc = new wxBizDataCrypt($appid, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
-        if ($errCode == 0)
-        {
+        if ($errCode == 0) {
             return json_decode($data,true);
-        }
-        else
-        {
+        } else {
             return array();
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 首次登录api
+     */
     public function firstLogin(Request $request)
     {
-
         $code = $request->get('code');
         $encryptedData = $request->get('encryptedData');
         $iv = $request->get('iv');
@@ -94,9 +87,6 @@ class WeixinController extends Controller
         $sessionKey = $this->getOpenId($code,$appid,$secretid);
 
         $datas = $this->decryptUserInfo($appid,$sessionKey,$encryptedData,$iv);
-
-        $data = array();
-        $userInfo = [];
 
         if(!empty($datas))
         {
@@ -113,15 +103,7 @@ class WeixinController extends Controller
 
             $token = Crypt::encrypt($datas['openId']);
 
-            // $data['status'] = 200;
-            // $data['user_id'] = $res->id;
-            // $data['wesecret'] = $token;
-
-
             return $token;
-
-//            return response()->json(['wesecret' => $token,'user_id' => $res->id]);
-
         }
         else
         {

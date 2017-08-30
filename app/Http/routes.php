@@ -1,24 +1,15 @@
 <?php
 
-
-
 $app->get('/', function () use ($app) {
     return $app->version();
 });
 
+//以下3个api做测试用
 $app->post('/api/encrypt/user','UserController@encryptCode');
 $app->post('/api/decrypt/user','UserController@decryptCode');
-
-$app->get('/api/weixin/check','WeixinController@check');
-$app->get('/api/weixin/login','WeixinController@login');
 $app->get('/api/weixin/userInfo','WeixinController@useInfo');
 
-
-
-
-$app->get('/api/upload/image','UploadToQiniuController@index');
-
-//发表帖子和上传图片同时进行
+//发表帖子和上传图片同时进行--切换至前端上传
 $app->post('/api/images/upload','UploadToQiniuController@uploadToQiniu');
 
 //注册
