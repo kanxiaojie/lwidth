@@ -56,7 +56,6 @@ class UserRepository
 
     public function update($inputs, $user)
     {
-        // $inputs['updateOpenId'] = 1;
        $res = $this->saveUser($inputs,$user,2);
 
         return $res;
@@ -64,9 +63,7 @@ class UserRepository
 
     public function saveUser($inputs,$user,$type)
     {
-//        $res = array('status'=>1,'error'=>'');
-
-        if(isset($inputs['openId']) && (!isset($inputs['updateOpenId'])))
+        if(isset($inputs['openId']))
         {
             $user->openid = $inputs['openId'];
         }
@@ -173,13 +170,6 @@ class UserRepository
         {
             $user->nickname = $inputs['nickname'];
         }
-
-        // if(isset($inputs['college']) && (!empty($inputs['college'])))
-        // {
-        //     $collegeIds = College::pluck('id')->toArray();
-        //     $theCollegeIndex = intval($inputs['college']) - 1;
-        //     $user->college_id = $collegeIds[$theCollegeIndex];
-        // }
 
         if(isset($inputs['college_id']) && (!empty($inputs['college_id'])))
         {
