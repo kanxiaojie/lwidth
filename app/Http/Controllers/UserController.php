@@ -729,13 +729,17 @@ class UserController extends Controller
 
                         $data['id'] = $user->id;
                         $data['nickname'] = $user->nickname;
-                        $data['gender'] = $user->gender;
+                        $data['gender_id'] = $user->gender_id;
+                        $data['gender_name'] = $user->gender->name;
+                        // $data['gender'] = $user->gender;
                         $data['avatarUrl'] = $user->avatarUrl;
+
 
                         if(empty($user->college_id)) {
                             $data['college_name'] = '';
                         } else {
-                            $data['college_name'] = College::find($user->college_id)->name;
+                            $data['college_name'] = $user->college->name;
+                            // $data['college_name'] = College::find($user->college_id)->name;
                             // $data['college_name'] = College::where('id',(int)($user->college_id))->first()->name;             
                         }
 
