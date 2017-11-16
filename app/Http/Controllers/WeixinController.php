@@ -120,11 +120,7 @@ class WeixinController extends Controller
         $nonce = $request->get('nonce');
         $echostr = $request->get('echostr');
         
-        $token = 'hellocollege';
-        
-        var_dump($signature);
-        var_dump($nonce);
-        var_dump($echostr);
+        $token = "hello";
 
         //形成数组，然后按字典序排序
         $array = array();
@@ -136,7 +132,7 @@ class WeixinController extends Controller
             //第一次接入weixin api接口的时候
             return  $echostr;
         }
-        return 'nothing';
+        // return 'nothing';
 
     }
 
