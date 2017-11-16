@@ -128,9 +128,8 @@ class WeixinController extends Controller
         $res = sha1($str);
         if ($res == $signature) {
             return $echostr;
-        } else {
-            return '';
-        }
+        } 
+        return 'nothing';
 
     }
 
