@@ -121,6 +121,10 @@ class WeixinController extends Controller
         $echostr = $request->get('echostr');
         
         $token = 'hellocollege';
+        
+        var_dump($signature);
+        var_dump($nonce);
+        var_dump($echostr);
 
         //形成数组，然后按字典序排序
         $array = array();
