@@ -165,3 +165,9 @@ $app->get('/api/get_availables','SystemNoticeController@get_availables');
 //后台管理API
 //登录接口
 $app->post('/admin/login','AdminUserController@login');
+
+
+//校园生活墙订阅号
+//验证微信服务器
+$app->get('/api/subscribe/init', 'WeixinController@subscribe_init')
+

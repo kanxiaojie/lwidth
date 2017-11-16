@@ -112,4 +112,27 @@ class WeixinController extends Controller
     }
 
 
+
+    //订阅号入口验证
+    public function subscribe_init (Request $request) {
+        $signature = $request->get('signature');
+        $timestamp = $request->get('timestamp');
+        $nonce = $request->get('nonce');
+        $echostr = $request->get('echostr');
+        
+        $token = 'hellocollege';
+
+        $array = array($token, $timestamp, $nonce);
+        sort($array, SORT_STRING);
+        $str = implode($array);
+        $res = sha1($str);
+        if ($res == $signature) {
+            return $echostr;
+        } else {
+            return '';
+        }
+
+    }
+
+
 }
