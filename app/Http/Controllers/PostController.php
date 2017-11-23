@@ -2339,14 +2339,14 @@ class PostController extends Controller
                     {
                         $anonymousUser = User::where('role', 0)->first();
                         $userInfo['id'] = $anonymousUser->id;
-                        $userInfo['openid'] = $anonymousUser->openid;
+                        $userInfo['openid'] = $post->user->openid;
                         $userInfo['nickname'] = $anonymousUser->nickname;
                         $userInfo['avatarUrl'] = $anonymousUser->avatarUrl;
 
                     }else
                     {
                         $userInfo['id'] = $post->user_id;
-                        $userInfo['openid'] = $anonymousUser->openid;
+                        $userInfo['openid'] = $post->user->openid;
                         $userInfo['nickname'] = $post->user->nickname;
                         $userInfo['avatarUrl'] = $post->user->avatarUrl;
                     }
