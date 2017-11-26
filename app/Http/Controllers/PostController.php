@@ -1959,6 +1959,7 @@ class PostController extends Controller
                             $diff_time = $this->postRepository->getTime($reply->created_at);
                             $replys['created_at'] = $diff_time;
                             $data['replies'][] = $replys;
+                            unset($reply);
                         }
                     }else
                     {
@@ -2037,6 +2038,7 @@ class PostController extends Controller
                             $diff_time = $this->postRepository->getTime($reply->created_at);
                             $replys['created_at'] = $diff_time;
                             $data['replies'][] = $replys;
+                            unset($reply);
                         }
                     }else
                     {
