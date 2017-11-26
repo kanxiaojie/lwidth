@@ -1887,6 +1887,12 @@ class PostController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 获取某个表白的所有评论
+     */
     public function getPostAllComments(Request $request, $id)
     {
         $wesecret = $request->get('wesecret');
@@ -1905,7 +1911,7 @@ class PostController extends Controller
         $replys = [];
         $objectUserInfo = [];
 
-        $comments = Comment::where(['post_id' => $id, 'available' => 1])->orderBy('created_at','desc')->paginate(15);
+        $comments = Comment::where(['post_id' => $id, 'available' => 1])->orderBy('created_at','desc')->paginate(PostRepository::pagesize);
         
         if(empty($wesecret))
         {
@@ -1964,6 +1970,7 @@ class PostController extends Controller
                     $data['if_my_praise'] = 0;
 
                     $datas[] = $data;
+                    unset($comment);
                 }
 
                 return response()->json(['status' => 200,'data' => $datas]);
@@ -2055,6 +2062,7 @@ class PostController extends Controller
                     }
 
                     $datas[] = $data;
+                    unset($comment);
                 }
                 return response()->json(['status' => 200,'data' => $datas]);
             }
