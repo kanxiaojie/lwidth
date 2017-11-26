@@ -61,6 +61,12 @@ class CommentController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 回复
+     */
     public function commentToComment(Request $request, $id)
     {
         $inputs = [];
@@ -623,7 +629,13 @@ class CommentController extends Controller
         }
     }
 
-    public function getCommentInfo(Request $request,$id)
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 获取单条评论
+     */
+    public function getCommentInfo(Request $request, $id)
     {
         $wesecret = $request->get('wesecret');
 
@@ -642,6 +654,7 @@ class CommentController extends Controller
             $userInfo['id'] = $user->id;
             $userInfo['nickname'] = $user->nickname;
             $userInfo['avatarUrl'] =  $user->avatarUrl;
+            $userInfo['openid'] =  (isset($user->openid)&&(!empty($user->openid)))?$user->openid:"";
             $data['userInfo'] = $userInfo;
 
             $diff_time = $this->postRepository->getTime($comment->created_at);
@@ -702,6 +715,7 @@ class CommentController extends Controller
                     $replyUserInfo['id'] = $user1->id;
                     $replyUserInfo['nickname'] = $user1->nickname;
                     $replyUserInfo['avatarUrl'] = $user1->avatarUrl;
+                    $userInfo['openid'] =  (isset($user1->openid)&&(!empty($user1->openid)))?$user->openid:"";
                     $replys['userInfo'] = $replyUserInfo;
 
                     $objectUserInfo['id'] = $reply->parent_id;
@@ -729,7 +743,13 @@ class CommentController extends Controller
 
     }
 
-    public function getCommentReplyInfos(Request $request,$id)
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 获取某条评论的所有回复
+     */
+    public function getCommentReplyInfos(Request $request, $id)
     {
         $wesecret = $request->get('wesecret');
 
@@ -750,6 +770,7 @@ class CommentController extends Controller
                 $userInfo['id'] = $replyUser->id;
                 $userInfo['nickname'] = $replyUser->nickname;
                 $userInfo['avatarUrl'] = $replyUser->avatarUrl;
+                $userInfo['openid'] =  (isset($replyUser->openid)&&(!empty($replyUser->openid)))?$replyUser->openid:"";
                 $data['userInfo'] = $userInfo;
 
                 $objectUser = User::where('id',$reply->parent_id)->first();

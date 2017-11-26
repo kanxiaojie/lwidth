@@ -1287,8 +1287,11 @@ class PostController extends Controller
     public function publishPost(Request $request)
     {
         $inputs = $request->all();
-
-        $openid = Crypt::decrypt($inputs['wesecret']);
+        try{
+            $openid = Crypt::decrypt($inputs['wesecret']);
+        }catch (\Exception $exception){
+            return ['status' => 201,'message' => 'wesecret invalid'];
+        }
 
         $user = $this->userRepository->getUserByOpenId($openid);
         if ($user)

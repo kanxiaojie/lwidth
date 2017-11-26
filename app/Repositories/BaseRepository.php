@@ -25,9 +25,19 @@ class BaseRepository
         }
     }
 
+    /**
+     * @param $wesecret
+     * @return string
+     * @name $wesecret解密
+     */
     public function decryptCode($wesecret)
     {
-        $openid = Crypt::decrypt($wesecret);
+        $openid = '';
+        try{
+            $openid = Crypt::decrypt($wesecret);
+        }catch (\Exception $exception){
+            $openid = '';
+        }
 
         return $openid;
     }
