@@ -1940,7 +1940,6 @@ class PostController extends Controller
                     {
                         foreach ($replies as $reply)
                         {
-                            $replys = [];
                             $replys['id'] = $reply->id;
                             $replys['content'] = $reply->content;
 
@@ -1959,12 +1958,13 @@ class PostController extends Controller
 
                             $diff_time = $this->postRepository->getTime($reply->created_at);
                             $replys['created_at'] = $diff_time;
-                            $allreplys[] = $replys;
-
+                            $data['replies'][] = $replys;
+                            unset($reply);
                         }
+                    }else
+                    {
+                        $data['replies'] = [];
                     }
-
-                    $data['replies'][] = $allreplys;
 
                     $data['praise_nums'] = $comment->r_likenum;
 
@@ -1989,7 +1989,7 @@ class PostController extends Controller
             {
                 foreach ($comments as $comment)
                 {
-                    $allreplys = [];
+                    $replys = [];
                     $data['id'] =  $comment->id;
                     $data['content'] = $comment->content;
                     $commentuser =User::where('id',$comment->user_id)->first();
@@ -2010,7 +2010,6 @@ class PostController extends Controller
                     {
                         foreach ($replies as $reply)
                         {
-                            $replys = [];
                             $replys['id'] = $reply->id;
                             $replys['content'] = $reply->content;
 
@@ -2038,11 +2037,13 @@ class PostController extends Controller
 
                             $diff_time = $this->postRepository->getTime($reply->created_at);
                             $replys['created_at'] = $diff_time;
-                            $allreplys[] = $replys;
+                            $data['replies'][] = $replys;
+                            unset($reply);
                         }
+                    }else
+                    {
+                        $data['replies'] = [];
                     }
-
-                    $data['replies'][] = $allreplys;
 
                     $data['praise_nums'] = $comment->r_likenum;
 
