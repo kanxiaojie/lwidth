@@ -1918,6 +1918,7 @@ class PostController extends Controller
                     $commentuser =User::where('id',$comment->user_id)->first();
 
                     $commentUserInfo['id'] = $commentuser->id;
+                    $commentUserInfo['openid'] = $commentuser->openid;
                     $commentUserInfo['nickname'] = $commentuser->nickname;
                     $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
                     $data['userInfo'] = $commentUserInfo;

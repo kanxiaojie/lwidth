@@ -652,6 +652,7 @@ class CommentController extends Controller
 
             $user = User::where('id',$comment->user_id)->first();
             $userInfo['id'] = $user->id;
+            $userInfo['openid'] = $user->openid;
             $userInfo['nickname'] = $user->nickname;
             $userInfo['avatarUrl'] =  $user->avatarUrl;
             $userInfo['openid'] =  (isset($user->openid)&&(!empty($user->openid)))?$user->openid:"";
@@ -768,6 +769,7 @@ class CommentController extends Controller
 
                 $replyUser = User::where('id',$reply->user_id)->first();
                 $userInfo['id'] = $replyUser->id;
+                $userInfo['openid'] = $replyUser->openid;
                 $userInfo['nickname'] = $replyUser->nickname;
                 $userInfo['avatarUrl'] = $replyUser->avatarUrl;
                 $userInfo['openid'] =  (isset($replyUser->openid)&&(!empty($replyUser->openid)))?$replyUser->openid:"";
