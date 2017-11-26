@@ -1309,7 +1309,7 @@ class PostController extends Controller
 
         }else
         {
-            return response()->json(['status' => 200,'message' => 'User does not exist']);
+            return response()->json(['status' => 201,'message' => 'User does not exist']);
         }
     }
 
