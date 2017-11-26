@@ -1911,7 +1911,7 @@ class PostController extends Controller
 
         $objectUserInfo = [];
 
-        $comments = Comment::where(['post_id' => $id, 'available' => 1])->orderBy('created_at','desc')->get();
+        $comments = Comment::where(['post_id' => $id, 'available' => 1])->orderBy('created_at','desc')->paginate(PostRepository::pagesize);
         
         if(empty($wesecret))
         {
