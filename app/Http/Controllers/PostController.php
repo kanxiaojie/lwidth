@@ -1940,6 +1940,7 @@ class PostController extends Controller
                     {
                         foreach ($replies as $reply)
                         {
+                            $replys = [];
                             $replys['id'] = $reply->id;
                             $replys['content'] = $reply->content;
 
@@ -1959,7 +1960,7 @@ class PostController extends Controller
                             $diff_time = $this->postRepository->getTime($reply->created_at);
                             $replys['created_at'] = $diff_time;
                             $allreplys[] = $replys;
-                            unset($reply);
+
                         }
                     }
 
@@ -2009,6 +2010,7 @@ class PostController extends Controller
                     {
                         foreach ($replies as $reply)
                         {
+                            $replys = [];
                             $replys['id'] = $reply->id;
                             $replys['content'] = $reply->content;
 
@@ -2037,7 +2039,6 @@ class PostController extends Controller
                             $diff_time = $this->postRepository->getTime($reply->created_at);
                             $replys['created_at'] = $diff_time;
                             $allreplys[] = $replys;
-                            unset($reply);
                         }
                     }
 
