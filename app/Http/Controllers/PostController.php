@@ -1908,7 +1908,7 @@ class PostController extends Controller
 
         $commentUserInfo = array();
         $replyUserInfo = array();
-        $replys = [];
+
         $objectUserInfo = [];
 
         $comments = Comment::where(['post_id' => $id, 'available' => 1])->orderBy('created_at','desc')->paginate(PostRepository::pagesize);
@@ -1919,6 +1919,7 @@ class PostController extends Controller
             {
                 foreach ($comments as $comment)
                 {
+                    $replys = [];
                     $data['id'] =  $comment->id;
                     $data['content'] = $comment->content;
                     $commentuser =User::where('id',$comment->user_id)->first();
@@ -1939,7 +1940,6 @@ class PostController extends Controller
                     {
                         foreach ($replies as $reply)
                         {
-                            $replys = [];
                             $replys['id'] = $reply->id;
                             $replys['content'] = $reply->content;
 
@@ -1988,6 +1988,7 @@ class PostController extends Controller
             {
                 foreach ($comments as $comment)
                 {
+                    $replys = [];
                     $data['id'] =  $comment->id;
                     $data['content'] = $comment->content;
                     $commentuser =User::where('id',$comment->user_id)->first();
@@ -2008,7 +2009,6 @@ class PostController extends Controller
                     {
                         foreach ($replies as $reply)
                         {
-                            $replys = [];
                             $replys['id'] = $reply->id;
                             $replys['content'] = $reply->content;
 
