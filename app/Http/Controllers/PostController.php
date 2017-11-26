@@ -1939,6 +1939,7 @@ class PostController extends Controller
                     {
                         foreach ($replies as $reply)
                         {
+                            $replys = [];
                             $replys['id'] = $reply->id;
                             $replys['content'] = $reply->content;
 
@@ -2002,11 +2003,12 @@ class PostController extends Controller
 
                     $data['reply_nums'] = $comment->r_commentnum;
                     $replies = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])
-                        ->orderBy('created_at','desc')->get();
+                        ->orderBy('created_at','desc')->limit(3)->get();
                     if(count($replies))
                     {
                         foreach ($replies as $reply)
                         {
+                            $replys = [];
                             $replys['id'] = $reply->id;
                             $replys['content'] = $reply->content;
 
