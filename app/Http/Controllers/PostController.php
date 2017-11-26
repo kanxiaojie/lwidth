@@ -1919,7 +1919,7 @@ class PostController extends Controller
             {
                 foreach ($comments as $comment)
                 {
-                    $replys = [];
+                    $allreplys = [];
                     $data['id'] =  $comment->id;
                     $data['content'] = $comment->content;
                     $commentuser =User::where('id',$comment->user_id)->first();
@@ -1958,13 +1958,12 @@ class PostController extends Controller
 
                             $diff_time = $this->postRepository->getTime($reply->created_at);
                             $replys['created_at'] = $diff_time;
-                            $data['replies'][] = $replys;
+                            $allreplys[] = $replys;
                             unset($reply);
                         }
-                    }else
-                    {
-                        $data['replies'] = [];
                     }
+
+                    $data['replies'][] = $allreplys;
 
                     $data['praise_nums'] = $comment->r_likenum;
 
@@ -1989,7 +1988,7 @@ class PostController extends Controller
             {
                 foreach ($comments as $comment)
                 {
-                    $replys = [];
+                    $allreplys = [];
                     $data['id'] =  $comment->id;
                     $data['content'] = $comment->content;
                     $commentuser =User::where('id',$comment->user_id)->first();
@@ -2005,7 +2004,7 @@ class PostController extends Controller
 
                     $data['reply_nums'] = $comment->r_commentnum;
                     $replies = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])
-                        ->orderBy('created_at','desc')->limit(3)->get();
+                        ->orderBy('created_at','desc')->get();
                     if(count($replies))
                     {
                         foreach ($replies as $reply)
@@ -2037,13 +2036,12 @@ class PostController extends Controller
 
                             $diff_time = $this->postRepository->getTime($reply->created_at);
                             $replys['created_at'] = $diff_time;
-                            $data['replies'][] = $replys;
+                            $allreplys[] = $replys;
                             unset($reply);
                         }
-                    }else
-                    {
-                        $data['replies'] = [];
                     }
+
+                    $data['replies'][] = $allreplys;
 
                     $data['praise_nums'] = $comment->r_likenum;
 
