@@ -49,6 +49,7 @@ class WeixinController extends Controller
         curl_setopt($ch, CURLOPT_URL, "https://api.weixin.qq.com/sns/jscode2session?appid=".$appid."&secret=".$secretid."&js_code=".$code."&grant_type=authorization_code");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
         $output = curl_exec($ch);
         $output = json_decode($output,TRUE);
 

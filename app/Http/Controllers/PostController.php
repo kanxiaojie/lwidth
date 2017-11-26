@@ -1279,6 +1279,11 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 发布表白墙
+     */
     public function publishPost(Request $request)
     {
         $inputs = $request->all();
@@ -2199,38 +2204,11 @@ class PostController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 获取帖子,根据type区分
+     */
     public function getLoves(Request $request)
     {   
         $wesecret = $request->get('wesecret');
@@ -2247,40 +2225,40 @@ class PostController extends Controller
         switch ($type) 
         {
             case 'newLoves': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'created_at');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_ONE, 'created_at');
                 break;
             case 'hotLoves': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_ONE, 'commentnum');
                 break;
             case 'topLoves':
-                $posts = $this->postRepository->getNewLoves($search, $user, 1, 'commentnum');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_ONE, 'commentnum');
                 break;
             case 'newActivities': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'created_at');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_TWO, 'created_at');
                 break;
             case 'hotActivities': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_TWO, 'commentnum');
                 break;
             case 'topActivities':
-                $posts = $this->postRepository->getNewLoves($search, $user, 2, 'commentnum');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_TWO, 'commentnum');
                 break;
             case 'newQuestions': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'created_at');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_THREE, 'created_at');
                 break;
             case 'hotQuestions': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_THREE, 'commentnum');
                 break;
             case 'topQuestions':
-                $posts = $this->postRepository->getNewLoves($search, $user, 3, 'commentnum');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_THREE, 'commentnum');
                 break;
             case 'goods': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 4, 'created_at');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_FOUR, 'created_at');
                 break;
             case 'complaints': 
-                $posts = $this->postRepository->getNewLoves($search, $user, 5, 'created_at');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_FIVE, 'created_at');
                 break;
             case 'jobs':
-                $posts = $this->postRepository->getNewLoves($search, $user, 6, 'created_at');
+                $posts = $this->postRepository->getNewLoves($search, $user, PostRepository::POSTINGTYPE_SIX, 'created_at');
                 break;
             
             case 'commentLoves':
@@ -2299,7 +2277,7 @@ class PostController extends Controller
 
         $datas = [];
 
-        if(empty($posts))
+        if(!count($posts))
         {
             $datas = [];
         }

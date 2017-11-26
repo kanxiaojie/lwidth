@@ -16,6 +16,15 @@ use App\Praise;
 
 class PostRepository
 {
+    const pagesize = 15;
+
+    const POSTINGTYPE_ONE = 1;//表白
+    const POSTINGTYPE_TWO = 2;
+    const POSTINGTYPE_THREE = 3;
+    const POSTINGTYPE_FOUR = 4;
+    const POSTINGTYPE_FIVE = 5;
+    const POSTINGTYPE_SIX = 6;
+
     protected $post;
 
     public function __construct(
@@ -30,7 +39,7 @@ class PostRepository
         $userIds = User::where('college_id',$user->college_id)->pluck('id')->toArray();
 
         $posts = $this->post->whereIn('user_id',$userIds)->whereIn('visiable',[0,1,2,3])
-            ->orWhere('user_id',$user->id)->where('visiable',4)->orderBy($orderby,$direction)->paginate(15);
+            ->orWhere('user_id',$user->id)->where('visiable',4)->orderBy($orderby,$direction)->paginate(self::pagesize);
 
         return $posts;
     }
@@ -42,12 +51,6 @@ class PostRepository
         return $posts;
     }
 
-    // public function getMyLoves($user, $orderby = 'created_at', $direction = 'desc')
-    // {
-    //     $posts = $this->post->where('user_id',$user->id)->orderBy($orderby,$direction)->get();
-
-    //     return $posts;
-    // }
 
     public function getGenderPosts($gender,$search = null, $orderby = 'created_at', $direction = 'desc')
     {
@@ -76,7 +79,7 @@ class PostRepository
                 }
             })
             ->whereIn('user_id',$userIds)
-            ->orderBy($orderby,$direction)->paginate(15);
+            ->orderBy($orderby,$direction)->paginate(self::pagesize);
 
         return $posts;
     }
@@ -105,22 +108,20 @@ class PostRepository
                             ->orWhere('content','LIKE','%'.$search.'%')
                         ;
                     }
-                })->orderBy($orderby,$direction)->paginate(15);
+                })->orderBy($orderby,$direction)->paginate(self::pagesize);
 
         return $posts;
     }
 
 
-
-
-
-
-
-
-
-
-
-
+    /**
+     * @param null $search
+     * @param null $user
+     * @param $postingType_id 1：表白
+     * @param $orderby
+     * @param string $direction
+     * @return mixed
+     */
     public function getNewLoves($search = null, $user = null, $postingType_id, $orderby, $direction = 'desc')
     {
         if (!empty($user) && !empty($user->college_id) && $user->interest_id > 1) {
@@ -150,7 +151,7 @@ class PostRepository
                             })
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
-                })->where(['postingType_id' => $postingType_id, $interest_name => $interest_value])->orderBy($orderby,$direction)->paginate(15);
+                })->where(['postingType_id' => $postingType_id, $interest_name => $interest_value])->orderBy($orderby,$direction)->paginate(self::pagesize);
 
             return $posts;
 
@@ -170,15 +171,22 @@ class PostRepository
                             })
                             ->orWhere('content','LIKE','%'.$search.'%');
                     }
-                })->where('postingType_id', $postingType_id)->orderBy($orderby,$direction)->paginate(15);
+                })->where('postingType_id', $postingType_id)->orderBy($orderby,$direction)->paginate(self::pagesize);
 
             return $posts;
         }
         
     }
-    
-    
-   
+
+
+    /**
+     * @param null $search
+     * @param null $user
+     * @param string $orderby
+     * @param string $direction
+     * @return mixed
+     * @name 自己评论过的帖子
+     */
     public function getCommentLoves($search = null, $user = null, $orderby = 'created_at', $direction = 'desc')
     {
         $postIds = Comment::where('user_id',$user->id)->pluck('post_id');
@@ -200,10 +208,19 @@ class PostRepository
                     }
                 })
                 ->whereIn('id',$postIds)
-                ->orderBy($orderby,$direction)->paginate(15);
+                ->orderBy($orderby,$direction)->paginate(self::pagesize);
 
         return $posts;
     }
+
+    /**
+     * @param null $search
+     * @param null $user
+     * @param string $orderby
+     * @param string $direction
+     * @return mixed
+     * @name 获取我点赞过的帖子
+     */
     public function getPraiseLoves($search = null, $user = null, $orderby = 'created_at', $direction = 'desc')
     {
         $postIds = Praise::where('user_id',$user->id)->pluck('post_id');
@@ -225,10 +242,19 @@ class PostRepository
                     }
                 })
                 ->whereIn('id',$postIds)
-                ->orderBy($orderby,$direction)->paginate(15);
+                ->orderBy($orderby,$direction)->paginate(self::pagesize);
 
         return $posts;
     }
+
+    /**
+     * @param null $search
+     * @param null $user
+     * @param string $orderby
+     * @param string $direction
+     * @return mixed
+     * @name 获取我喜欢的帖子
+     */
     public function getMyLoves($search = null, $user = null, $orderby = 'created_at', $direction = 'desc')
     {
         $posts = Post::where(function ($query) use($search){
@@ -248,7 +274,7 @@ class PostRepository
                     }
                 })
                 ->where('user_id', $user->id)
-                ->orderBy($orderby,$direction)->paginate(15);
+                ->orderBy($orderby,$direction)->paginate(self::pagesize);
 
         return $posts;
     }
@@ -419,7 +445,6 @@ class PostRepository
         if(isset($inputs['location']) && !empty($inputs['location']))
         {
             $post->location = implode(',',$inputs['location']);
-//            $post->location = json_decode($inputs['location']);
         }
 
         if(isset($inputs['visiable']) && !empty($inputs['visiable']))
@@ -439,6 +464,11 @@ class PostRepository
         return $post;
     }
 
+    /**
+     * @param $created_at
+     * @return false|string
+     * @name 帖子发表时间
+     */
     public function getTime($created_at)
     {
         $time = strtotime($created_at);
@@ -449,11 +479,11 @@ class PostRepository
 
         $diff = $date*24*60 + $hour*60 + $minute + $second/60;
 
-        if($diff<=0)
+        if($diff<1)
         {
             return '刚刚';
         }
-        elseif (($diff>0) && ($diff<60))
+        elseif (($diff>=1) && ($diff<60))
         {
 
             return round($diff).'分钟前';
