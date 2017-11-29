@@ -2418,7 +2418,9 @@ class PostController extends Controller
 
         }
 
-        return response()->json(['status' => 200,'data' => $datas]);
+        $ip = $request->getClientIp();
+
+        return response()->json(['status' => 200,'data' => $datas,'ip'=>$ip]);
 
     }
 
