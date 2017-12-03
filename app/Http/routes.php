@@ -178,3 +178,5 @@ $app->post('/api/save_private_message','ApiController@savePrivateMessage');
 $app->get('/api/get_private_message','ApiController@getPrivateMessage');
 
 //电台
+$app->get('/api/get_radio/list','ApiController@getRadioList');
+

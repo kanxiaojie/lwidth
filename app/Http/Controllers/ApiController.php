@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PrivateChat;
+use App\Models\RadioStationInfo;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -170,6 +171,35 @@ class ApiController extends Controller
             ];
         }
 
+    }
+
+    /**
+     * @param Request $request
+     * @name 获取电台列表
+     */
+    public function getRadioList(Request $request)
+    {
+        $datas = [];
+        $radiolists = RadioStationInfo::find()->orderBy(['upload_time' => SORT_DESC])->paginate(10);
+        if ($radiolists){
+            foreach ($radiolists as $radiolist){
+                $data = [];
+                $data['id'] = $radiolist->id;
+                $data['title'] = $radiolist->title;
+                $data['author'] = $radiolist->author;
+                $data['upload_time'] = !empty($radiolist->upload_time)?date('Y-m-d',$radiolist->upload_time):'';
+                $data['url'] = $radiolist->url;
+                $data['duration'] = $radiolist->duration;
+                $data['praise_number'] = $radiolist->praise_number;
+                $data['play_number'] = $radiolist->play_number;
+                $datas[] = $data;
+            }
+        }
+
+        return [
+            'code' => 200,
+            'data' => $datas
+        ];
     }
 
 
