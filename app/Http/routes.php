@@ -170,4 +170,11 @@ $app->post('/admin/login','AdminUserController@login');
 //校园生活墙订阅号
 //验证微信服务器
 $app->get('/api/subscribe/init', 'WeixinController@subscribe_init');
+$app->get('/api/getip', 'PostController@getip');
 
+
+//私信
+$app->post('/api/save_private_message','ApiController@savePrivateMessage');
+$app->get('/api/get_private_message','ApiController@getPrivateMessage');
+
+//电台
