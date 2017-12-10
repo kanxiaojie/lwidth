@@ -192,6 +192,10 @@ class ApiController extends Controller
                 $data['duration'] = $radiolist->duration;
                 $data['praise_number'] = $radiolist->praise_number;
                 $data['play_number'] = $radiolist->play_number;
+                $data['img_url'] = $radiolist->img_url;
+                $data['article_author'] = $radiolist->article_author;
+                $data['article_content'] = $radiolist->article_content;
+                $data['article_remark'] = $radiolist->article_remark;
                 $datas[] = $data;
             }
         }
