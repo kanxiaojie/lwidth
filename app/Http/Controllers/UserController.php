@@ -914,4 +914,253 @@ class UserController extends Controller
             return response()->json(['status' => 201,'message' => 'User does not exist']);
         }
     }
+
+
+
+
+
+
+
+    // 后台管理api-------------------------------------------------------------------------------------------------------------------------------------------
+    
+    public function getUsers(Request $request)
+    {
+        $users = User::where('role', 1)->where('trust', '>', -1)->paginate(10);
+        $allUsers = User::where('role', 1)->where('trust', '>', -1)->get();
+        $dataLength = count($allUsers);
+        $datas = [];
+        foreach ($users as $user) {
+            $userInfo = [];
+            $updateUser = $user;
+            $userInfo['id'] = $updateUser->id ;
+            // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
+            $userInfo['praise_nums'] = $updateUser->praiseNums;
+            $userInfo['nickname'] = $updateUser->nickname ;
+            $userInfo['avatarUrl'] = $updateUser->avatarUrl ;
+            $userInfo['background_image'] = 'http://lifecdn.collhome.com/user_background_image.jpg';
+            $userInfo['gender_id'] = $updateUser->gender_id;
+            if ($updateUser->gender_id == 1)
+            {
+                $userInfo['gender_name'] = "男";
+            }elseif($updateUser->gender_id == 2)
+            {
+                $userInfo['gender_name'] = "女";
+            }else
+            {
+                $userInfo['gender_name'] = "";
+            }
+            if(!empty($updateUser->pictures))
+            {
+                if(substr(trim($updateUser->pictures),-1) == ',')
+                {
+                    $userInfo['pictures'] = explode(',',$updateUser->pictures);
+                }else
+                {
+                    $userInfo['pictures'] = explode(',',$updateUser->pictures);
+                }
+            }
+            else
+            {
+                $userInfo['pictures'] = [];
+            }
+            if($updateUser->province_id)
+            {
+                $userInfo['province'] = $updateUser->province_id;
+            }
+            else
+            {
+                $userInfo['province'] = "";
+            }
+            if($updateUser->city_id)
+            {
+                $userInfo['city'] = $updateUser->city_id;
+            }
+            else
+            {
+                $userInfo['city'] = "";
+            }
+            if($updateUser->country_id)
+            {
+                $userInfo['country'] = $updateUser->country_id;
+            }
+            else
+            {
+                $userInfo['country'] = "中国";
+            }
+            if($updateUser->realname)
+            {
+                $userInfo['realname'] = $updateUser->realname;
+            }
+            else
+            {
+                $userInfo['realname'] = '';
+            }
+            if(!$updateUser->college_id)
+            {
+                $userInfo['college_id'] = '';
+                $userInfo['college_name'] = '';
+            }
+            else
+            {
+                $userInfo['college_id'] = $updateUser->college_id;
+                $userInfo['college_name'] = $updateUser->college->name;
+            }
+            if(!$updateUser->interest_id)
+            {
+                $userInfo['interest_id'] = '';
+                $userInfo['interest_name'] = '';
+            }
+            else
+            {
+                $userInfo['interest_id'] = $updateUser->interest_id;
+                $userInfo['interest_name'] = $updateUser->interest->name;
+            }
+            if($updateUser->major)
+            {
+                $userInfo['major'] = $updateUser->major;
+            }
+            else
+            {
+                $userInfo['major'] = '';
+            }
+            if($updateUser->grade)
+            {
+                $userInfo['grade'] = $updateUser->grade;
+            }
+            else
+            {
+                $userInfo['grade'] = '';
+            }
+            if($updateUser->wechat)
+            {
+                $userInfo['wechat'] = $updateUser->wechat;
+            }else
+            {
+                $userInfo['wechat'] = '';
+            }
+            if($updateUser->QQ)
+            {
+                $userInfo['qq'] = $updateUser->QQ;
+            }else
+            {
+                $userInfo['qq'] = '';
+            }
+            if($updateUser->weibo)
+            {
+                $userInfo['weibo'] = $updateUser->weibo;
+            }else
+            {
+                $userInfo['weibo'] = '';
+            }
+            if($updateUser->phone)
+            {
+                $userInfo['mobilePhone'] = $updateUser->phone;
+            }else
+            {
+                $userInfo['mobilePhone'] = '';
+            }
+            $userInfo['role'] = $updateUser->role;
+            $userInfo['trust'] = $updateUser->trust;
+            $userInfo['available'] = $updateUser->available;
+            $userInfo['disabled_reason'] = $updateUser->disabled_reason;
+            $profile = Profile::where('user_id',$updateUser->id)->first();
+            if($profile->birthday)
+            {
+                $userInfo['birthday'] = $profile->birthday;
+            }
+            else
+            {
+                $userInfo['birthday'] = '';
+            }
+            if($profile->height)
+            {
+                $userInfo['height'] = $profile->height;
+            }
+            else
+            {
+                $userInfo['height'] = '';
+            }
+            if($profile->weight)
+            {
+                $userInfo['weight'] = $profile->weight;
+            }
+            else
+            {
+                $userInfo['weight'] = '';
+            }
+            if($profile->hometown)
+            {
+                $userInfo['hometown'] = $profile->hometown;
+            }
+            else
+            {
+                $userInfo['hometown'] = '';
+            }
+            if($profile->signature)
+            {
+                $userInfo['signature'] = $profile->signature;
+            }
+            else
+            {
+                $userInfo['signature'] = '';
+            }
+            if($profile->character)
+            {
+                $userInfo['character'] = $profile->character;
+            }
+            else
+            {
+                $userInfo['character'] = '';
+            }
+            if($profile->hobby)
+            {
+                $userInfo['hobby'] = $profile->hobby;
+            }
+            else
+            {
+                $userInfo['hobby'] = '';
+            }
+            if($profile->love_history)
+            {
+                $userInfo['love_history'] = $profile->love_history;
+            }
+            else
+            {
+                $userInfo['love_history'] = '';
+            }
+            if($profile->love_selecting)
+            {
+                $userInfo['love_selecting'] = $profile->love_selecting;
+            }
+            else
+            {
+                $userInfo['love_selecting'] = '';
+            }
+            if($profile->age)
+            {
+                $userInfo['age'] = $profile->age;
+            }else
+            {
+                $userInfo['age'] = '';
+            }
+            $userInfo['constellation'] = $profile->constellation;
+           
+            
+            $datas[] = $userInfo;
+        }
+        return response()->json(['status'=>200,'data'=>$datas, 'dataLength' => $dataLength]);
+        
+    }
+    public function editUser(Request $request) {
+        $params = $request->get('params');
+        $user = User::find($params['id']);
+        $user->trust = $params['trust'];
+        $user->available = $params['available'];
+        $user->disabled_reason = $params['disabled_reason'];
+        $user->save();
+        
+        return response()->json(['status'=>200,'user_id'=>$user->id]);
+    }
+
+    
 }

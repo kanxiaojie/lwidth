@@ -173,6 +173,10 @@ class ApiController extends Controller
 
     }
 
+
+
+    // 后台管理系统api----------------------------------------------------------------------------------------------------------------------
+    
     /**
      * @param Request $request
      * @name 获取电台列表
@@ -206,6 +210,50 @@ class ApiController extends Controller
             'dataLength' => $dataLength,
             'data' => $datas
         ];
+    }
+
+    public function postRadio(Request $request)
+    {
+        $params = $request->get('params');
+        if (empty($params['id'])) {
+            $radio = new RadioStationInfo();
+        } else {
+            $radio = RadioStationInfo::find($params['id']);
+        }
+
+        $radio->title = $params['title'];
+        $radio->author = $params['author'];
+        $radio->upload_time = $params['upload_time'];
+        $radio->url = $params['url'];
+        $radio->duration = $params['duration'];
+        if(isset($params['praise_number']))
+        {
+            $radio->praise_number = $params['praise_number'];
+        }
+        if(isset($params['play_number']))   
+        {
+            $radio->play_number = $params['play_number'];
+        }
+        $radio->img_url = $params['img_url'];
+        $radio->article_author = $params['article_author'];
+        $radio->article_content = $params['article_content'];
+        $radio->article_content = $params['article_content'];
+        $radio->article_remark = $params['article_remark'];
+        $radio->save();
+        
+        $radio_id = $radio->id;
+        return response()->json(['status' => 200,'radio_id' => $radio_id]);
+    }
+    public function deleteRadio(Request $request)
+    {
+        $params = $request->get('params');
+        $radio = RadioStationInfo::find($params['id']);
+        if ($radio) {
+            $radio_id = $radio->id;
+            
+            $radio->delete();
+        }
+        return response()->json(['status' => 200,'radio_id' => $radio_id]);
     }
 
 

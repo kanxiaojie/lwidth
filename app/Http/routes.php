@@ -162,9 +162,44 @@ $app->get('/api/get_availables','SystemNoticeController@get_availables');
 
 
 
-//后台管理API
+
+
+
+
+
+
+//后台管理系统API--------------------------------------------------------------------------------------------------------------
+
+
 //登录接口
 $app->post('/admin/login','AdminUserController@login');
+
+
+//获取所有的系统通知
+$app->get('/api/systemNotices_backsystem','SystemNoticeController@getSystemNotices_backsystem');
+//发布系统通知
+$app->post('/api/systemNotices','SystemNoticeController@postSystemNotices');
+//删除系统通知
+$app->post('/api/delete/systemNotice','SystemNoticeController@deleteSystemNotice');
+//获取所有的相关小程序
+$app->get('/api/relatedApplets','SystemNoticeController@getRelatedApplets');
+//发布相关小程序
+$app->post('/api/relatedApplets','SystemNoticeController@postRelatedApplets');
+//删除相关小程序
+$app->post('/api/delete/relatedApplet','SystemNoticeController@deleteRelatedApplet');
+//获取所有的关于表白墙
+$app->get('/api/aboutLoveWalls','SystemNoticeController@getAboutLoveWalls');
+//发布关于表白墙
+$app->post('/api/aboutLoveWalls','SystemNoticeController@postAboutLoveWalls');
+//删除关于表白墙
+$app->post('/api/delete/aboutLoveWall','SystemNoticeController@deleteAboutLoveWall');
+
+//获取用户的详细信息
+$app->get('/api/users','UserController@getUsers');
+//编辑用户的详细信息
+$app->post('/api/users','UserController@editUser');
+
+
 
 
 //校园生活墙订阅号
@@ -179,4 +214,6 @@ $app->get('/api/get_private_message','ApiController@getPrivateMessage');
 
 //电台
 $app->get('/api/get_radio/list','ApiController@getRadioList');
+$app->post('/api/radios','ApiController@postRadios');
+$app->post('/api/delete/radio','ApiController@deleteRadio');
 
