@@ -181,7 +181,7 @@ class ApiController extends Controller
     {
         $datas = [];
         $dataLength = RadioStationInfo::all()->count();
-        $radiolists = RadioStationInfo::find()->orderBy(['upload_time' => SORT_DESC])->paginate(10);
+        $radiolists = RadioStationInfo::orderBy(['upload_time' => SORT_DESC])->paginate(10);
         if ($radiolists){
             foreach ($radiolists as $radiolist){
                 $data = [];
