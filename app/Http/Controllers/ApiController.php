@@ -183,10 +183,10 @@ class ApiController extends Controller
      */
     public function getRadioList(Request $request)
     {
-        $condition = ' 1=1 ';
+        $condition = '1=1';
         $datas = [];
         $dataLength = RadioStationInfo::all()->count();
-        $radiolists = RadioStationInfo::where($condition)->orderBy(['upload_time' => SORT_DESC])->paginate(10);
+        $radiolists = RadioStationInfo::find()->from(RadioStationInfo::$table_name)->where($condition)->orderBy(['upload_time' => SORT_DESC])->paginate(10);
         if ($radiolists){
             foreach ($radiolists as $radiolist){
                 $data = [];
