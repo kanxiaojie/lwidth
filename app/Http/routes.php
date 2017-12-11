@@ -214,6 +214,6 @@ $app->get('/api/get_private_message','ApiController@getPrivateMessage');
 
 //电台
 $app->get('/api/get_radio/list','ApiController@getRadioList');
-$app->post('/api/radios','ApiController@postRadios');
+$app->post('/api/radios','ApiController@postRadio');
 $app->post('/api/delete/radio','ApiController@deleteRadio');
 
