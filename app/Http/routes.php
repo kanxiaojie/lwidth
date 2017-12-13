@@ -164,6 +164,9 @@ $app->get('/api/get_availables','SystemNoticeController@get_availables');
 
 
 
+//电台
+$app->get('/api/radios','ApiController@getRadios');
+$app->get('/api/radios/{id}','ApiController@getRadio');
 
 
 

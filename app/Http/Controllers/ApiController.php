@@ -173,6 +173,76 @@ class ApiController extends Controller
 
     }
 
+    //电台
+    public function getRadios(Request $request)
+    {
+        $datas = [];
+        $square_imgs = [
+            'http://mmbiz.qpic.cn/mmbiz/wJ1zCBmADTGcvaOfIId1RyZ5QctTGuic7LvsuBR5LSebkuicyN01TKMk7uy2wdiaia2PDZaaWQsZkItI6JC0qPyK7Q/0',
+            'http://mmbiz.qpic.cn/mmbiz/wJ1zCBmADTG51P470aib7ZiburTZ41jdqX8thOo4pibZ5ibiaQaKoGG5bibCDJ5D6Sfxrrgc7G9tW4RdShcmKmuhTXpw/0',
+            'http://mmbiz.qpic.cn/mmbiz/wJ1zCBmADTGS87cogy6cEPmxNqfMsTdCHDxEaLBCTmAmUXicfdlcQxa6P6h8UFoqB98ia0WjVtN8CVACulXHyH0w/0',
+        ];
+        $dataLength = RadioStationInfo::all()->count();
+        $radiolists = RadioStationInfo::orderBy("upload_time", "desc")->paginate(10);
+
+        if ($radiolists){
+            foreach ($radiolists as $radiolist){
+                $data = [];
+                $data['id'] = $radiolist->id;
+                $data['title'] = $radiolist->title;
+                $data['author'] = $radiolist->author;
+                $ut = strval($radiolist->upload_time);
+                $tut = substr($ut,0,4).'-'.substr($ut,4,6).'-'.substr($ut,6,8);
+                $data['upload_time'] = $tut;
+                // $data['url'] = $radiolist->url;
+                $data['duration'] = $radiolist->duration;
+                $data['praise_number'] = $radiolist->praise_number;
+                $data['play_number'] = $radiolist->play_number;
+                $data['img_url'] = $radiolist->img_url;
+                // $data['article_author'] = $radiolist->article_author;
+                // $data['article_content'] = $radiolist->article_content;
+                // $data['article_remark'] = $radiolist->article_remark;
+                $datas[] = $data;
+            }
+        }
+
+        return [
+            'code' => 200,
+            'square_imgs'=> $square_imgs,
+            'dataLength' => $dataLength,
+            'data' => $datas
+        ];
+    }
+
+    public function getRadio(Request $request)
+    {
+        $id = $request->get('id');
+        $radio = RadioStationInfo::find($id);
+        
+        $data = [];
+        if ($radio) {
+            $data['id'] = $radio->id;
+            $data['title'] = $radio->title;
+            $data['author'] = $radio->author;
+            $ut = strval($radio->upload_time);
+            $tut = substr($ut,0,4).'-'.substr($ut,4,6).'-'.substr($ut,6,8);
+            $data['upload_time'] = $tut;
+            $data['url'] = $radio->url;
+            $data['duration'] = $radio->duration;
+            $data['praise_number'] = $radio->praise_number;
+            $data['play_number'] = $radio->play_number;
+            $data['img_url'] = $radio->img_url;
+            $data['article_author'] = $radio->article_author;
+            $data['article_content'] = $radio->article_content;
+            $data['article_remark'] = $radio->article_remark;
+        }
+
+        return [
+            'code' => 200,
+            'data' => $data
+        ];
+    }
+
 
 
     // 后台管理系统api----------------------------------------------------------------------------------------------------------------------
@@ -195,10 +265,10 @@ class ApiController extends Controller
                 $data['id'] = $radiolist->id;
                 $data['title'] = $radiolist->title;
                 $data['author'] = $radiolist->author;
-                // $ut = strval($radiolist->upload_time);
-                // $tut = substr($ut,0,4).'-'.substr($ut,4,6).'-'.substr($ut,6,8);
-                // $data['upload_time'] = $tut;
-                $data['upload_time'] = !empty($radiolist->upload_time)?date('Y-m-d',$radiolist->upload_time):'';
+                $ut = strval($radiolist->upload_time);
+                $tut = substr($ut,0,4).'-'.substr($ut,4,6).'-'.substr($ut,6,8);
+                $data['upload_time'] = $tut;
+                // $data['upload_time'] = !empty($radiolist->upload_time)?date('Y-m-d',$radiolist->upload_time):'';
                 $data['url'] = $radiolist->url;
                 $data['duration'] = $radiolist->duration;
                 $data['praise_number'] = $radiolist->praise_number;
