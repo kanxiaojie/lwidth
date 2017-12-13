@@ -222,9 +222,10 @@ class ApiController extends Controller
         if ($radio) {
             $data['id'] = $radio->id;
             $data['title'] = $radio->title;
+            $data['epname'] = 'FM 80℃ 电台';
             $data['author'] = $radio->author;
             $ut = strval($radio->upload_time);
-            $tut = substr($ut,0,4).'-'.substr($ut,4,6).'-'.substr($ut,6,8);
+            $tut = substr($ut,0,4).'-'.substr($ut,4,2).'-'.substr($ut,6,2);
             $data['upload_time'] = $tut;
             $data['url'] = $radio->url;
             $data['duration'] = $radio->duration;
