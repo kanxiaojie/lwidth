@@ -214,9 +214,8 @@ class ApiController extends Controller
         ];
     }
 
-    public function getRadio(Request $request)
+    public function getRadio(Request $request, $id)
     {
-        $id = $request->get('id');
         $radio = RadioStationInfo::find($id);
         
         $data = [];
