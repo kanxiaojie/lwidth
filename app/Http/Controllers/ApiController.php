@@ -195,10 +195,10 @@ class ApiController extends Controller
                 $data['id'] = $radiolist->id;
                 $data['title'] = $radiolist->title;
                 $data['author'] = $radiolist->author;
-                $ut = strval($radiolist->upload_time);
-                $tut = substr($ut,0,4).'-'.substr($ut,4,6).'-'.substr($ut,6,8);
-                $data['upload_time'] = $tut;
-                // $data['upload_time'] = !empty($radiolist->upload_time)?date('Y-m-d',$radiolist->upload_time):'';
+                // $ut = strval($radiolist->upload_time);
+                // $tut = substr($ut,0,4).'-'.substr($ut,4,6).'-'.substr($ut,6,8);
+                // $data['upload_time'] = $tut;
+                $data['upload_time'] = !empty($radiolist->upload_time)?date('Y-m-d',$radiolist->upload_time):'';
                 $data['url'] = $radiolist->url;
                 $data['duration'] = $radiolist->duration;
                 $data['praise_number'] = $radiolist->praise_number;
