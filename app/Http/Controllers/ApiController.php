@@ -182,6 +182,7 @@ class ApiController extends Controller
             'http://mmbiz.qpic.cn/mmbiz/wJ1zCBmADTG51P470aib7ZiburTZ41jdqX8thOo4pibZ5ibiaQaKoGG5bibCDJ5D6Sfxrrgc7G9tW4RdShcmKmuhTXpw/0',
             'http://mmbiz.qpic.cn/mmbiz/wJ1zCBmADTGS87cogy6cEPmxNqfMsTdCHDxEaLBCTmAmUXicfdlcQxa6P6h8UFoqB98ia0WjVtN8CVACulXHyH0w/0',
         ];
+        $square_title = 'FM 80℃ 电台';
         $dataLength = RadioStationInfo::all()->count();
         $radiolists = RadioStationInfo::orderBy("upload_time", "desc")->paginate(10);
 
@@ -209,6 +210,7 @@ class ApiController extends Controller
         return [
             'code' => 200,
             'square_imgs'=> $square_imgs,
+            'square_title'=> $square_title,
             'dataLength' => $dataLength,
             'data' => $datas
         ];

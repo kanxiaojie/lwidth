@@ -126,6 +126,7 @@ class UserController extends Controller
             $updateUser = $user;
 
             $userInfo['id'] = $updateUser->id ;
+            $userInfo['openid'] = $updateUser->openid ;
             // $userInfo['praise_nums'] = count(PraiseUser::where('praised_user_id',$updateUser->id)->get());
             $userInfo['praise_nums'] = $updateUser->praiseNums;
             $userInfo['nickname'] = $updateUser->nickname ;
