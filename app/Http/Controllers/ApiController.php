@@ -31,11 +31,11 @@ class ApiController extends Controller
      */
     public function savePrivateMessage(Request $request)
     {
-        $wesecret = $request->get('wesecret','');
-        $to_user_id = $request->get('to_user_id','');
-        $content = $request->get('content','');
+        $wesecret = $request->get('wesecret');
+        $to_user_id = $request->get('to_user_id');
+        $content = $request->get('content');
 
-        if (empty($wesecret) || $to_user_id || $content){
+        if (empty($wesecret) || empty($to_user_id) || empty($content)){
             return [
                 'code' => 201,
                 'message' => "wesecret,to_user_id,content其中参数不可为空"
