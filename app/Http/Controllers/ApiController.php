@@ -80,10 +80,10 @@ class ApiController extends Controller
      */
     public function getPrivateMessage(Request $request)
     {
-        $wesecret = $request->get('wesecret','');
-        $type = $request->get('type','');
+        $wesecret = $request->get('wesecret');
+        $type = $request->get('type');
 
-        if (empty($wesecret) || $type){
+        if (empty($wesecret) || empty($type)){
             return [
                 'code' => 201,
                 'message' => "wesecret,type其中参数不可为空"
