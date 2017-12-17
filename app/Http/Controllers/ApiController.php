@@ -98,7 +98,7 @@ class ApiController extends Controller
         $user = $this->userRepository->getUserByOpenId($openid);
         $message = PrivateChat::find($id);
         if ($user->id == $message->to_user_id) {
-            $message->if_read == 1;
+            $message->if_read = 1;
             $message->save();
         }
 
