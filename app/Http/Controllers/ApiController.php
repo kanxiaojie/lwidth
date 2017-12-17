@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PrivateChat;
 use App\Models\RadioStationInfo;
 use App\Repositories\UserRepository;
+use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -12,16 +13,20 @@ class ApiController extends Controller
 {
     const page_size = 15;
     protected $userRepository;
+    protected $postRepository;
+    
     /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct(
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        PostRepository $postRepository
     )
     {
         $this->userRepository = $userRepository;
+        $this->postRepository = $postRepository;
     }
 
     /**
@@ -134,8 +139,11 @@ class ApiController extends Controller
                     }
 
                     $data['content'] = $message->content;
-                    $data['created_at'] = date('Y-m-d H:i:s',$message->created_at);
                     $data['if_read'] = $message->if_read;
+                    
+                    $the_time = date('Y-m-d H:i:s',$message->created_at);
+                    $diff_time = $this->postRepository->getTime($the_time);
+                    $data['created_at'] = $diff_time;
 
                     $datas[] = $data;
                 }
@@ -164,6 +172,12 @@ class ApiController extends Controller
                     $toUserInfo['college_name'] = $to_user->college->name;
                     $data['userInfo'] = $toUserInfo;
 
+                    $data['content'] = $message->content;
+                    $data['if_read'] = $message->if_read;
+                    
+                    $the_time = date('Y-m-d H:i:s',$message->created_at);
+                    $diff_time = $this->postRepository->getTime($the_time);
+                    $data['created_at'] = $diff_time;
 
                     if ($from_user){
                         $data['to_user_info']['id'] = $to_user->id;
