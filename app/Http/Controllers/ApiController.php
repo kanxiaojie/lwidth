@@ -107,6 +107,14 @@ class ApiController extends Controller
                     $data['id'] = $message->id;
                     $data['from_user_id'] = $message->from_user_id;
                     $from_user = $this->userRepository->getUserById($message->from_user_id);
+
+                    $fromUserInfo = [];
+                    $fromUserInfo['id'] = $from_user->id;
+                    $fromUserInfo['openid'] = $from_user->openid;
+                    $fromUserInfo['nickname'] = $from_user->nickname;
+                    $fromUserInfo['avatarUrl'] =  $from_user->avatarUrl;
+                    $data['userInfo'] = $fromUserInfo;
+
                     if ($from_user){
                         $data['from_user_info']['nickname'] = $from_user->nickname;
                         $data['from_user_info']['avatarUrl'] = $from_user->avatarUrl;
@@ -144,6 +152,15 @@ class ApiController extends Controller
                     }
 
                     $to_user = $this->userRepository->getUserById($message->to_user_id);
+
+                    $toUserInfo = [];
+                    $toUserInfo['id'] = $to_user->id;
+                    $toUserInfo['openid'] = $to_user->openid;
+                    $toUserInfo['nickname'] = $to_user->nickname;
+                    $toUserInfo['avatarUrl'] =  $to_user->avatarUrl;
+                    $data['userInfo'] = $toUserInfo;
+
+
                     if ($from_user){
                         $data['to_user_info']['id'] = $to_user->id;
                         $data['to_user_info']['nickname'] = $to_user->nickname;
