@@ -113,7 +113,9 @@ class ApiController extends Controller
                     $fromUserInfo['openid'] = $from_user->openid;
                     $fromUserInfo['nickname'] = $from_user->nickname;
                     $fromUserInfo['avatarUrl'] =  $from_user->avatarUrl;
+                    $fromUserInfo['college_name'] = $from_user->college->name;
                     $data['userInfo'] = $fromUserInfo;
+
 
                     if ($from_user){
                         $data['from_user_info']['nickname'] = $from_user->nickname;
@@ -158,6 +160,7 @@ class ApiController extends Controller
                     $toUserInfo['openid'] = $to_user->openid;
                     $toUserInfo['nickname'] = $to_user->nickname;
                     $toUserInfo['avatarUrl'] =  $to_user->avatarUrl;
+                    $toUserInfo['college_name'] = $to_user->college->name;
                     $data['userInfo'] = $toUserInfo;
 
 
