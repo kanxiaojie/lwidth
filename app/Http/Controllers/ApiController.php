@@ -134,7 +134,8 @@ class ApiController extends Controller
                     }
 
                     $data['content'] = $message->content;
-                    $data['time'] = date('Y-m-d H:i:s',$message->created_at);
+                    $data['created_at'] = date('Y-m-d H:i:s',$message->created_at);
+                    $data['if_read'] = $message->if_read;
 
                     $datas[] = $data;
                 }
@@ -173,7 +174,8 @@ class ApiController extends Controller
                     }
 
                     $data['content'] = $message->content;
-                    $data['time'] = date('Y-m-d H:i:s',$message->created_at);
+                    $data['created_at'] = date('Y-m-d H:i:s',$message->created_at);
+                    $data['if_read'] = $message->if_read;
 
                     $datas[] = $data;
                 }
