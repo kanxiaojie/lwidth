@@ -100,7 +100,7 @@ class ApiController extends Controller
         if ($user){
             $datas = [];
             if ($type == 1){
-                $messages = PrivateChat::where(['from_user_id'=>$user->id])->orderBy(['id' => SORT_DESC])->paginate(self::page_size);
+                $messages = PrivateChat::where('from_user_id', $user->id)->orderBy(['id' => SORT_DESC])->paginate(self::page_size);
 
                 foreach ($messages as $message){
                     $data = [];
@@ -129,7 +129,7 @@ class ApiController extends Controller
                     $datas[] = $data;
                 }
             }elseif($type == 2){
-                $messages = PrivateChat::where(['to_user_id'=>$user->id])->orderBy(['id' => SORT_DESC])->paginate(self::page_size);
+                $messages = PrivateChat::where('to_user_id', $user->id)->orderBy(['id' => SORT_DESC])->paginate(self::page_size);
 
                 foreach ($messages as $message){
                     $data = [];
