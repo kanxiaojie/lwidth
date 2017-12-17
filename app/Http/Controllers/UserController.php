@@ -885,10 +885,10 @@ class UserController extends Controller
                     $data['id'] = $blackUser->id;
                     $data['nickname'] = $blackUser->nickname;
                     $data['avatarUrl'] = $blackUser->avatarUrl;
-                    if (!$blackUser->gender)
+                    if (!$blackUser->gender_id)
                     {
                         $data['gender_name'] = "";
-                    }elseif($blackUser->gender == 1)
+                    }elseif($blackUser->gender_id == 1)
                     {
                         $data['gender_name'] = "男";
                     }else

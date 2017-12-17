@@ -209,7 +209,7 @@ class PraiseController extends Controller
                                         })
                                         ->orWhere('nickname','LIKE','%'.$search.'%')
                                         ->orWhere('realname','LIKE','%'.$search.'%')
-                                        ->orWhere('gender','LIKE','%'.$search_gender.'%');
+                                        ->orWhere('gender_id','LIKE','%'.$search_gender.'%');
                                 }
                             })
                             ->whereIn('id',$praiseUserIds)
@@ -234,10 +234,10 @@ class PraiseController extends Controller
                         $data['college_name'] = "";
                     }
 
-                    if (!$praiseUser->gender)
+                    if (!$praiseUser->gender_id)
                     {
                         $data['gender_name'] = "";
-                    }elseif($praiseUser->gender == 1)
+                    }elseif($praiseUser->gender_id == 1)
                     {
                         $data['gender_name'] = "男";
                     }else

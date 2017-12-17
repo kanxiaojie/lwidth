@@ -100,7 +100,7 @@ class PostRepository
                         $query->whereHas('user',function ($queryUser) use ($search, $search_gender){
                                 $queryUser->where('realname','LIKE','%'.$search.'%')
                                 ->orWhere('nickname','LIKE','%'.$search.'%')
-                                ->orWhere('gender','LIKE','%'.$search_gender.'%');
+                                ->orWhere('gender_id','LIKE','%'.$search_gender.'%');
                             })
                             ->orWhereHas('user.college',function ($queryCollege) use ($search){
                                 $queryCollege->where('name','LIKE','%'.$search.'%');
