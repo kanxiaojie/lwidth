@@ -77,13 +77,44 @@ class ApiController extends Controller
         }
     }
 
+    public function readPrivateMessage(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        $id = $request->get('id');
+
+        if (empty($wesecret) || empty($id)){
+            return [
+                'code' => 201,
+                'message' => "wesecret,id其中参数不可为空"
+            ];
+        }
+
+        try{
+            $openid = Crypt::decrypt($wesecret);
+        }catch (\Exception $exception){
+            return ['status' => 201,'message' => 'wesecret invalid'];
+        }
+
+        $user = $this->userRepository->getUserByOpenId($openid);
+        $message = PrivateChat::find($id);
+        if ($user->id == $message->to_user_id) {
+            $message->if_read == 1;
+            $message->save();
+        }
+
+        return [
+            'code' => 200,
+            'message' => 'save success'
+        ];
+    }
+
     /**
      * @param Request $request
      * @return array
      * @name 获取私信
      * $type 1,发送，2，接收
      */
-    public function getPrivateMessage(Request $request)
+    public function getPrivateMessages(Request $request)
     {
         $wesecret = $request->get('wesecret');
         $type = $request->get('type');
@@ -207,6 +238,35 @@ class ApiController extends Controller
             ];
         }
 
+    }
+
+    public function getUnPrivateMessages(Request $request) {
+        $wesecret = $request->get('wesecret');
+
+        if (empty($wesecret)){
+            return [
+                'code' => 201,
+                'message' => "wesecret其中参数不可为空"
+            ];
+        }
+
+        try{
+            $openid = Crypt::decrypt($wesecret);
+        }catch (\Exception $exception){
+            return ['status' => 201,'message' => 'wesecret invalid'];
+        }
+
+        $user = $this->userRepository->getUserByOpenId($openid);
+        if ($user){
+            $unreadMessages = PrivateChat::where('to_user_id', $user->id)->get()->count();
+        } else {
+            $unreadMessages = 0;
+        }
+
+        return [
+            'code' => 200,
+            'unreadMessages' => $unreadMessages
+        ];
     }
 
     //电台
