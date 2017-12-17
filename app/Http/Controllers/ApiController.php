@@ -258,7 +258,7 @@ class ApiController extends Controller
 
         $user = $this->userRepository->getUserByOpenId($openid);
         if ($user){
-            $unreadMessages = PrivateChat::where('to_user_id', $user->id)->get()->count();
+            $unreadMessages = PrivateChat::where(['to_user_id' => $user->id, 'if_read' => 1])->get()->count();
         } else {
             $unreadMessages = 0;
         }
