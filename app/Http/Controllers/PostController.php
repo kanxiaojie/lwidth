@@ -1932,7 +1932,8 @@ class PostController extends Controller
                     $diff_time = $this->postRepository->getTime($comment->created_at);
                     $data['created_at'] = $diff_time;
 
-                    $data['reply_nums'] = $comment->r_commentnum;
+                    // $data['reply_nums'] = $comment->r_commentnum;
+                    $data['reply_nums'] = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])->get()->count();
                     $replies = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])
                         ->orderBy('created_at','desc')->limit(3)->get();
                     $data['replies'] = [];
@@ -2000,7 +2001,8 @@ class PostController extends Controller
                     $diff_time = $this->postRepository->getTime($comment->created_at);
                     $data['created_at'] = $diff_time;
 
-                    $data['reply_nums'] = $comment->r_commentnum;
+                    // $data['reply_nums'] = $comment->r_commentnum;
+                    $data['reply_nums'] = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])->get()->count();
                     $replies = CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])
                         ->orderBy('created_at','desc')->limit(3)->get();
                     $data['replies'] = [];
@@ -2359,7 +2361,8 @@ class PostController extends Controller
                     }
                     if($post->commentnum)
                     {
-                        $data['comment_nums'] = $post->commentnum;
+                        // $data['comment_nums'] = $post->commentnum;
+                        $data['comment_nums'] = Comment::where('post_id',$post->id)->get()->count();
                     }
                     else
                     {
