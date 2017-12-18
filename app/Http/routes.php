@@ -128,6 +128,8 @@ $app->get('/api/systemNotices','SystemNoticeController@getSystemNotices');
 
 //标注评论/回复已读
 $app->post('/api/read/notice','NoticeController@labelRead');
+//提醒全部已读
+$app->post('/api/read_all/notices','NoticeController@read_all_notices');
 
 //标注系统通知已读
 $app->post('/api/read/systemNotice','SystemNoticeController@labelRead');
@@ -156,6 +158,25 @@ $app->get('/api/cities/{id}/colleges','ExampleController@getColleges');
 $app->get('/api/interests', 'ExampleController@getInterests');
 $app->get('/api/postingTypes', 'ExampleController@getPostingTypes');
 
+
+
+//电台
+$app->get('/api/radios','ApiController@getRadios');
+$app->get('/api/radios/{id}','ApiController@getRadio');
+
+
+//私信
+$app->get('/api/unreadMessages','ApiController@getUnPrivateMessages');
+$app->post('/api/save_private_message','ApiController@savePrivateMessage');
+$app->get('/api/get_private_messages','ApiController@getPrivateMessages');
+$app->post('/api/read/private_message','ApiController@readPrivateMessage');
+
+
+
+
+
+
+
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');
 $app->get('/api/get_availables','SystemNoticeController@get_availables');
@@ -163,10 +184,6 @@ $app->get('/api/get_availables','SystemNoticeController@get_availables');
 
 
 
-
-//电台
-$app->get('/api/radios','ApiController@getRadios');
-$app->get('/api/radios/{id}','ApiController@getRadio');
 
 
 
@@ -203,6 +220,13 @@ $app->get('/api/users','UserController@getUsers');
 $app->post('/api/back/users','UserController@editUser');
 
 
+//电台
+$app->get('/api/get_radio/list','ApiController@getRadioList');
+$app->post('/api/radios','ApiController@postRadio');
+$app->post('/api/delete/radio','ApiController@deleteRadio');
+
+
+
 
 
 //校园生活墙订阅号
@@ -211,16 +235,9 @@ $app->get('/api/subscribe/init', 'WeixinController@subscribe_init');
 $app->get('/api/getip', 'PostController@getip');
 
 
-//私信
-$app->get('/api/unreadMessages','ApiController@getUnPrivateMessages');
-$app->post('/api/save_private_message','ApiController@savePrivateMessage');
-$app->get('/api/get_private_messages','ApiController@getPrivateMessages');
-$app->post('/api/read/private_message','ApiController@readPrivateMessage');
 
 
 
-//电台
-$app->get('/api/get_radio/list','ApiController@getRadioList');
-$app->post('/api/radios','ApiController@postRadio');
-$app->post('/api/delete/radio','ApiController@deleteRadio');
+
+
 

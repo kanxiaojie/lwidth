@@ -211,4 +211,27 @@ class NoticeController extends Controller
         }
     }
 
+    public function read_all_notices(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+        // $source_id = $request->get('source_id');
+        // $source_type = $request->get('source_type');
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if($user)
+        {
+            $sql = 'update notices set if_read=1 WHERE objectUser_id=?';
+            DB::update($sql,[$user->id]);
+
+            return response()->json(['status' => 200,'message'=>'success']);
+        }
+        else
+        {
+        return response()->json(['status'=>201,'message' => 'User Does Not Exist.']);
+        }
+    }
+    
+
 }
