@@ -394,7 +394,8 @@ class UserRepository
                                     ->orWhere('gender','LIKE','%'.$search_gender.'%');
                             }
                         })
-                        
+                        ->where(['available' => 1, 'pictureOnWall' => 1, 'role' => 1])
+                        ->where('college_id', '<>', null)
                         ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(15);
 
         return $users;
