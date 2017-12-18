@@ -661,7 +661,8 @@ class CommentController extends Controller
             $diff_time = $this->postRepository->getTime($comment->created_at);
             $data['created_at'] = $diff_time;
 
-            $data['reply_nums'] = $comment->r_commentnum;
+            // $data['reply_nums'] = $comment->r_commentnum;
+            CommentToComment::where('comment_id',$comment->id)->get()->count();
             $data['praise_nums'] = $comment->r_likenum;
             if(empty($wesecret))
             {
