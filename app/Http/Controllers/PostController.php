@@ -2362,7 +2362,7 @@ class PostController extends Controller
                     if($post->commentnum)
                     {
                         // $data['comment_nums'] = $post->commentnum;
-                        $data['comment_nums'] = Comment::where('post_id',$post->id)->get()->count();
+                        $data['comment_nums'] = Comment::where(['post_id' => $post->id, 'available' => 1])->get()->count();
                     }
                     else
                     {
@@ -2497,7 +2497,7 @@ class PostController extends Controller
         if($post->commentnum)
         {
             // $data['comment_nums'] = $post->commentnum;
-            $data['comment_nums'] = Comment::where('post_id',$post->id)->get()->count();
+            $data['comment_nums'] = Comment::where(['post_id' => $post->id, 'available' => 1])->get()->count();
         }
         else
         {

@@ -662,7 +662,7 @@ class CommentController extends Controller
             $data['created_at'] = $diff_time;
 
             // $data['reply_nums'] = $comment->r_commentnum;
-            CommentToComment::where('comment_id',$comment->id)->get()->count();
+            CommentToComment::where(['comment_id' => $comment->id, 'available' => 1])->get()->count();
             $data['praise_nums'] = $comment->r_likenum;
             if(empty($wesecret))
             {
