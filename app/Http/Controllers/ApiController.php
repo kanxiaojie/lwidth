@@ -8,6 +8,7 @@ use App\Repositories\UserRepository;
 use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
