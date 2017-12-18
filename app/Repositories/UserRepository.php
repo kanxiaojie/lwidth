@@ -395,7 +395,7 @@ class UserRepository
                             }
                         })
                         ->where(['available' => 1, 'pictureOnWall' => 1, 'role' => 1])
-                        ->where('college_id', '<>', null)
+                        ->where('college_id', '<>', '')
                         ->orderBy('praiseNums', 'desc')->orderBy('created_at', 'desc')->paginate(15);
 
         return $users;
