@@ -108,6 +108,52 @@ class ApiController extends Controller
         ];
     }
 
+    public function readAllPrivateMessages(Request $request)
+    {
+        $wesecret = $request->get('wesecret');
+
+        if (empty($wesecret)){
+            return [
+                'code' => 201,
+                'message' => "wesecret其中参数不可为空"
+            ];
+        }
+
+        try{
+            $openid = Crypt::decrypt($wesecret);
+        }catch (\Exception $exception){
+            return ['status' => 201,'message' => 'wesecret invalid'];
+        }
+
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        if($user)
+        {
+            $sql = 'update private_chat_log set if_read=1 WHERE to_user_id=?';
+            DB::update($sql,[$user->id]);
+
+            return response()->json(['status' => 200,'message'=>'success']);
+        }
+        else
+        {
+        return response()->json(['status'=>201,'message' => 'User Does Not Exist.']);
+        }
+
+
+        // $message = PrivateChat::find($id);
+        // if ($user->id == $message->to_user_id) {
+        //     $message->if_read = 1;
+        //     $message->save();
+        // }
+
+        // return [
+        //     'code' => 200,
+        //     'message' => 'save success'
+        // ];
+    }
+
+    
+
     /**
      * @param Request $request
      * @return array

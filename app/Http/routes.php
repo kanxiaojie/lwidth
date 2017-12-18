@@ -170,6 +170,7 @@ $app->get('/api/unreadMessages','ApiController@getUnPrivateMessages');
 $app->post('/api/save_private_message','ApiController@savePrivateMessage');
 $app->get('/api/get_private_messages','ApiController@getPrivateMessages');
 $app->post('/api/read/private_message','ApiController@readPrivateMessage');
+$app->post('/api/read_all/private_messages','ApiController@readAllPrivateMessages');
 
 
 
