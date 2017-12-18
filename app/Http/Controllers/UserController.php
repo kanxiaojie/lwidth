@@ -723,7 +723,7 @@ class UserController extends Controller
         {
             foreach ($users as $user)
             {
-                if($user->available == 1 && $user->pictureOnWall == 1 && $user->role == 1)
+                if($user->available == 1 && $user->pictureOnWall == 1 && $user->role == 1 && !empty($user->college_id))
                 {
                     if (!empty($user->pictures) || !empty($user->avatarUrl)) {
                         $data = [];       
