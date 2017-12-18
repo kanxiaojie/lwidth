@@ -136,7 +136,7 @@ class ApiController extends Controller
         if ($user){
             $datas = [];
             if ($type == 1){
-                $messages = PrivateChat::where('from_user_id', $user->id)->orderBy('id', 'desc')->paginate(self::page_size);
+                $messages = PrivateChat::where('to_user_id', $user->id)->orderBy('id', 'desc')->paginate(self::page_size);
 
                 foreach ($messages as $message){
                     $data = [];
@@ -153,21 +153,21 @@ class ApiController extends Controller
                     $data['userInfo'] = $fromUserInfo;
 
 
-                    if ($from_user){
-                        $data['from_user_info']['nickname'] = $from_user->nickname;
-                        $data['from_user_info']['avatarUrl'] = $from_user->avatarUrl;
-                    }else{
-                        $data['from_user_info'] = [];
-                    }
+                    // if ($from_user){
+                    //     $data['from_user_info']['nickname'] = $from_user->nickname;
+                    //     $data['from_user_info']['avatarUrl'] = $from_user->avatarUrl;
+                    // }else{
+                    //     $data['from_user_info'] = [];
+                    // }
 
-                    $to_user = $this->userRepository->getUserById($message->to_user_id);
-                    if ($from_user){
-                        $data['to_user_info']['id'] = $to_user->id;
-                        $data['to_user_info']['nickname'] = $to_user->nickname;
-                        $data['to_user_info']['avatarUrl'] = $to_user->avatarUrl;
-                    }else{
-                        $data['to_user_info'] = [];
-                    }
+                    // $to_user = $this->userRepository->getUserById($message->to_user_id);
+                    // if ($from_user){
+                    //     $data['to_user_info']['id'] = $to_user->id;
+                    //     $data['to_user_info']['nickname'] = $to_user->nickname;
+                    //     $data['to_user_info']['avatarUrl'] = $to_user->avatarUrl;
+                    // }else{
+                    //     $data['to_user_info'] = [];
+                    // }
 
                     $data['content'] = $message->content;
                     $data['if_read'] = $message->if_read;
@@ -179,19 +179,19 @@ class ApiController extends Controller
                     $datas[] = $data;
                 }
             }elseif($type == 2){
-                $messages = PrivateChat::where('to_user_id', $user->id)->orderBy('id', 'desc')->paginate(self::page_size);
+                $messages = PrivateChat::where('from_user_id', $user->id)->orderBy('id', 'desc')->paginate(self::page_size);
 
                 foreach ($messages as $message){
                     $data = [];
                     $data['id'] = $message->id;
-                    $data['from_user_id'] = $message->from_user_id;
-                    $from_user = $this->userRepository->getUserById($message->from_user_id);
-                    if ($from_user){
-                        $data['from_user_info']['nickname'] = $from_user->nickname;
-                        $data['from_user_info']['avatarUrl'] = $from_user->avatarUrl;
-                    }else{
-                        $data['from_user_info'] = [];
-                    }
+                    $data['to_user_id'] = $message->to_user_id;
+                    // $from_user = $this->userRepository->getUserById($message->from_user_id);
+                    // if ($from_user){
+                    //     $data['from_user_info']['nickname'] = $from_user->nickname;
+                    //     $data['from_user_info']['avatarUrl'] = $from_user->avatarUrl;
+                    // }else{
+                    //     $data['from_user_info'] = [];
+                    // }
 
                     $to_user = $this->userRepository->getUserById($message->to_user_id);
 
@@ -210,17 +210,17 @@ class ApiController extends Controller
                     $diff_time = $this->postRepository->getTime($the_time);
                     $data['created_at'] = $diff_time;
 
-                    if ($from_user){
-                        $data['to_user_info']['id'] = $to_user->id;
-                        $data['to_user_info']['nickname'] = $to_user->nickname;
-                        $data['to_user_info']['avatarUrl'] = $to_user->avatarUrl;
-                    }else{
-                        $data['to_user_info'] = [];
-                    }
+                    // if ($from_user){
+                    //     $data['to_user_info']['id'] = $to_user->id;
+                    //     $data['to_user_info']['nickname'] = $to_user->nickname;
+                    //     $data['to_user_info']['avatarUrl'] = $to_user->avatarUrl;
+                    // }else{
+                    //     $data['to_user_info'] = [];
+                    // }
 
-                    $data['content'] = $message->content;
-                    $data['created_at'] = date('Y-m-d H:i:s',$message->created_at);
-                    $data['if_read'] = $message->if_read;
+                    // $data['content'] = $message->content;
+                    // $data['created_at'] = date('Y-m-d H:i:s',$message->created_at);
+                    // $data['if_read'] = $message->if_read;
 
                     $datas[] = $data;
                 }
