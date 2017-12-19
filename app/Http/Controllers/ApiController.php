@@ -433,6 +433,11 @@ class ApiController extends Controller
         ];
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 新增/更新电台
+     */
     public function postRadio(Request $request)
     {
         $params = $request->get('params');
@@ -465,6 +470,12 @@ class ApiController extends Controller
         $radio_id = $radio->id;
         return response()->json(['status' => 200,'radio_id' => $radio_id]);
     }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 删除电台
+     */
     public function deleteRadio(Request $request)
     {
         $radio_id = 0;
