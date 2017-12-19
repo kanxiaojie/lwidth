@@ -258,7 +258,7 @@ class SystemNoticeController extends Controller
         return response()->json(['status' => 200,'data' => 1]);
     }
     public function get_availables(Request $request) {
-        return response()->json(['status' => 200,'data' => 1]);
+        return response()->json(['status' => 200,'data' => 0]);
     }
 
 
