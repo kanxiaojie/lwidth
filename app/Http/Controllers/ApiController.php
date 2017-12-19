@@ -467,7 +467,8 @@ class ApiController extends Controller
     }
     public function deleteRadio(Request $request)
     {
-        $params = $request->get('params');
+        $radio_id = 0;
+        $params = $request->get('params',0);
         $radio = RadioStationInfo::find($params['id']);
         if ($radio) {
             $radio_id = $radio->id;
