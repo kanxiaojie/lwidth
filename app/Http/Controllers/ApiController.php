@@ -389,6 +389,59 @@ class ApiController extends Controller
     }
 
 
+    public function send_message_templateMessage(Request $request) {
+        $appId = env('WEIXIN_APP_ID','wx6700db6c36e6eed1');
+        $appSecret = env('WEIXIN_SECRET_ID','3220627137eaa581d7061a7bc4b11c66');
+        $access_token = $this->get_access_token($appId, $appSecret);
+
+        $url  = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=".$access_token;  
+        $data = json_encode($request->get('data'));   
+        // $data = json_encode(array('a'=>1, 'b'=>2));   
+        
+        $response = $this->http_post_data($url, $data);
+
+        return response()->json(['status' => 200,'response' => $response]);
+        
+    }
+
+    public function http_post_data($url, $data_string) {  
+  
+        $ch = curl_init();  
+        curl_setopt($ch, CURLOPT_POST, 1);  
+        curl_setopt($ch, CURLOPT_URL, $url);  
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);  
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(  
+            'Content-Type: application/json; charset=utf-8',  
+            'Content-Length: ' . strlen($data_string))  
+        );  
+        ob_start();  
+        curl_exec($ch);  
+        $return_content = ob_get_contents();  
+        ob_end_clean();  
+  
+        $return_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
+
+        return array($return_code, $return_content);  
+    }  
+
+
+    public function get_access_token($appId, $appSecret)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appId."&secret=".$appSecret);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        $output = curl_exec($ch);
+        $output = json_decode($output,TRUE);
+
+        $access_token = $output["access_token"];
+        curl_close($ch);
+
+        return $access_token;
+    }
+
+
 
     // 后台管理系统api----------------------------------------------------------------------------------------------------------------------
     
@@ -488,6 +541,8 @@ class ApiController extends Controller
         }
         return response()->json(['status' => 200,'radio_id' => $radio_id]);
     }
+
+
 
 
 }
