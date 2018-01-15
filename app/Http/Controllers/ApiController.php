@@ -395,13 +395,14 @@ class ApiController extends Controller
         $access_token = $this->get_access_token($appId, $appSecret);
 
         $url  = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=".$access_token;  
-        $data = json_encode($request->get('data'));   
+        $data = json_encode($request->all());   
         $data1 = $request->get('data');   
+        $data2 = $request->all();   
         // $data = json_encode(array('a'=>1, 'b'=>2));   
         
         $response = $this->http_post_data($url, $data);
 
-        return response()->json(['status' => 200,'response' => $response, 'data' => $data, 'data1' => $data1, 'url' => $url]);
+        return response()->json(['status' => 200,'response' => $response, 'data' => $data, 'data1' => $data1, 'data2' => $data2, 'url' => $url]);
         
     }
 
