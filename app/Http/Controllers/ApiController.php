@@ -399,7 +399,6 @@ class ApiController extends Controller
         
         $response = $this->http_post_data($url, $data);
 
-        var_dump("send_templateMessage response:  ".$response);
         return response()->json(['status' => 200,'response' => $response]);
     }
 
