@@ -174,12 +174,7 @@ $app->post('/api/read_all/private_messages','ApiController@readAllPrivateMessage
 
 
 //发模版消息
-//发私信模版消息
-$app->post('/api/send_message/templateMessage','ApiController@send_message_templateMessage');
-//发评论模版消息
-$app->post('/api/send_comment/templateMessage','ApiController@send_comment_templateMessage');
-//发回复模版消息
-$app->post('/api/send_reply/templateMessage','ApiController@send_reply_templateMessage');
+$app->post('/api/send_templateMessage','ApiController@send_templateMessage');
 
 
 

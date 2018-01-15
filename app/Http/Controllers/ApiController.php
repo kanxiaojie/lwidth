@@ -389,21 +389,17 @@ class ApiController extends Controller
     }
 
 
-    public function send_message_templateMessage(Request $request) {
+    public function send_templateMessage(Request $request) {
         $appId = env('WEIXIN_APP_ID','wx6700db6c36e6eed1');
         $appSecret = env('WEIXIN_SECRET_ID','3220627137eaa581d7061a7bc4b11c66');
         $access_token = $this->get_access_token($appId, $appSecret);
 
         $url  = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=".$access_token;  
         $data = json_encode($request->all());   
-        $data1 = $request->get('data');   
-        $data2 = $request->all();   
-        // $data = json_encode(array('a'=>1, 'b'=>2));   
         
         $response = $this->http_post_data($url, $data);
 
-        return response()->json(['status' => 200,'response' => $response, 'data' => $data, 'data1' => $data1, 'data2' => $data2, 'url' => $url]);
-        
+        return response()->json(['status' => 200,'response' => $response]);
     }
 
     public function http_post_data($url, $data_string) {  
