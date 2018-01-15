@@ -400,7 +400,7 @@ class ApiController extends Controller
         
         $response = $this->http_post_data($url, $data);
 
-        return response()->json(['status' => 200,'response' => $response]);
+        return response()->json(['status' => 200,'response' => $response, 'data' => $data, 'url' => $url]);
         
     }
 
