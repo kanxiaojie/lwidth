@@ -327,7 +327,7 @@ class ApiController extends Controller
         ];
         $square_title = 'FM 80℃ 电台';
         $dataLength = RadioStationInfo::all()->count();
-        $radiolists = RadioStationInfo::orderBy("upload_time", "desc")->paginate(10);
+        $radiolists = RadioStationInfo::orderBy("id", "desc")->paginate(10);
 
         if ($radiolists){
             foreach ($radiolists as $radiolist){
