@@ -731,7 +731,11 @@ class UserController extends Controller
                         $data['id'] = $user->id;
                         $data['nickname'] = $user->nickname;
                         $data['gender_id'] = $user->gender_id;
-                        $data['gender_name'] = $user->gender->name;
+                        if ($user->gender_id != 0) {
+                            $data['gender_name'] = $user->gender->name;
+                        } else {
+                            $data['gender_name'] = '';
+                        }
                         // $data['gender'] = $user->gender;
                         $data['avatarUrl'] = $user->avatarUrl;
 
