@@ -196,7 +196,11 @@ class ApiController extends Controller
                     $fromUserInfo['openid'] = $from_user->openid;
                     $fromUserInfo['nickname'] = $from_user->nickname;
                     $fromUserInfo['avatarUrl'] =  $from_user->avatarUrl;
-                    $fromUserInfo['college_name'] = $from_user->college->name;
+                    if ($from_user->college_id) {
+                        $fromUserInfo['college_name'] = $from_user->college->name;
+                    } else {
+                        $fromUserInfo['college_name'] = '';
+                    }
                     $data['userInfo'] = $fromUserInfo;
 
 
@@ -247,7 +251,11 @@ class ApiController extends Controller
                     $toUserInfo['openid'] = $to_user->openid;
                     $toUserInfo['nickname'] = $to_user->nickname;
                     $toUserInfo['avatarUrl'] =  $to_user->avatarUrl;
-                    $toUserInfo['college_name'] = $to_user->college->name;
+                    if ($to_user->college_id) {
+                        $toUserInfo['college_name'] = $to_user->college->name;
+                    } else {
+                        $toUserInfo['college_name'] = '';
+                    }
                     $data['userInfo'] = $toUserInfo;
 
                     $data['content'] = $message->content;
