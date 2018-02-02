@@ -94,8 +94,7 @@ $app->get('api/myPraiseLoves','CommentController@getMyPraisePosts');
 //从后端获取上传图片到七牛云所需要的 uptoken
 $app->get('/api/uptoken','UploadToQiniuController@getUpToken');
 
-//获取我未读的帖子数
-$app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');
+
 
 //对用户点赞/取消点赞
 $app->post('/api/users/{id}/praises','PraiseController@praiseToUser');
@@ -114,11 +113,9 @@ $app->get('/api/comments/{id}','CommentController@getCommentInfo');
 //获取某条评论的所有回复
 $app->get('/api/comments/{id}/replies','CommentController@getCommentReplyInfos');
 
-//19  获取我未读的提醒数
-$app->get('/api/unreadNoticeNums','NoticeController@getUnreadNoticeNums');
 
-//获取我未读的系统通知数
-$app->get('/api/unreadSystemNoticeNums','SystemNoticeController@getUnreadSystemNoticeNums');
+
+
 
 //获取所有的提醒
 $app->get('/api/notices','NoticeController@getNotices');
@@ -166,7 +163,6 @@ $app->get('/api/radios/{id}','ApiController@getRadio');
 
 
 //私信
-$app->get('/api/unreadMessages','ApiController@getUnPrivateMessages');
 $app->post('/api/save_private_message','ApiController@savePrivateMessage');
 $app->get('/api/get_private_messages','ApiController@getPrivateMessages');
 $app->post('/api/read/private_message','ApiController@readPrivateMessage');
@@ -183,6 +179,15 @@ $app->post('/api/send_templateMessage','ApiController@send_templateMessage');
 // 审核是否可见
 $app->get('/api/get_available','SystemNoticeController@get_available');
 $app->get('/api/get_availables','SystemNoticeController@get_availables');
+
+//获取我未读帖子数、未读系统通知数、未读提醒数、未读私信数
+$app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');
+$app->get('/api/unreadSystemNoticeNums','SystemNoticeController@getUnreadSystemNoticeNums');
+$app->get('/api/unreadNoticeNums','NoticeController@getUnreadNoticeNums');
+$app->get('/api/unreadMessages','ApiController@getUnPrivateMessages');
+
+
+
 
 
 

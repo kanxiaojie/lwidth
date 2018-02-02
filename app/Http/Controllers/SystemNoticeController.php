@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\SystemNotice;
+use App\Notice;
+use App\PrivateChat;
 use App\User;
 use App\Repositories\BaseRepository;
 use App\Repositories\UserRepository;
@@ -254,12 +257,100 @@ class SystemNoticeController extends Controller
     
 
 
+
+    
+
+
+
     public function get_available(Request $request) {
         return response()->json(['status' => 200,'data' => 1]);
     }
     public function get_availables(Request $request) {
-        return response()->json(['status' => 200,'data' => 1]);
+        $wesecret = $request->get('wesecret');
+        $the_last_love_id = $request->get('the_last_love_id');
+
+        $unreadNums = $this->getUnreadNums($wesecret, $the_last_love_id);
+        
+        return response()->json(['status' => 200,'data' => 1, 'unreadNums' => $unreadNums]);
     }
+
+
+    public function getUnreadNums($wesecret1, $the_last_love_id1) {
+        // $wesecret = $request->get('wesecret');
+        // $the_last_love_id = $request->get('the_last_love_id');
+        $wesecret = $wesecret1;
+        $the_last_love_id = $the_last_love_id1;
+        $postingType_id = 1;
+
+        $openid = $this->baseRepository->decryptCode($wesecret);
+        $user = $this->userRepository->getUserByOpenId($openid);
+
+        $data = [];
+        if($user)
+        {
+            $post = $this->postRepository->getPost($the_last_love_id);
+            if($post)
+            {
+                $created_time = $post->created_at;
+                if ($user->interest_id = 2) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'province_id' => $user->college->city->province->id ])->where('created_at','>',$created_time)->get();
+                } elseif($user->interest_id = 3) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'city_id' => $user->college->city->id ])->where('created_at','>',$created_time)->get();
+                } elseif($user->interest_id = 4) {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id, 'college_id' => $user->college->id ])->where('created_at','>',$created_time)->get();
+                } else {
+                    $unread_loves = Post::where(['available' => 1, 'postingType_id' => $postingType_id ])->where('created_at','>',$created_time)->get();
+                }
+                $unreadLoveNums = count($unread_loves);
+            } else {
+                $unreadLoveNums = 0;
+            }
+
+            $unreadSystemNoticeNums = SystemNotice::where(['if_read' => 0, 'user_id' => $user->id])->get()->count();
+            $unreadNotices = Notice::where('objectUser_id', $user->id)->where('if_read',0)->get()->count();
+            $unreadMessages = PrivateChat::where(['to_user_id' => $user->id, 'if_read' => 0])->get()->count();
+
+            $data['unreadLoveNums'] = $unreadLoveNums;
+            $data['unreadSystemNoticeNums'] = $unreadSystemNoticeNums;
+            $data['unreadNoticeNums'] = $unreadNotices;
+            $data['unreadMessages'] = $unreadMessages;
+        } else {
+            $post = $this->postRepository->getPost($the_last_love_id);
+            if($post)
+            {
+                $created_time = $post->created_at;
+                $unreadLoveNums = Post::where(['available' => 1, 'postingType_id' => $postingType_id ])->where('created_at','>',$created_time)->get()->count();
+            } else {
+                $unreadLoveNums = 0;
+            }
+
+            $data['unreadLoveNums'] = $unreadLoveNums;
+            $data['unreadSystemNoticeNums'] = 0;
+            $data['unreadNoticeNums'] = 0;
+            $data['unreadMessages'] = 0;
+        }
+
+        return $data;
+    }
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
