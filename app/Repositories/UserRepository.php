@@ -4,6 +4,7 @@
 use App\Profile;
 use App\User;
 use App\College;
+use App\Models\TemplateMessage;
 use Illuminate\Support\Facades\Crypt;
 use App\Repositories\QiniuRepository;
 
