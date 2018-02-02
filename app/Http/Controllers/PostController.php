@@ -1313,9 +1313,9 @@ class PostController extends Controller
                 $templateMessage->begin_time = time();
                 $templateMessage->end_time = time() + 7*84600;
                 $templateMessage->created_at = time();
-                $post->save();
+                $templateMessage->save();
 
-                return response()->json(['status' => 200,'love_id'=>$post->id]);
+                return response()->json(['status' => 200,'love_id'=>$post->id, 'templateMessage_id' => $templateMessage->id]);
             }
             else
             {
