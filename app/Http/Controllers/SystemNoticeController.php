@@ -262,24 +262,12 @@ class SystemNoticeController extends Controller
 
 
 
-    public function get_available(Request $request) {
-        return response()->json(['status' => 200,'data' => 1]);
-    }
-    public function get_availables(Request $request) {
+    
+
+
+    public function getUnreadNums(Request $request) {
         $wesecret = $request->get('wesecret');
         $the_last_love_id = $request->get('the_last_love_id');
-
-        $unreadNums = $this->getUnreadNums($wesecret, $the_last_love_id);
-        
-        return response()->json(['status' => 200,'data' => 1, 'unreadNums' => $unreadNums]);
-    }
-
-
-    public function getUnreadNums($wesecret1, $the_last_love_id1) {
-        // $wesecret = $request->get('wesecret');
-        // $the_last_love_id = $request->get('the_last_love_id');
-        $wesecret = $wesecret1;
-        $the_last_love_id = $the_last_love_id1;
         $postingType_id = 1;
 
         $openid = $this->baseRepository->decryptCode($wesecret);
@@ -330,7 +318,16 @@ class SystemNoticeController extends Controller
             $data['unreadMessages'] = 0;
         }
 
-        return $data;
+        return response()->json(['status' => 200,'data' => $data]);
+    }
+
+    
+
+    public function get_available(Request $request) {
+        return response()->json(['status' => 200,'data' => 1]);
+    }
+    public function get_availables(Request $request) {
+        return response()->json(['status' => 200,'data' => 1]);
     }
 
 

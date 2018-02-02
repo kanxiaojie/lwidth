@@ -181,6 +181,8 @@ $app->get('/api/get_available','SystemNoticeController@get_available');
 $app->get('/api/get_availables','SystemNoticeController@get_availables');
 
 //获取我未读帖子数、未读系统通知数、未读提醒数、未读私信数
+$app->get('/api/get_unreadNums','SystemNoticeController@getUnreadNums');
+//这四个失效了
 $app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');
 $app->get('/api/unreadSystemNoticeNums','SystemNoticeController@getUnreadSystemNoticeNums');
 $app->get('/api/unreadNoticeNums','NoticeController@getUnreadNoticeNums');
