@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\SystemNotice;
 use App\Notice;
-use App\PrivateChat;
+use App\Models\PrivateChat;
 use App\User;
 use App\Repositories\BaseRepository;
 use App\Repositories\UserRepository;
