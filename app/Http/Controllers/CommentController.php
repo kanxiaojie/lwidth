@@ -40,6 +40,8 @@ class CommentController extends Controller
     public function publishComments(Request $request,$id)
     {
         $wesecret = $request->get('wesecret');
+        $form_id = $request->get('form_id');
+
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
 
@@ -54,6 +56,9 @@ class CommentController extends Controller
             $res = $this->commentRepository->publishForPost($inputs,$id);
 
             if (($res['status']) && ($res['status'] == 200)) {
+
+                $templateMessage = $this->userRepository->saveTemplateMessage($user->id, $user->openid, $form_id);
+
                 return response()->json(['status' => 200]);
             } else {
                 return response()->json(['status' => 201, 'message' => 'Publish failed,please check the argument']);
@@ -71,6 +76,8 @@ class CommentController extends Controller
     {
         $inputs = [];
         $wesecret = $request->get('wesecret');
+        $form_id = $request->get('form_id');
+        
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
 
@@ -89,6 +96,8 @@ class CommentController extends Controller
                 $res = $this->commentRepository->saveCommentToComment($inputs,$comment);
                 if ($res['status'] == 200)
                 {
+                    $templateMessage = $this->userRepository->saveTemplateMessage($user->id, $user->openid, $form_id);
+                    
                     return response()->json(['status' => 200]);
                 }else
                 {

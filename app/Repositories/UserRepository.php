@@ -400,4 +400,19 @@ class UserRepository
 
         return $users;
     }
+    
+
+    public function saveTemplateMessage($user_id, $openid, $form_id) {
+        // 生成模版消息
+        $templateMessage = new TemplateMessage();
+        $templateMessage->user_id = $user_id;
+        $templateMessage->openid = $openid;
+        $templateMessage->form_id = $form_id;
+        $templateMessage->begin_time = time();
+        $templateMessage->end_time = time() + 7*84600;
+        $templateMessage->created_at = time();
+        $templateMessage->save();
+
+        return $templateMessage;
+    }
 }

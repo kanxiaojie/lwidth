@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\College;
 use App\Comment;
-use App\Models\TemplateMessage;
 use App\CommentToComment;
 use App\Post;
 use App\Praise;
@@ -1288,7 +1287,7 @@ class PostController extends Controller
     public function publishPost(Request $request)
     {
         $inputs = $request->all();
-        $form_id = $inputs['formId'];
+        $form_id = $inputs['form_id'];
 
         try{
             $openid = Crypt::decrypt($inputs['wesecret']);
@@ -1306,14 +1305,7 @@ class PostController extends Controller
             if($post)
             {
                 // 生成模版消息
-                $templateMessage = new TemplateMessage();
-                $templateMessage->user_id = $user->id;
-                $templateMessage->openid = $user->openid;
-                $templateMessage->form_id = $form_id;
-                $templateMessage->begin_time = time();
-                $templateMessage->end_time = time() + 7*84600;
-                $templateMessage->created_at = time();
-                $templateMessage->save();
+                $templateMessage = $this->userRepository->saveTemplateMessage($user->id, $user->openid, $form_id);
 
                 return response()->json(['status' => 200,'love_id'=>$post->id, 'templateMessage_id' => $templateMessage->id]);
             }
