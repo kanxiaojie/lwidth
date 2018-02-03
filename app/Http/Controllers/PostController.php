@@ -1287,7 +1287,6 @@ class PostController extends Controller
     public function publishPost(Request $request)
     {
         $inputs = $request->all();
-        $form_id = $inputs['form_id'];
 
         try{
             $openid = Crypt::decrypt($inputs['wesecret']);
@@ -1304,9 +1303,6 @@ class PostController extends Controller
 
             if($post)
             {
-                // 生成模版消息
-                $templateMessage = $this->userRepository->saveTemplateMessage($user->id, $user->openid, $form_id);
-
                 return response()->json(['status' => 200,'love_id'=>$post->id, 'templateMessage_id' => $templateMessage->id]);
             }
             else

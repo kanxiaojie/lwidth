@@ -410,7 +410,7 @@ class UserRepository
         $templateMessage->openid = $openid;
         $templateMessage->form_id = $form_id;
         $templateMessage->begin_time = time();
-        $templateMessage->end_time = time() + 7*84600;
+        $templateMessage->end_time = time() + 7*86400;
         $templateMessage->created_at = time();
         $templateMessage->save();
 
