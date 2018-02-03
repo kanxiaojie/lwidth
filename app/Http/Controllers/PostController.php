@@ -1303,7 +1303,7 @@ class PostController extends Controller
 
             if($post)
             {
-                return response()->json(['status' => 200,'love_id'=>$post->id, 'templateMessage_id' => $templateMessage->id]);
+                return response()->json(['status' => 200,'love_id'=>$post->id]);
             }
             else
             {
