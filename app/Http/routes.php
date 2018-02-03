@@ -169,6 +169,8 @@ $app->post('/api/read/private_message','ApiController@readPrivateMessage');
 $app->post('/api/read_all/private_messages','ApiController@readAllPrivateMessages');
 
 
+//保存模版消息formId
+$app->post('/api/templateMessages','ApiController@save_templateMessages');
 //发模版消息
 $app->post('/api/send_templateMessage','ApiController@send_templateMessage');
 
@@ -182,7 +184,7 @@ $app->get('/api/get_availables','SystemNoticeController@get_availables');
 
 //获取我未读帖子数、未读系统通知数、未读提醒数、未读私信数
 $app->get('/api/get_unreadNums','SystemNoticeController@getUnreadNums');
-//这四个失效了
+//这四个没用了
 $app->get('/api/unreadLoveNums','PostController@getUnreadLoveNums');
 $app->get('/api/unreadSystemNoticeNums','SystemNoticeController@getUnreadSystemNoticeNums');
 $app->get('/api/unreadNoticeNums','NoticeController@getUnreadNoticeNums');

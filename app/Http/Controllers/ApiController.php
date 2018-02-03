@@ -397,6 +397,41 @@ class ApiController extends Controller
         ];
     }
 
+
+
+    //保存模版消息formId
+    public function save_templateMessages(Request $request) {
+        $wesecret = $request->get('wesecret');
+        $form_id = $request->get('form_id');
+
+        if (empty($wesecret) || empty($form_id)){
+            return [
+                'code' => 201,
+                'message' => "wesecret,form_id 其中参数不可为空"
+            ];
+        }
+
+        try{
+            $openid = Crypt::decrypt($wesecret);
+        }catch (\Exception $exception){
+            return ['status' => 201,'message' => 'wesecret invalid'];
+        }
+
+        $user = $this->userRepository->getUserByOpenId($openid);
+        if ($user){
+            $templateMessage = $this->userRepository->saveTemplateMessage($user->id, $user->openid, $form_id);
+
+            return [
+                'code' => 200,
+                'templateMessage' => $templateMessage
+            ];
+        } else {
+            return ['status' => 201,'message' => 'user not found'];
+        }
+
+        
+
+    }
     // 发送模版消息
     public function send_templateMessage(Request $request) {
         $appId = env('WEIXIN_APP_ID','wx6700db6c36e6eed1');

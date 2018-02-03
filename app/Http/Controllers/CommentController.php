@@ -56,9 +56,6 @@ class CommentController extends Controller
             $res = $this->commentRepository->publishForPost($inputs,$id);
 
             if (($res['status']) && ($res['status'] == 200)) {
-
-                $templateMessage = $this->userRepository->saveTemplateMessage($user->id, $user->openid, $form_id);
-
                 return response()->json(['status' => 200]);
             } else {
                 return response()->json(['status' => 201, 'message' => 'Publish failed,please check the argument']);
@@ -96,8 +93,6 @@ class CommentController extends Controller
                 $res = $this->commentRepository->saveCommentToComment($inputs,$comment);
                 if ($res['status'] == 200)
                 {
-                    $templateMessage = $this->userRepository->saveTemplateMessage($user->id, $user->openid, $form_id);
-                    
                     return response()->json(['status' => 200]);
                 }else
                 {
