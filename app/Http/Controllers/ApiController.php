@@ -441,12 +441,39 @@ class ApiController extends Controller
         $url  = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=".$access_token; 
         
         $inputs = $request->all(); 
-        $inputs['page'] = substr($inputs['page'],1);
-        $data = json_encode($inputs);   
-        
-        $response = $this->http_post_data($url, $data);
 
-        return response()->json(['status' => 200,'response' => $response]);
+        $this->send_templateMessage_by_wechat($url, $inputs);
+    }
+    public function send_templateMessage_by_wechat($url, $inputs) {
+        $the_gotten_templateMessage = $this->get_right_templateMessage();
+        if ($the_gotten_templateMessage == 0) {
+            return response()->json(['status' => 200,'message' => 'no form_id anymore']);
+        } else {
+            $inputs['form_id'] = $the_gotten_templateMessage->form_id;
+            $data = json_encode($inputs);   
+            $response = $this->http_post_data($url, $data);
+            $response_json = json_decode($response[1], true);
+            if ($response_json['errcode'] == 41028 || $response_json['errcode'] == 41029) {
+                $the_gotten_templateMessage->delete();
+                $this->send_templateMessage_by_wechat($url, $inputs);
+            } else {
+                return response()->json(['status' => 200,'response' => $response]);
+            }
+        }
+    }
+    public function get_right_templateMessage() {
+        $the_templateMessages = TemplateMessage::where('openid', $inputs['touser'])->orderBy('id', 'asc')->get();
+        $now_time = time();
+        foreach ($the_templateMessages as $the_templateMessage)
+        {
+            $the_end_time = $the_templateMessage->end_time;
+            if ($now_time > $the_end_time) {
+                $the_templateMessage->delete();                
+            } else {
+                return $the_templateMessage;
+            }
+        }
+        return 0;
     }
     public function get_access_token($appId, $appSecret)
     {

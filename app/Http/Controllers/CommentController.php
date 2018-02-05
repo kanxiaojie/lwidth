@@ -40,7 +40,6 @@ class CommentController extends Controller
     public function publishComments(Request $request,$id)
     {
         $wesecret = $request->get('wesecret');
-        $form_id = $request->get('form_id');
 
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
@@ -73,7 +72,6 @@ class CommentController extends Controller
     {
         $inputs = [];
         $wesecret = $request->get('wesecret');
-        $form_id = $request->get('form_id');
         
         $openid = $this->baseRepository->decryptCode($wesecret);
         $user = $this->userRepository->getUserByOpenId($openid);
