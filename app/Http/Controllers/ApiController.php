@@ -446,7 +446,7 @@ class ApiController extends Controller
     }
     public function send_templateMessage_by_wechat($url, $inputs) {
         $the_gotten_templateMessage = $this->get_right_templateMessage($inputs);
-        if ($the_gotten_templateMessage == 0) {
+        if (empty($the_gotten_templateMessage)) {
             return response()->json(['status' => 200,'message' => 'no form_id anymore']);
         } else {
             $inputs['form_id'] = $the_gotten_templateMessage->form_id;
