@@ -453,9 +453,13 @@ class ApiController extends Controller
             $data = json_encode($inputs);   
             $response = $this->http_post_data($url, $data);
             $response_json = json_decode($response[1], true);
-            if ($response_json['errcode'] == 41028 || $response_json['errcode'] == 41029) {
+            $errcode = $response_json['errcode'];
+            if ($errcode == 41028 || $errcode == 41029) {
                 $the_gotten_templateMessage->delete();
                 $this->send_templateMessage_by_wechat($url, $inputs);
+            } else if($errcode == 0)  {
+                $the_gotten_templateMessage->delete();
+                return response()->json(['status' => 200,'response' => $response]);
             } else {
                 return response()->json(['status' => 200,'response' => $response]);
             }
