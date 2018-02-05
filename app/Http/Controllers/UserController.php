@@ -409,6 +409,16 @@ class UserController extends Controller
         $openid = Crypt::decrypt($inputs['wesecret']);
         $user = $this->userRepository->getUserByOpenId($openid);
 
+        $init_college_id = $inputs['init_college_id'];
+        if (!empty($init_college_id) && !empty($user) && empty($user->college_id)) {
+            $college_ids = College::pluck('id')->all();
+            if (in_array($init_college_id, $college_ids)) {
+                $user->college_id = $init_college_id;
+                $user->interest_id = '1';
+                $user->save();
+            }
+        }
+
         $userInfo = [];
         if ($user)
         {
