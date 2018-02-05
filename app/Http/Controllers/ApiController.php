@@ -445,7 +445,7 @@ class ApiController extends Controller
         $this->send_templateMessage_by_wechat($url, $inputs);
     }
     public function send_templateMessage_by_wechat($url, $inputs) {
-        $the_gotten_templateMessage = $this->get_right_templateMessage();
+        $the_gotten_templateMessage = $this->get_right_templateMessage($inputs);
         if ($the_gotten_templateMessage == 0) {
             return response()->json(['status' => 200,'message' => 'no form_id anymore']);
         } else {
@@ -465,7 +465,7 @@ class ApiController extends Controller
             }
         }
     }
-    public function get_right_templateMessage() {
+    public function get_right_templateMessage($inputs) {
         $the_templateMessages = TemplateMessage::where('openid', $inputs['touser'])->orderBy('id', 'asc')->get();
         $now_time = time();
         foreach ($the_templateMessages as $the_templateMessage)
