@@ -204,7 +204,7 @@ $app->get('/api/unreadMessages','ApiController@getUnPrivateMessages');
 
 
 //登录接口
-$app->post('/admin/login','AdminUserController@login');
+$app->post('/api/admin/login','AdminUserController@login');
 
 //获取所有表白
 $app->get('/api/loves_backsystem','PostController@getLoves_backsystem');
