@@ -206,6 +206,9 @@ $app->get('/api/unreadMessages','ApiController@getUnPrivateMessages');
 //登录接口
 $app->post('/admin/login','AdminUserController@login');
 
+//获取所有表白
+$app->get('/api/loves_backsystem','PostController@getLoves_backsystem');
+
 
 //获取所有的系统通知
 $app->get('/api/systemNotices_backsystem','SystemNoticeController@getSystemNotices_backsystem');
