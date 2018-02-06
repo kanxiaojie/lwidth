@@ -23,7 +23,7 @@ class AdminUserController extends Controller
     public function login(Request $request)
     {
         $params = $request->get('params');
-        $username = $params['username'];
+        $username = (int)$params['username'];
         $password = md5($params['password']);
 
         $adminUser = User::where('id',$username)->first();
