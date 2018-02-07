@@ -454,11 +454,11 @@ class PostRepository
 
         
 
-        if(isset($inputs['anonymous']) && !empty($inputs['anonymous']))
+        if(isset($inputs['anonymous']))
         {
             $post->anonymous = $inputs['anonymous'];
         }
-        if(isset($inputs['available']) && !empty($inputs['available']))
+        if(isset($inputs['available']))
         {
             $post->available = $inputs['available'];
         }
