@@ -2587,13 +2587,15 @@ class PostController extends Controller
      */
     public function getLoves_backsystem(Request $request)
     {   
-        $search = $request->get('search');
-        $manage_level_id = $request->get('manage_level_id');
-        $manage_college_id = $request->get('manage_college_id');
+        $params = $request->get('params');
+        $search = $params['search'];
+        $manage_level_id = $params['manage_level_id'];
+        $manage_college_id = $params['manage_college_id'];
         
-        $posts = $this->getLovesByManageLevel($search, $manage_level_id, $manage_college_id);
+        $postsBefore = $this->getLovesByManageLevel($search, $manage_level_id, $manage_college_id);
+        $dataLength = $postsBefore->get()->count();
         
-        $dataLength = $this->getLovesSumByManageLevel($search, $manage_level_id, $manage_college_id);
+        $posts= $postsBefore->paginate(10);
 
         $datas = [];
 
@@ -2698,8 +2700,7 @@ class PostController extends Controller
                         })
                         ->orWhere('content','LIKE','%'.$search.'%');
                 }
-            })->where(['postingType_id' => 1, 'college_id' => $manage_college_id])->orderBy('created_at', 'desc')->paginate(10);
-
+            })->where(['postingType_id' => 1, 'college_id' => $manage_college_id])->orderBy('created_at', 'desc');
         } else {
             $posts = Post::where(function ($query) use($search){
                 if(!empty($search))
@@ -2716,50 +2717,7 @@ class PostController extends Controller
                         })
                         ->orWhere('content','LIKE','%'.$search.'%');
                 }
-            })->where('postingType_id', 1)->orderBy('created_at', 'desc')->paginate(10);
-
-        }
-        
-
-        return $posts;
-    }
-    public function getLovesSumByManageLevel($search, $manage_level_id, $manage_college_id) {
-        if ($manage_level_id == 4) {
-            $posts = Post::where(function ($query) use($search){
-                if(!empty($search))
-                {
-                    $query->whereHas('user',function ($queryUser) use ($search){
-                            $queryUser->where('realname','LIKE','%'.$search.'%')
-                            ->orWhere('nickname','LIKE','%'.$search.'%');
-                        })
-                        ->orWhereHas('college',function ($queryCollege) use ($search){
-                            $queryCollege->where('name','LIKE','%'.$search.'%');
-                        })
-                        ->orWhereHas('user.gender',function ($queryGender) use ($search){
-                            $queryGender->where('name','LIKE','%'.$search.'%');
-                        })
-                        ->orWhere('content','LIKE','%'.$search.'%');
-                }
-            })->where(['postingType_id' => 1, 'college_id' => $manage_college_id])->orderBy('created_at', 'desc')->get()->count();
-
-        } else {
-            $posts = Post::where(function ($query) use($search){
-                if(!empty($search))
-                {
-                    $query->whereHas('user',function ($queryUser) use ($search){
-                            $queryUser->where('realname','LIKE','%'.$search.'%')
-                            ->orWhere('nickname','LIKE','%'.$search.'%');
-                        })
-                        ->orWhereHas('college',function ($queryCollege) use ($search){
-                            $queryCollege->where('name','LIKE','%'.$search.'%');
-                        })
-                        ->orWhereHas('user.gender',function ($queryGender) use ($search){
-                            $queryGender->where('name','LIKE','%'.$search.'%');
-                        })
-                        ->orWhere('content','LIKE','%'.$search.'%');
-                }
-            })->where('postingType_id', 1)->orderBy('created_at', 'desc')->get()->count();
-
+            })->where('postingType_id', 1)->orderBy('created_at', 'desc');
         }
         
 
