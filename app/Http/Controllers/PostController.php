@@ -2587,10 +2587,13 @@ class PostController extends Controller
      */
     public function getLoves_backsystem(Request $request)
     {   
-        $params = $request->get('params');
-        $search = $params['search'];
-        $manage_level_id = $params['manage_level_id'];
-        $manage_college_id = $params['manage_college_id'];
+        // $params = $request->get('params');
+        // $search = $params['search'];
+        // $manage_level_id = $params['manage_level_id'];
+        // $manage_college_id = $params['manage_college_id'];
+        $search = $request->get('search');
+        $manage_level_id = $request->get('manage_level_id');
+        $manage_college_id = $request->get('manage_college_id');
         
         $postsBefore = $this->getLovesByManageLevel($search, $manage_level_id, $manage_college_id);
         $dataLength = $postsBefore->get()->count();
