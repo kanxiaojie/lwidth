@@ -2812,7 +2812,11 @@ class PostController extends Controller
         {
             $inputs['user_id'] = $user->id;
 
-            $post = $this->postRepository->savePost($inputs);
+            if (empty($inputs['id'])){
+                $post = $this->postRepository->savePost($inputs);
+            } else {
+                $post = $this->postRepository->updatePost($inputs, $inputs['id']);
+            }
 
             if($post)
             {
