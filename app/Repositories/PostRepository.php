@@ -458,6 +458,10 @@ class PostRepository
         {
             $post->anonymous = $inputs['anonymous'];
         }
+        if(isset($inputs['available']) && !empty($inputs['available']))
+        {
+            $post->available = $inputs['available'];
+        }
 
         $post->save();
 
