@@ -2630,7 +2630,10 @@ class PostController extends Controller
                 $userInfo['college_name'] = $post->college->name;
                 $data['userInfo'] = $userInfo;
 
-                $data['created_at'] = $post->created_at;
+                // $data['created_at'] = $post->created_at;
+                $data['created_at'] = $post->created_at->format('Y-m-d H:i:s');
+                // $data['created_at'] = date('Y-m-d H:i:s', $post->created_at);
+
                 $data['anonymous'] = $post->anonymous;
                 $data['available'] = $post->available;
                 
