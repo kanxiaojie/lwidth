@@ -2803,5 +2803,32 @@ class PostController extends Controller
 
     }
 
+    public function publishPost_backsystem(Request $request)
+    {
+        $inputs = $request->get('params');
+        
+        $user = User::where('id', $inputs['user_id'])->first();
+        if ($user)
+        {
+            $inputs['user_id'] = $user->id;
+
+            $post = $this->postRepository->savePost($inputs);
+
+            if($post)
+            {
+                return response()->json(['status' => 200,'love_id'=>$post->id]);
+            }
+            else
+            {
+                return response()->json(['status' => 200,'message' => 'Public love failed,please check the arguments!']);
+            }
+
+
+        }else
+        {
+            return response()->json(['status' => 200,'message' => 'User does not exist']);
+        }
+    }
+
 
 }

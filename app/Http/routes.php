@@ -212,6 +212,9 @@ $app->get('/api/loves_backsystem','PostController@getLoves_backsystem');
 $app->post('/api/addImage/love','PostController@addImagePost');
 //删除表白图片
 $app->post('/api/removeImage/love','PostController@removeImagePost');
+//删除表白图片
+$app->post('/api/loves_backsystem','PostController@publishPost_backsystem');
+
 
 
 //获取所有的系统通知
