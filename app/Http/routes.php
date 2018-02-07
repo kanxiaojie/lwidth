@@ -208,6 +208,10 @@ $app->post('/api/admin/login','AdminUserController@login');
 
 //获取所有表白
 $app->get('/api/loves_backsystem','PostController@getLoves_backsystem');
+//增加表白图片
+$app->post('/api/addImage/love','PostController@addImagePost');
+//删除表白图片
+$app->post('/api/removeImage/love','PostController@removeImagePost');
 
 
 //获取所有的系统通知
