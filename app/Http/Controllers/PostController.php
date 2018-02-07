@@ -2610,7 +2610,6 @@ class PostController extends Controller
         {
             foreach ($posts as $post)
             {
-                
                 $data = [];
 
                 $data['id'] = $post->id;
@@ -2619,13 +2618,22 @@ class PostController extends Controller
                 $data['content'] = $post->content;
             
                 $data['video_url'] = $post->video_url;
+                // if(!empty($post->pictures))
+                // {
+                //     $data['images'] = explode(',',$post->pictures);
+                // }
+                // else
+                // {
+                //     $data['images'] = [];
+                // }
+                $data['images'] = $post->pictures;
                 if(!empty($post->pictures))
                 {
-                    $data['images'] = explode(',',$post->pictures);
+                    $data['images_array'] = explode(',',$post->pictures);
                 }
                 else
                 {
-                    $data['images'] = [];
+                    $data['images_array'] = [];
                 }
 
                 $userInfo = [];
@@ -2635,6 +2643,8 @@ class PostController extends Controller
                 $userInfo['avatarUrl'] = $post->user->avatarUrl;
                 $userInfo['college_name'] = $post->college->name;
                 $data['userInfo'] = $userInfo;
+
+                $data['user_id'] = $userInfo['id'];
 
                 // $data['created_at'] = $post->created_at;
                 $data['created_at'] = $post->created_at->format('Y-m-d H:i:s');
