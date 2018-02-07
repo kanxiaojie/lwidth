@@ -214,6 +214,9 @@ $app->post('/api/addImage/love','PostController@addImagePost');
 $app->post('/api/removeImage/love','PostController@removeImagePost');
 //删除表白图片
 $app->post('/api/loves_backsystem','PostController@publishPost_backsystem');
+//删除表白
+$app->post('/api/delete/love_backsystem','PostController@deletePost_backsystem');
+
 
 
 

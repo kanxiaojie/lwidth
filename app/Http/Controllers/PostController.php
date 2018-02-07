@@ -2834,5 +2834,13 @@ class PostController extends Controller
         }
     }
 
+    public function deletePost_backsystem(Request $request) {
+        $inputs = $request->get('params');
+        $post = Post::find($inputs['id']);
+        $post->available = 0;
+        $post->save();
+        return response()->json(['status' => 200,'message' => '隐藏显示成功！']);
+    }
+
 
 }
