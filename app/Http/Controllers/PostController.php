@@ -2694,7 +2694,7 @@ class PostController extends Controller
                         })
                         ->orWhere('content','LIKE','%'.$search.'%');
                 }
-            })->where(['postingType_id' => 1, 'college_id' => $manage_college_id])->orderBy('created_at', 'desc')->paginate(self::pagesize);
+            })->where(['postingType_id' => 1, 'college_id' => $manage_college_id])->orderBy('created_at', 'desc')->paginate(10);
         } else {
             $posts = Post::where(function ($query) use($search){
                 if(!empty($search))
@@ -2711,7 +2711,7 @@ class PostController extends Controller
                         })
                         ->orWhere('content','LIKE','%'.$search.'%');
                 }
-            })->where('postingType_id', 1)->orderBy('created_at', 'desc')->paginate(self::pagesize);
+            })->where('postingType_id', 1)->orderBy('created_at', 'desc')->paginate(10);
         }
         
 
