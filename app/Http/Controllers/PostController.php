@@ -2813,9 +2813,11 @@ class PostController extends Controller
             $inputs['user_id'] = $user->id;
 
             if (empty($inputs['id'])){
-                $post = $this->postRepository->savePost($inputs);
+                $the_post = new Post();
+                $post = $this->savePost_backsystem($the_post,$inputs);
             } else {
-                $post = $this->postRepository->updatePost($inputs, $inputs['id']);
+                $the_post = Post::find($inputs['id']);
+                $post = $this->savePost_backsystem($the_post,$inputs);;
             }
 
             if($post)
@@ -2832,6 +2834,77 @@ class PostController extends Controller
         {
             return response()->json(['status' => 200,'message' => 'User does not exist']);
         }
+    }
+
+    public function savePost_backsystem($post,$inputs,$picturePath = null)
+    {
+        if (isset($inputs['user_id']) && !empty($inputs['user_id']))
+        {
+            $post->user_id = $inputs['user_id'];
+
+            $user = User::find($inputs['user_id']);
+            
+            $post->province_id = $user->college->city->province->id;
+            $post->city_id = $user->college->city->id;
+            $post->college_id = $user->college->id;
+        }
+
+        if(isset($inputs['content']) && !empty($inputs['content']))
+        {
+            $post->content = $inputs['content'];
+        }
+
+        if ($picturePath)
+        {
+            if($post->pictures)
+            {
+                $post->pictures .= ','.$picturePath;
+            }
+            else
+            {
+                $post->pictures = $picturePath;
+            }
+        }
+
+        // if(isset($inputs['images']) && count($inputs['images']) > 0)
+        // {
+        //     $post->pictures = implode(',',$inputs['images']);
+        // }
+
+        if(isset($inputs['video_url']) && strlen($inputs['video_url']) > 0)
+        {
+            $post->video_url = $inputs['video_url'];
+        }
+
+        if(isset($inputs['postingType_id']) && !empty($inputs['postingType_id']))
+        {
+            $post->postingType_id = $inputs['postingType_id'];
+        }
+
+        if(isset($inputs['location']) && !empty($inputs['location']))
+        {
+            $post->location = implode(',',$inputs['location']);
+        }
+
+        if(isset($inputs['visiable']) && !empty($inputs['visiable']))
+        {
+            $post->visiable = $inputs['visiable'];
+        }
+
+        
+
+        if(isset($inputs['anonymous']))
+        {
+            $post->anonymous = $inputs['anonymous'];
+        }
+        if(isset($inputs['available']))
+        {
+            $post->available = $inputs['available'];
+        }
+
+        $post->save();
+
+        return $post;
     }
 
     public function deletePost_backsystem(Request $request) {
