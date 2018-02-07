@@ -2638,8 +2638,11 @@ class PostController extends Controller
                 // $data['created_at'] = date('Y-m-d H:i:s', $post->created_at);
 
                 $data['anonymous'] = $post->anonymous;
-                $data['available'] = $post->available;
-                
+                if ($post->available == 1 && $post->user->available == 1) {
+                    $data['available'] = 1;
+                } else {
+                    $data['available'] = 0;
+                }
 
                 if($post->likenum)
                 {
