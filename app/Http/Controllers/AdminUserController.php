@@ -62,6 +62,7 @@ class AdminUserController extends Controller
                     $user['college_id'] = $adminUser->college_id;
                     $user['college_name'] = $adminUser->college->name;
                     $user['manage_level_id'] = $adminUser->manage_level_id;
+                    $user['manage_college_id'] = $adminUser->manage_college_id;
                 
                     return response()->json(['code'=>200,'msg'=>'登录成功！', 'user' => $user]);
                 } else {
