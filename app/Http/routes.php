@@ -230,10 +230,10 @@ $app->post('/api/delete/comment_backsystem','CommentController@deleteComment_bac
 
 //获取单条评论
 $app->get('/api/comments_backsystem/{id}','CommentController@getCommentInfo_backsystem');
-//给某条评论再评论 改为回复
-$app->post('/api/comments/{id}/replies_backsystem','CommentController@commentToComment_backsystem');
 //获取某条评论的所有回复
 $app->get('/api/comments/{id}/replies_backsystem','CommentController@getCommentReplyInfos_backsystem');
+//给某条评论再评论 改为回复
+$app->post('/api/comments/{id}/replies_backsystem','CommentController@commentToComment_backsystem');
 //删除某条回复
 $app->post('/api/delete/reply_backsystem','CommentController@deleteReply_backsystem');
 
