@@ -218,7 +218,14 @@ $app->post('/api/loves_backsystem','PostController@publishPost_backsystem');
 $app->post('/api/delete/love_backsystem','PostController@deletePost_backsystem');
 
 
-
+//获取单个表白
+$app->get('/api/loves_backsystem/{id}','PostController@getLove_backsystem');
+//获取某个表白的所有评论
+$app->get('/api/loves/{id}/comments_backsystem','PostController@getPostAllComments_backsystem');
+//给某条表白评论
+$app->post('/api/loves/{id}/comments_backsystem','CommentController@publishComments_backsystem');
+//删除某条评论
+$app->post('/api/delete/comment_backsystem','CommentController@deleteComment_backsystem');
 
 //获取所有的系统通知
 $app->get('/api/systemNotices_backsystem','SystemNoticeController@getSystemNotices_backsystem');

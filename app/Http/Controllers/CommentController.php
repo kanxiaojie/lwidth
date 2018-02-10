@@ -817,4 +817,33 @@ class CommentController extends Controller
 
         return response()->json(['status' => 200,'message' => 'success','data' =>$datas]);
     }
+
+
+
+
+    // ---------------------------------------------------后台管理系统-------------------------------------------------------------
+
+
+    public function publishComments_backsystem(Request $request,$id)
+    {
+        $inputs = $request->get('params');
+
+        $comment = Comment::find($id);
+        $comment->available = $inputs['available'];
+        $comment->content = $inputs['content'];
+        $comment->save();
+       
+        return response()->json(['status' => 200, 'comment' => $comment]);
+    }
+
+    public function deleteComment_backsystem(Request $request)
+    {
+        $inputs = $request->get('params');
+
+        $comment = Comment::find($inputs['id']);
+        $comment->available = 0;
+        $comment->save();
+       
+        return response()->json(['status' => 200, 'comment' => $comment]);
+    }
 }

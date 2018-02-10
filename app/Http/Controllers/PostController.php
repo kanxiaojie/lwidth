@@ -2916,4 +2916,71 @@ class PostController extends Controller
     }
 
 
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @name 获取某个表白的所有评论
+     */
+    public function getPostAllComments_backsystem(Request $request, $id)
+    {
+        $data = array();
+        $datas = array();
+        $commentUserInfo = array();
+        $comments = Comment::where('post_id', $id)->orderBy('created_at','desc')->paginate(PostRepository::pagesize);
+        $dataLength = Comment::where('post_id', $id)->get()->count();
+ 
+        foreach ($comments as $comment)
+        {
+            $data['id'] =  $comment->id;
+            $data['content'] = $comment->content;
+            $commentuser =User::where('id',$comment->user_id)->first();
+
+            $commentUserInfo['id'] = $commentuser->id;
+            $commentUserInfo['openid'] = $commentuser->openid;
+            $commentUserInfo['nickname'] = $commentuser->nickname;
+            $commentUserInfo['avatarUrl'] =  $commentuser->avatarUrl;
+            $data['userInfo'] = $commentUserInfo;
+
+            $data['created_at'] = $comment->created_at->format('Y-m-d H:i:s');
+            $data['reply_nums'] = CommentToComment::where('comment_id', $comment->id)->get()->count();
+            
+            $datas[] = $data;
+        }
+
+        return response()->json(['status' => 200,'data' => $datas, 'dataLength' => $dataLength,]);
+            
+        
+
+    }
+
+    public function getLove_backsystem(Request $request, $id)
+    {
+        $post = $this->postRepository->getPost($id);
+        
+        $data = [];
+
+        $data['id'] = $post->id;
+        $data['content'] = $post->content;
+
+        $userInfo = [];
+        
+        $userInfo['id'] = $post->user_id;
+        $userInfo['openid'] = $post->user->openid;
+        $userInfo['nickname'] = $post->user->nickname;
+        $userInfo['avatarUrl'] = $post->user->avatarUrl;
+    
+        $userInfo['college_name'] = $post->college->name;
+        
+        $data['userInfo'] = $userInfo;
+
+        $data['created_at'] = $post->created_at->format('Y-m-d H:i:s');
+
+        
+
+        return response()->json(['status' => 200,'data' => $data]);
+    }
+
+
 }
