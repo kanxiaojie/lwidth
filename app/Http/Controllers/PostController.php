@@ -2945,6 +2945,13 @@ class PostController extends Controller
 
             $data['created_at'] = $comment->created_at->format('Y-m-d H:i:s');
             $data['reply_nums'] = CommentToComment::where('comment_id', $comment->id)->get()->count();
+            $data['praise_nums'] = $comment->r_likenum;
+
+            if ($comment->user->available == 1 && $comment->available == 1) {
+                $data['available'] = 1;
+            } else {
+                $data['available'] = 0;
+            }
             
             $datas[] = $data;
         }
