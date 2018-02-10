@@ -2595,10 +2595,16 @@ class PostController extends Controller
         $manage_level_id = $request->get('manage_level_id');
         $manage_college_id = $request->get('manage_college_id');
         
-        $postsBefore = $this->getLovesByManageLevel($search, $manage_level_id, $manage_college_id);
-        $dataLength = $postsBefore->get()->count();
+        if ($manage_level_id == 1 || $manage_level_id == 4) {
+            $postsBefore = $this->getLovesByManageLevel($search, $manage_level_id, $manage_college_id);
+            $dataLength = $postsBefore->get()->count();
+            
+            $posts= $postsBefore->paginate(10);
+        } else {
+            $posts = [];
+            $dataLength = 0;
+        }
         
-        $posts= $postsBefore->paginate(10);
 
         $datas = [];
 
@@ -2717,7 +2723,7 @@ class PostController extends Controller
                         ->orWhere('content','LIKE','%'.$search.'%');
                 }
             })->where(['postingType_id' => 1, 'college_id' => $manage_college_id])->orderBy('created_at', 'desc');
-        } else {
+        } else if (($manage_level_id == 1)) {
             $posts = Post::where(function ($query) use($search){
                 if(!empty($search))
                 {

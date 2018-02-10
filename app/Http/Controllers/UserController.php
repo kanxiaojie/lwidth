@@ -942,9 +942,20 @@ class UserController extends Controller
     
     public function getUsers(Request $request)
     {
-        $users = User::where('role', 1)->where('trust', '>', -1)->paginate(10);
-        $allUsers = User::where('role', 1)->where('trust', '>', -1)->get();
-        $dataLength = count($allUsers);
+        // $search = $request->get('search');
+        $manage_level_id = $request->get('manage_level_id');
+        $manage_college_id = $request->get('manage_college_id');
+
+        if ($manage_level_id == 1) {
+            $users = User::where('role', 1)->orderBy('created_at','desc')->paginate(10);
+            $dataLength = User::where('role', 1)->get()->count();
+        } else if($manage_level_id == 4)  {
+            $users = User::where(['role'=> 1, 'college_id' => $manage_college_id])->orderBy('created_at','desc')->paginate(10);
+            $dataLength = User::where(['role'=> 1, 'college_id' => $manage_college_id])->get()->count();
+        } else {
+            $users = [];
+            $dataLength =0;
+        }
         $datas = [];
         foreach ($users as $user) {
             $userInfo = [];
