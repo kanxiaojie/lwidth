@@ -846,4 +846,96 @@ class CommentController extends Controller
        
         return response()->json(['status' => 200, 'comment' => $comment]);
     }
+
+    public function getCommentInfo_backsystem(Request $request, $id)
+    {
+        // $wesecret = $request->get('wesecret');
+
+        $data = array();
+        $userInfo = array();
+
+        $comment = $this->commentRepository->getCommentById($id);
+        
+        $data['id'] = $comment->id;
+        $data['content'] = $comment->content;
+
+        $user = User::where('id',$comment->user_id)->first();
+        $userInfo['id'] = $user->id;
+        $userInfo['openid'] = $user->openid;
+        $userInfo['nickname'] = $user->nickname;
+        $userInfo['avatarUrl'] =  $user->avatarUrl;
+        $userInfo['openid'] =  (isset($user->openid)&&(!empty($user->openid)))?$user->openid:"";
+        $data['userInfo'] = $userInfo;
+
+
+        return response()->json(['status' => 200,'message' => 'success.','data' => $data]);
+    }
+    public function commentToComment_backsystem(Request $request, $id)
+    {
+        $inputs = $request->get('params');
+
+        $reply = CommentToComment::find($id);
+        $reply->available = $inputs['available'];
+        $reply->content = $inputs['content'];
+        $reply->save();
+
+        return response()->json(['status' => 200, 'reply' => $reply]);
+    }
+    public function getCommentReplyInfos_backsystem(Request $request, $id)
+    {
+
+        $data = array();
+        $datas = array();
+        $userInfo = array();
+        $objectUserInfo = array();
+
+        $replies = CommentToComment::where('comment_id', $id)->orderBy('created_at','desc')->paginate(15);
+        $dataLength = CommentToComment::where('comment_id', $id)->get()->count();
+
+        if($replies)
+        {
+            foreach ($replies as $reply)
+            {
+                $data['id'] = $reply->id;
+                $data['content'] = $reply->content;
+
+                $replyUser = User::where('id',$reply->user_id)->first();
+                $userInfo['id'] = $replyUser->id;
+                $userInfo['openid'] = $replyUser->openid;
+                $userInfo['nickname'] = $replyUser->nickname;
+                $userInfo['avatarUrl'] = $replyUser->avatarUrl;
+                $userInfo['openid'] =  (isset($replyUser->openid)&&(!empty($replyUser->openid)))?$replyUser->openid:"";
+                $data['userInfo'] = $userInfo;
+
+                $objectUser = User::where('id',$reply->parent_id)->first();
+                $objectUserInfo['id'] = $objectUser->id;
+                $objectUserInfo['nickname'] = $objectUser->nickname;
+                $data['objectUserInfo'] = $objectUserInfo;
+
+                $data['praise_nums'] = $reply->praise_nums;
+                
+                $data['created_at'] = $reply->created_at->format('Y-m-d H:i:s');
+
+                if ($reply->user->available == 1 && $reply->available == 1) {
+                    $data['available'] = 1;
+                } else {
+                    $data['available'] = 0;
+                }
+
+                $datas[] = $data;
+
+            }
+        }
+
+        return response()->json(['status' => 200,'message' => 'success','data' =>$datas]);
+    }
+    public function deleteReply_backsystem(Request $request)
+    {
+        $inputs = $request->get('params');
+
+        $reply = CommentToComment::find($inputs['id']);
+        $reply->available = 0;
+        $reply->save();
+        return response()->json(['status' => 200,'reply' => $reply]);
+    }
 }
