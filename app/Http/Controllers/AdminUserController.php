@@ -42,9 +42,9 @@ class AdminUserController extends Controller
                     $user['realname'] = $adminUser->realname;
                     $user['avatarUrl'] = $adminUser->avatarUrl;
                     $user['gender_id'] = $adminUser->gender_id;
-                    $user['gender_name'] = $adminUser->gender->name;
+                    // $user['gender_name'] = $adminUser->gender->name;
                     $user['college_id'] = $adminUser->college_id;
-                    $user['college_name'] = $adminUser->college->name;
+                    // $user['college_name'] = $adminUser->college->name;
                     $user['manage_level_id'] = $adminUser->manage_level_id;
                     $user['manage_college_id'] = $adminUser->manage_college_id;
                     $user['manage_college_name'] = College::where('id', $adminUser->manage_college_id)->first()->name;
@@ -58,9 +58,9 @@ class AdminUserController extends Controller
                     $user['realname'] = $adminUser->realname;
                     $user['avatarUrl'] = $adminUser->avatarUrl;                    
                     $user['gender_id'] = $adminUser->gender_id;
-                    $user['gender_name'] = $adminUser->gender->name;
+                    // $user['gender_name'] = $adminUser->gender->name;
                     $user['college_id'] = $adminUser->college_id;
-                    $user['college_name'] = $adminUser->college->name;
+                    // $user['college_name'] = $adminUser->college->name;
                     $user['manage_level_id'] = $adminUser->manage_level_id;
                     $user['manage_college_id'] = $adminUser->manage_college_id;
                 
