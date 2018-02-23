@@ -8,6 +8,7 @@ use App\Gender;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use WXBizDataCrypt;
 
 class WeixinController extends Controller
@@ -102,6 +103,7 @@ class WeixinController extends Controller
                 $res = $this->userRepository->update($datas,$user);
             }
 
+            Log::debug("登陆日志调试：".$datas['openId']);
             $token = Crypt::encrypt($datas['openId']);
 
             return $token;
