@@ -193,8 +193,8 @@ $app->get('/api/unreadMessages','ApiController@getUnPrivateMessages');
 
 
 
-
-
+//测试用的
+$app->post('/api/test_wesecret','WeixinController@test_wesecret');
 
 
 

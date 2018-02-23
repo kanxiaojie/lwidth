@@ -139,4 +139,14 @@ class WeixinController extends Controller
     }
 
 
+    //测试用的
+    public function test_wesecret (Request $request) {
+        $openid = $request->get('openid');     
+        
+        $token = Crypt::encrypt($openid);
+
+        return $token;
+    }
+
+
 }
