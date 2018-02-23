@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-include_once "wxBizDataCrypt.php";
+//include_once "wxBizDataCrypt.php";
 
 use App\Gender;
 use App\Repositories\UserRepository;
