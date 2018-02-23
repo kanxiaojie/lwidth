@@ -103,7 +103,7 @@ class WeixinController extends Controller
                 $res = $this->userRepository->update($datas,$user);
             }
 
-            Log::debug("登陆日志调试：".$datas['openId']);
+            Log::debug("登陆日志调试：firstLogin debug".$datas['openId']);
             $token = Crypt::encrypt($datas['openId']);
 
             return $token;
