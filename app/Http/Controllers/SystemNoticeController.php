@@ -235,6 +235,11 @@ class SystemNoticeController extends Controller
             } else {
                 $data['image'] = '';
             }
+            if (!empty($systemNotice->poster)) {
+                $data['poster'] = $systemNotice->poster;
+            } else {
+                $data['poster'] = '';
+            }
             if (!empty($systemNotice->video_url)) {
                 $data['video_url'] = $systemNotice->video_url;
             } else {
