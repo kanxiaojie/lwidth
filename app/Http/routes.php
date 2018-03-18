@@ -144,6 +144,8 @@ $app->get('/api/applets','SystemNoticeController@get_applets');
 
 //获取关于表白墙
 $app->get('/api/aboutLoveWalls','SystemNoticeController@get_aboutLoveWalls');
+//获取关于表白墙
+$app->get('/api/reHomes','SystemNoticeController@get_reHomes');
 //获取关于校园服务号
 $app->get('/api/aboutCollegeServices','SystemNoticeController@get_aboutCollegeServices');
 

@@ -212,6 +212,47 @@ class SystemNoticeController extends Controller
 
     }
 
+    public function get_reHomes(Request $request)
+    {
+        $datas = [];
+        
+        $systemNotices = SystemNotice::where('type', 12)->get();
+        foreach ($systemNotices as $systemNotice) {
+            $data = [];
+
+            $data['id'] = $systemNotice->id;
+
+            $diff_time = $this->postRepository->getTime($systemNotice->created_at);
+            $data['created_at'] = $diff_time;
+
+            if (!empty($systemNotice->title)) {
+                $data['title'] = $systemNotice->title;
+            } else {
+                $data['title'] = '';
+            }
+            if (!empty($systemNotice->image)) {
+                $data['image'] = $systemNotice->image;
+            } else {
+                $data['image'] = '';
+            }
+            if (!empty($systemNotice->video_url)) {
+                $data['video_url'] = $systemNotice->video_url;
+            } else {
+                $data['video_url'] = '';
+            }
+            if (!empty($systemNotice->content)) {
+                $data['content'] = $systemNotice->content;
+            } else {
+                $data['content'] = '';
+            }
+            
+            $datas[] = $data;
+        }
+
+        return response()->json(['status' => 200,'data' => $datas]);
+
+    }
+
     public function get_aboutCollegeServices(Request $request)
     {
         $service_id = $request->get('service_id');
